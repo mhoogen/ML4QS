@@ -62,6 +62,7 @@ class TemporalClassificationAlgorithms:
     # W, and W_back.
     def initialize_echo_state_network(self, inputs, outputs, reservoir):
 
+        # http://minds.jacobs-university.de/mantas/code
         # Create random matrices.
         Win = (np.random.rand(reservoir,1+inputs)-0.5) * 1
         W = np.random.rand(reservoir,reservoir)-0.5
@@ -80,7 +81,7 @@ class TemporalClassificationAlgorithms:
     # http://minds.jacobs-university.de/sites/default/files/uploads/mantas/code/minimalESN.py.txt
 
     def predict_values_echo_state_network(self, Win, W, Wback, Wout, a, reservoir_size, X, y_true, cols, per_time_step):
-
+        # http://minds.jacobs-university.de/mantas/code
         # Set the initial activation to zero.
         x = np.zeros((reservoir_size,1))
         Y = []
@@ -207,7 +208,7 @@ class TemporalClassificationAlgorithms:
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
     def reservoir_computing(self, train_X, train_y, test_X, test_y, reservoir_size=100, a=0.8, per_time_step=False, gridsearch=True, gridsearch_training_frac=0.7, error='accuracy'):
-        # Inspired by .....
+        # Inspired by http://minds.jacobs-university.de/mantas/code
 
         if gridsearch:
             reservoir_size, a = self.gridsearch_reservoir_computing(train_X, train_y, test_X, test_y, per_time_step=per_time_step, gridsearch_training_frac=gridsearch_training_frac, error=error)
