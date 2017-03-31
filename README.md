@@ -19,4 +19,4 @@ The Python code requires the following packages to run everything (not that we i
 - inspyred version 1.0.1
 - pybrain version 0.3
 
-Note that we have tried to make the code as robust as we can, but we cannot provide any guarantees on its correctness. This code is made available under the GNU public license.
+Note that we have tried to make the code as robust as we can, but we cannot provide any guarantees on its correctness. This code is made available under the GNU public license. We have used snippets of code from other sources and have tried to add references to these in our code where possible.
