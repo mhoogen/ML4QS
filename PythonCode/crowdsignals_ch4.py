@@ -15,15 +15,20 @@ from Chapter4.TextAbstraction import TextAbstraction
 import copy
 import pandas as pd
 
-# Let is create our visualization class again.
+# Let us create our visualization class again.
 DataViz = VisualizeDataset()
 
 # Read the result from the previous chapter, and make sure the index is of the type datetime.
 dataset_path = './intermediate_datafiles/'
-dataset = pd.read_csv(dataset_path + 'chapter3_result_final.csv', index_col=0)
+try:
+    dataset = pd.read_csv(dataset_path + 'chapter3_result_final.csv', index_col=0)
+except IOError as e:
+    print('File not found, try to run previous crowdsignals scripts first!')
+    raise e
+
 dataset.index = dataset.index.to_datetime()
 
-# Computer the number of milliseconds covered by an instane based on the first two rows
+# Compute the number of milliseconds covered by an instane based on the first two rows
 milliseconds_per_instance = (dataset.index[1] - dataset.index[0]).microseconds/1000
 
 
@@ -31,7 +36,7 @@ milliseconds_per_instance = (dataset.index[1] - dataset.index[0]).microseconds/1
 
 # First we focus on the time domain.
 
-# Set the windows size to the number of instances representing 10 seconds
+# Set the window sizes to the number of instances representing 5 seconds, 30 seconds and 5 minutes
 window_sizes = [int(float(5000)/milliseconds_per_instance), int(float(0.5*60000)/milliseconds_per_instance), int(float(5*60000)/milliseconds_per_instance)]
 
 NumAbs = NumericalAbstraction()

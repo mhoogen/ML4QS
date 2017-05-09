@@ -56,14 +56,18 @@ class CreateDataset():
         # Over all rows in the new table
         for i in range(0, len(self.data_table.index)):
             # Select the relevant measurements.
-            relevant_rows = dataset[((dataset[timestamp_col] >= self.data_table.index[i]) & (dataset[timestamp_col] < (self.data_table.index[i]+timedelta(milliseconds=self.granularity))))]
+            relevant_rows = dataset[
+                (dataset[timestamp_col] >= self.data_table.index[i]) &
+                (dataset[timestamp_col] < (self.data_table.index[i] +
+                                           timedelta(milliseconds=self.granularity)))
+            ]
             for col in value_cols:
                 # Take the average value
-                if (len(relevant_rows) > 0):
+                if len(relevant_rows) > 0:
                     if aggregation == 'avg':
-                        self.data_table.loc[self.data_table.index[i], str(prefix)+str(col)] = float(sum(relevant_rows[col]))/len(relevant_rows[col])
+                        self.data_table.loc[self.data_table.index[i], str(prefix)+str(col)] = np.average(relevant_rows[col])
                     else:
-                        self.data_table.loc[self.data_table.index[i], str(prefix)+str(col)] = float(sum(relevant_rows[col]))/len(relevant_rows[col])
+                        raise ValueError("Unknown aggregation '" + aggregation + "'")
                 else:
                     self.data_table.loc[self.data_table.index[i], str(prefix)+str(col)] = np.nan
 
@@ -72,10 +76,11 @@ class CreateDataset():
         return re.sub('[^0-9a-zA-Z]+', '', name)
 
     # Add data in which we have rows that indicate the occurrence of a certain event with a given start and end time.
+    # 'aggregation' can be 'sum' or 'binary'.
     def add_event_dataset(self, file, start_timestamp_col, end_timestamp_col, value_col, aggregation='sum'):
         dataset = pd.read_csv(self.base_dir + file)
 
-        # Convert timestamps to datatime.
+        # Convert timestamps to datetime.
         dataset[start_timestamp_col] = pd.to_datetime(dataset[start_timestamp_col])
         dataset[end_timestamp_col] = pd.to_datetime(dataset[end_timestamp_col])
 
@@ -106,6 +111,8 @@ class CreateDataset():
             # or set to 1 if we just want to know it happened
             elif aggregation == 'binary':
                 self.data_table.loc[relevant_rows.index, str(value_col) + str(value)] = 1
+            else:
+                raise ValueError("Unknown aggregation '" + aggregation + "'")
 
     # This function returns the column names that have one of the strings expressed by 'ids' in the column name.
     def get_relevant_columns(self, ids):
