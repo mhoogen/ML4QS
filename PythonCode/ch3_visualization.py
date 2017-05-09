@@ -35,7 +35,6 @@ ax.annotate('outliers', xy=(0.3, 0.25), xytext=(0.45, 0.7),
 ax.annotate('outliers', xy=(0.7, 0.25), xytext=(0.45, 0.7),
             arrowprops=dict(facecolor='black', shrink=0.05))
 plot.hold(False)
-plot.title('Figure 3.1')
 plot.show()
 
 # Figure 3.2
@@ -66,7 +65,6 @@ ax.arrow(0.5, 0.5,
 ax.annotate('$d_{min}$', xy=(.6, .5),  xycoords='axes fraction',
                 horizontalalignment='center', verticalalignment='center')
 plot.show()
-plot.title('Figure 3.2')
 plot.hold(False)
 
 # Figure 3.3
@@ -87,7 +85,6 @@ plot.xlim([0,1])
 plot.ylim([0,1])
 plot.plot([0.25], [0.25], 'ko')
 plot.plot([0.65], [0.65], 'ko')
-plot.title('Figure 3.3')
 plot.show()
 
 # Figure 3.4
@@ -110,7 +107,6 @@ plot.legend(['$3 \cdot sin(2 \cdot \pi \cdot 0.1 \cdot t))$', '$2 \cdot sin(2 \c
             loc=4, fontsize='small')
 plot.xlabel('time')
 plot.ylabel('$X_{1}$')
-plot.title('Figure 3.4')
 plot.show()
 
 # Figure 3.5
@@ -137,7 +133,6 @@ plot.ylim([0,1])
 plot.xlabel('$X_{1}$')
 plot.ylabel('$X_{2}$')
 plot.hold(False)
-plot.title('Figure 3.5')
 plot.show()
 
 # Figure 3.6
@@ -154,7 +149,6 @@ ax.spines['left'].set_visible(False)
 ax.spines['bottom'].set_position('zero')
 plot.legend(['$transformed$ $data$'], loc=(0.5, 0.1))
 plot.hold(False)
-plot.title('Figure 3.6')
 plot.show()
 
 # Figure 3.7
@@ -166,5 +160,4 @@ plot.xlabel('$X\'_{1}$')
 plot.ylabel('$X\'_{2}$')
 plot.legend(['$transformed$ $data$'], loc=4)
 plot.hold(False)
-plot.title('Figure 3.7')
 plot.show()
