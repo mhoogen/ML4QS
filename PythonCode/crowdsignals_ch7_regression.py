@@ -21,6 +21,7 @@ from util import util
 import matplotlib.pyplot as plot
 import numpy as np
 from sklearn.model_selection import train_test_split
+import os
 
 
 # Of course we repeat some stuff from Chapter 3, namely to load the dataset
@@ -29,8 +30,18 @@ DataViz = VisualizeDataset()
 
 # Read the result from the previous chapter, and make sure the index is of the type datetime.
 dataset_path = './intermediate_datafiles/'
+export_tree_path = 'Example_graphs/Chapter7/'
+
+try:
+    dataset = pd.read_csv(dataset_path + 'chapter5_result.csv', index_col=0)
+except IOError as e:
+    print('File not found, try to run previous crowdsignals scripts first!')
+    raise e
 dataset = pd.read_csv(dataset_path + 'chapter5_result.csv', index_col=0)
 dataset.index = dataset.index.to_datetime()
+
+if not os.path.exists(export_tree_path):
+    os.makedirs(export_tree_path)
 
 # Let us consider our second task, namely the prediction of the heart rate. We consider this as a temporal task.
 
@@ -153,7 +164,7 @@ for i in range(0, len(possible_feature_sets)):
     performance_te_knn = mean_te
     performance_te_knn_std = std_te
 
-    regr_train_y, regr_test_y = learner.decision_tree(selected_train_X, train_y, selected_test_X, gridsearch=True)
+    regr_train_y, regr_test_y = learner.decision_tree(selected_train_X, train_y, selected_test_X, gridsearch=True, export_tree_path=export_tree_path)
 
     mean_tr, std_tr = eval.mean_squared_error_with_std(train_y, regr_train_y)
     mean_te, std_te = eval.mean_squared_error_with_std(test_y, regr_test_y)

@@ -9,6 +9,7 @@
 
 
 dataset_path = '../datasets/crowdsignals.io/csv-participant-one/'
+result_dataset_path = './intermediate_datafiles/'
 
 # Import the relevant classes.
 
@@ -16,6 +17,12 @@ from Chapter2.CreateDataset import CreateDataset
 from util.VisualizeDataset import VisualizeDataset
 from util import util
 import copy
+import os
+
+
+if not os.path.exists(result_dataset_path):
+    print('Creating result directory: ' + result_dataset_path)
+    os.makedirs(result_dataset_path)
 
 # Chapter 2: Initial exploration of the dataset.
 
@@ -47,7 +54,7 @@ for milliseconds_per_instance in granularities:
     DataSet.add_numerical_dataset('heart_rate_smartwatch.csv', 'timestamps', ['rate'], 'avg', 'hr_watch_')
 
     # We add the labels provided by the users. These are categorical events that might overlap. We add them
-    # as binary attributes (i.e. ad a one to the attribute representing the specific value for the label if it
+    # as binary attributes (i.e. add a one to the attribute representing the specific value for the label if it
     # occurs within an interval).
     DataSet.add_event_dataset('labels.csv', 'label_start', 'label_end', 'label', 'binary')
 
@@ -55,7 +62,7 @@ for milliseconds_per_instance in granularities:
     DataSet.add_numerical_dataset('light_phone.csv', 'timestamps', ['lux'], 'avg', 'light_phone_')
 
     # We add the magnetometer data (continuous numerical measurements) of the phone and the smartwatch
-    # and aggregate the values per timestep by averaging the values/
+    # and aggregate the values per timestep by averaging the values
     DataSet.add_numerical_dataset('magnetometer_phone.csv', 'timestamps', ['x','y','z'], 'avg', 'mag_phone_')
     DataSet.add_numerical_dataset('magnetometer_smartwatch.csv', 'timestamps', ['x','y','z'], 'avg', 'mag_watch_')
 
@@ -86,5 +93,4 @@ for milliseconds_per_instance in granularities:
 util.print_latex_table_statistics_two_datasets(datasets[0], datasets[1])
 
 # Finally, store the last dataset we have generated (250 ms).
-result_dataset_path = './intermediate_datafiles/'
 dataset.to_csv(result_dataset_path + 'chapter2_result.csv')

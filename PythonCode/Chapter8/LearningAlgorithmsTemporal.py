@@ -32,7 +32,7 @@ from statsmodels.tsa.arima_model import ARIMA
 
 
 
-# The class includes several algorithm that capture the temporal dimension explicitly for
+# The class includes several algorithms that capture the temporal dimension explicitly for
 # classification problems.
 class TemporalClassificationAlgorithms:
 

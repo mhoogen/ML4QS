@@ -35,8 +35,8 @@ class ClassificationAlgorithms:
 
 
         if gridsearch:
-            tuned_parameters = [{'hidden_layer_sizes': [(5,), (10,), (25,), (100,), (100,5,), (100,10,),], 'activation': ['logistic'],
-                                 'learning_rate': ['adaptive'], 'max_iter': [1000, 2000], 'alpha': [alpha]}]
+            tuned_parameters = [{'hidden_layer_sizes': [(5,), (10,), (25,), (100,), (100,5,), (100,10,),], 'activation': [activation],
+                                 'learning_rate': [learning_rate], 'max_iter': [1000, 2000], 'alpha': [alpha]}]
             nn = GridSearchCV(MLPClassifier(), tuned_parameters, cv=5, scoring='accuracy')
         else:
             # Create the model
@@ -322,7 +322,7 @@ class RegressionAlgorithms:
 
         return pred_training_y, pred_test_y
 
-    # Apply a support vector machine wihtout a complex kernel function for regression upon the training data (with the specified value for
+    # Apply a support vector machine without a complex kernel function for regression upon the training data (with the specified value for
     # C, tolerance and max iterations), and use the created model to predict the outcome for both the
     # test and training set. It returns the predictions for the training and test set.
     def support_vector_regression_without_kernel(self, train_X, train_y, test_X, C=1, tol=1e-3, max_iter=1000, gridsearch=True, print_model_details=False):

@@ -8,7 +8,7 @@ The Python code requires the following packages to run everything (not that we i
     - matplotlib version 1.5.3
     - statsmodels version 0.6.1
     - scikit-learn version 0.18.1
-    - numpy 1.11.13
+    - numpy 1.11.1
     - pandas 0.19.2
     - scipy version 0.18.1
     - nltk version 3.2.1 
@@ -19,4 +19,8 @@ The Python code requires the following packages to run everything (not that we i
 - inspyred version 1.0.1
 - pybrain version 0.3
 
+Create and activate an anaconda environment and install all package versions using `conda install --name <EnvironmentName> --file requirements.txt`.
+Install non-conda packages using pip: `pip install -r pip_requirements.txt`.
+
 Note that we have tried to make the code as robust as we can, but we cannot provide any guarantees on its correctness. This code is made available under the GNU public license. We have used snippets of code from other sources and have tried to add references to these in our code where possible.
+

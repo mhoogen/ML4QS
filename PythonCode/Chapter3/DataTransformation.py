@@ -42,22 +42,21 @@ class PrincipalComponentAnalysis:
     # Perform the PCA on the selected columns and return the explained variance.
     def determine_pc_explained_variance(self, data_table, cols):
         # Normalize the data first.
-
         dt_norm = util.normalize_dataset(data_table, cols)
 
         # perform the PCA.
         self.pca = PCA(n_components = len(cols))
         self.pca.fit(dt_norm[cols])
-
         # And return the explained variances.
         return self.pca.explained_variance_ratio_
 
     # Apply a PCA given the number of components we have selected.
     # We add new pca columns.
     def apply_pca(self, data_table, cols, number_comp):
+        # Normalize the data first.
         dt_norm = util.normalize_dataset(data_table, cols)
 
-        # Apply PCA.
+        # perform the PCA.
         self.pca = PCA(n_components = number_comp)
         self.pca.fit(dt_norm[cols])
 
