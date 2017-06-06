@@ -2,7 +2,7 @@
 
 This repository provides all the code associated with the book titled "Machine Learning for the Quantified Self", authored by Mark Hoogendoorn and Burkhardt Funk and published by Springer in 2017. The website of the book can be found on ml4qs.wordpress.com
 
-The Python code requires the following packages to run everything (not that we indicate the version we have tested with):
+The Python code requires the following packages to run everything (note that we indicate the version we have tested with):
 - Python version 2.7.12
 - Anaconda version 4.2.0
     - matplotlib version 1.5.3
