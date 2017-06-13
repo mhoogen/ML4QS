@@ -109,7 +109,7 @@ silhouette_values = []
 print '===== agglomaritive clustering ====='
 for k in k_values:
     print 'k = ', k
-    dataset_cluster, l = clusteringH.agglomerative_over_instances(copy.deepcopy(dataset), ['acc_phone_x', 'acc_phone_y', 'acc_phone_z'], 5, 'euclidean', use_prev_linkage=True, link_function='ward')
+    dataset_cluster, l = clusteringH.agglomerative_over_instances(copy.deepcopy(dataset), ['acc_phone_x', 'acc_phone_y', 'acc_phone_z'], k, 'euclidean', use_prev_linkage=True, link_function='ward')
     silhouette_score = dataset_cluster['silhouette'].mean()
     print 'silhouette = ', silhouette_score
     silhouette_values.append(silhouette_score)
