@@ -298,16 +298,14 @@ class HierarchicalClustering:
     link = None
 
     # Perform agglomerative clustering over a single dataset.
-    def agglomerative_over_instances(self, dataset, cols, max_clusters, distance_metric, p=1, use_prev_linkage=False, link_function='single'):
+    def agglomerative_over_instances(self, dataset, cols, max_clusters, distance_metric, use_prev_linkage=False, link_function='single'):
         temp_dataset = dataset[cols]
         df = NonHierarchicalClustering()
 
         if (not use_prev_linkage) or (self.link is None):
             # Perform the clustering process according to the specified distance metric.
-            if distance_metric == df.minkowski:
-                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='minkowski', p=p)
-            elif distance_metric == df.manhattan:
-                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='manhattan')
+            if distance_metric == df.manhattan:
+                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='cityblock')
             else:
                 self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='euclidean')
 
@@ -321,11 +319,11 @@ class HierarchicalClustering:
         return dataset, self.link
 
     # Perform agglomerative clustering over the datasets by flattening them into a single dataset.
-    def agglomerative_over_datasets(self, datasets, cols, max_clusters, abstraction_method, distance_metric, p=1):
+    def agglomerative_over_datasets(self, datasets, cols, max_clusters, abstraction_method, distance_metric, use_prev_linkage=False, link_function='single'):
         # Convert the datasets to instances
         df = NonHierarchicalClustering()
         temp_dataset = df.aggregate_datasets(datasets, cols, abstraction_method)
 
         # And simply apply the instance based algorithm...
-        return self.agglomerative_over_instances(temp_dataset, temp_dataset.columns, max_clusters, distance_metric, p)
+        return self.agglomerative_over_instances(temp_dataset, temp_dataset.columns, max_clusters, distance_metric, use_prev_linkage=use_prev_linkage, link_function=link_function)
 
