@@ -19,7 +19,7 @@ The Python code requires the following packages to run everything (note that we 
 - inspyred version 1.0.1
 - pybrain version 0.3
 
-Create and activate an anaconda environment and install all package versions using `conda install --name <EnvironmentName> --file requirements.txt`.
+Create and activate an anaconda environment and install all package versions using `conda install --name <EnvironmentName> --file conda_requirements.txt`.
 Install non-conda packages using pip: `pip install -r pip_requirements.txt`.
 
 Note that we have tried to make the code as robust as we can, but we cannot provide any guarantees on its correctness. This code is made available under the GNU public license. We have used snippets of code from other sources and have tried to add references to these in our code where possible. When using the code for publications, please include a reference to the book in your paper:
