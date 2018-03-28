@@ -1,0 +1,13 @@
+---
+title: "ToDos für RCode"
+output: html_notebook
+---
+
+Chapter 3
+- plotBinaryOutliers: auf ggplot umstellen
+- compute the log probability under the model für Mixture Model (siehe g.score in Python)
+- @MH: fig. 3.8b: warum wird das als line plot dargestellt? entweder line oder points
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
