@@ -44,9 +44,6 @@ class FourierTransformation:
                 # We only look at the real part in this implementation.
                 for j in range(0, len(freqs)):
                     data_table.ix[i, col + '_freq_' + str(freqs[j]) + '_Hz_ws_' + str(window_size)] = real_ampl[j]
-#                    print '====='
-#                    print real_ampl[j]
-#                    print data_table.ix[i, col + '_freq_' + str(freqs[j])]
                 # And select the dominant frequency. We only consider the positive frequencies for now.
 
                 data_table.ix[i, col + '_max_freq'] = freqs[np.argmax(real_ampl[0:len(real_ampl)])]
@@ -56,17 +53,3 @@ class FourierTransformation:
                 data_table.ix[i, col + '_pse'] = -np.sum(np.log(PSD_pdf) * PSD_pdf)
 
         return data_table
-
-#
-#
-#    # Remove periodic sinusoid functions from our data to be left with the "clean" signal
-#    # The components should be specified by means of their index (meaning their period).
-#    def remove_components(self, data_table, col, components):
-#        new_transformation = copy.deepcopy(self.transformation)
-#        for i in range(0, len(new_transformation)):
-#            if i in components:
-#                new_transformation[i] = 0
-#        values = np.fft.ifft(new_transformation)
-#        values = values.real
-#        data_table[col + '_fft'] = values
-#        return data_table

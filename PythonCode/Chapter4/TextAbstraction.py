@@ -41,7 +41,7 @@ class TextAbstraction:
             # Take the lower case.
             word = word.lower()
             try:
-                # Us the proper coding.
+                # Use the proper coding.
                 word = word.decode('utf-8')
             except:
                 word = word

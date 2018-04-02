@@ -13,16 +13,13 @@ from sklearn import mixture
 import numpy as np
 import pandas as pd
 import util.util as util
-import warnings
 import copy
 
 # Class for outlier detection algorithms based on some distribution of the data. They
 # all consider only single points per row (i.e. one column).
 class DistributionBasedOutlierDetection:
 
-    warnings.filterwarnings('ignore')
-
-    # Finds outliers in the specified column of datatable and adds a binary columns with
+    # Finds outliers in the specified column of datatable and adds a binary column with
     # the same name extended with '_outlier' that expresses the result per data point.
     def chauvenet(self, data_table, col):
         # Taken partly from: https://www.astro.rug.nl/software/kapteyn/
@@ -55,8 +52,6 @@ class DistributionBasedOutlierDetection:
     # of observing the value given the mixture model.
     def mixture_model(self, data_table, col):
         # Fit a mixture model to our data.
-        #data = data_table[col].reshape(-1,1)
-        #nan_mask = ~np.isnan(data)
         data = data_table[data_table[col].notnull()][col]
         g = mixture.GMM(n_components=3, n_iter=1)
 
@@ -76,7 +71,7 @@ class DistanceBasedOutlierDetection:
 
 
     # Create distance table between rows in the data table. Here, only cols are considered and the specified
-    # distance function is used to computer the distance.
+    # distance function is used to compute the distance.
     def distance_table(self, data_table, cols, d_function):
         return pd.DataFrame(scipy.spatial.distance.squareform(util.distance(data_table.ix[:, cols], d_function)), columns=data_table.index, index=data_table.index)
 
@@ -111,7 +106,7 @@ class DistanceBasedOutlierDetection:
         self.distances = self.distance_table(new_data_table, cols, d_function)
 
         outlier_factor = []
-        # Computer the outlier score per row.
+        # Compute the outlier score per row.
         for i in range(0, len(new_data_table.index)):
             print i
             outlier_factor.append(self.local_outlier_factor_instance(i, k))
@@ -126,12 +121,12 @@ class DistanceBasedOutlierDetection:
         # The value is the max of the k-distance of i2 and the real distance.
         return max([k_distance_value, self.distances.ix[i1,i2]])
 
-    # Computer the local reachability density for a row i, given a k-distance and set of neighbors.
+    # Compute the local reachability density for a row i, given a k-distance and set of neighbors.
     def local_reachability_density(self, i, k, k_distance_i, neighbors_i):
         # Set distances to neighbors to 0.
         reachability_distances_array = [0]*len(neighbors_i)
 
-        # Compute the reachability distance between i and all neighbords.
+        # Compute the reachability distance between i and all neighbors.
         for i, neighbor in enumerate(neighbors_i):
             reachability_distances_array[i] = self.reachability_distance(k, i, neighbor)
         if not any(reachability_distances_array):
@@ -140,8 +135,8 @@ class DistanceBasedOutlierDetection:
             # Return the number of neighbors divided by the sum of the reachability distances.
             return len(neighbors_i) / sum(reachability_distances_array)
 
-    # Computer the k-distance of a row i, namely the maximum distance within the k nearest neighbors
-    # and returns this value and the neighbors within this distance.
+    # Compute the k-distance of a row i, namely the maximum distance within the k nearest neighbors
+    # and return a tuple containing this value and the neighbors within this distance.
     def k_distance(self, i, k):
         # Simply look up the values in the distance table, select the min_pts^th lowest value and take the value pairs
         # Take min_pts + 1 as we also have the instance itself in there.

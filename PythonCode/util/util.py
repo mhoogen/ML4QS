@@ -11,13 +11,13 @@ def normalize_dataset(data_table, columns):
     return dt_norm
 
 # Calculate the distance between rows.
-def distance(rows, d_function):
+def distance(rows, d_function='euclidean'):
     if d_function == 'euclidean':
         # Assumes m rows and n columns (attributes), returns and array where each row represents
         # the distances to the other rows (except the own row).
         return scipy.spatial.distance.pdist(rows, 'euclidean')
     else:
-        return scipy.spatial.distance.pdist(rows, 'euclidean')
+        raise ValueError("Unknown distance value '" + d_function + "'")
 
 def print_statistics(dataset):
     print 'column, fraction missing values, mean, standard deviation, min, max'

@@ -91,7 +91,8 @@ class NonHierarchicalClustering:
 
         # Take the appropriate columns.
         temp_dataset = dataset[cols]
-        # Override the standard distance functions.
+        # Override the standard distance functions. Store the original first
+        sklearn_euclidian_distances = sklearn.cluster.k_means_.euclidean_distances
         if distance_metric == self.euclidean:
             sklearn.cluster.k_means_.euclidean_distances = self.euclidean_distance
         elif distance_metric == self.minkowski:
@@ -114,6 +115,9 @@ class NonHierarchicalClustering:
         silhouette_avg = silhouette_score(temp_dataset, kmeans.labels_)
         silhouette_per_inst = silhouette_samples(temp_dataset, kmeans.labels_)
         dataset['silhouette'] = silhouette_per_inst
+
+        # Reset the module distance function for further usage
+        sklearn_euclidian_distances = sklearn_euclidian_distances
 
         return dataset
 
@@ -157,7 +161,7 @@ class NonHierarchicalClustering:
                 distances.ix[j,i] = distances.ix[i,j]
         return distances
 
-    # We need to implement k-medoids ourselves to accommodate alle
+    # We need to implement k-medoids ourselves to accommodate all distance metrics
     def k_medoids_over_instances(self, dataset, cols, k, distance_metric, max_iters, n_inits=5, p=1):
         # If we set it to default we use the pyclust package...
         temp_dataset = dataset[cols]
@@ -231,7 +235,6 @@ class NonHierarchicalClustering:
                 elif distance_metric == self.abstraction_lag:
                     distances.ix[i,j] = DMOrdering.lag_correlation(datasets[i], datasets[j], self.max_lag)
                 elif distance_metric == self.abstraction_dtw:
-                    print 'before call'
                     distances.ix[i,j] = DMOrdering.dynamic_time_warping(datasets[i], datasets[j])
                 distances.ix[j,i] = distances.ix[i,j]
         return distances
@@ -295,16 +298,14 @@ class HierarchicalClustering:
     link = None
 
     # Perform agglomerative clustering over a single dataset.
-    def agglomerative_over_instances(self, dataset, cols, max_clusters, distance_metric, p=1, use_prev_linkage=False, link_function='single'):
+    def agglomerative_over_instances(self, dataset, cols, max_clusters, distance_metric, use_prev_linkage=False, link_function='single'):
         temp_dataset = dataset[cols]
         df = NonHierarchicalClustering()
 
         if (not use_prev_linkage) or (self.link is None):
             # Perform the clustering process according to the specified distance metric.
-            if distance_metric == df.minkowski:
-                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='minkowski', p=p)
-            elif distance_metric == df.manhattan:
-                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='manhattan')
+            if distance_metric == df.manhattan:
+                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='cityblock')
             else:
                 self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='euclidean')
 
@@ -318,11 +319,11 @@ class HierarchicalClustering:
         return dataset, self.link
 
     # Perform agglomerative clustering over the datasets by flattening them into a single dataset.
-    def agglomerative_over_datasets(self, datasets, cols, max_clusters, abstraction_method, distance_metric, p=1):
+    def agglomerative_over_datasets(self, datasets, cols, max_clusters, abstraction_method, distance_metric, use_prev_linkage=False, link_function='single'):
         # Convert the datasets to instances
         df = NonHierarchicalClustering()
         temp_dataset = df.aggregate_datasets(datasets, cols, abstraction_method)
 
         # And simply apply the instance based algorithm...
-        return self.agglomerative_over_instances(temp_dataset, temp_dataset.columns, max_clusters, distance_metric, p)
+        return self.agglomerative_over_instances(temp_dataset, temp_dataset.columns, max_clusters, distance_metric, use_prev_linkage=use_prev_linkage, link_function=link_function)
 

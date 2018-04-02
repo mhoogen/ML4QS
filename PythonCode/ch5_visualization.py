@@ -202,7 +202,7 @@ plot.ylim([0,1])
 plot.hold(False)
 plot.show()
 
- Figure 5.4
+# Figure 5.4
 
 f, axarr = plot.subplots(2, 2)
 f.subplots_adjust(hspace=0)

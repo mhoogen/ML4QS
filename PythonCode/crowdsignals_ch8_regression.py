@@ -29,7 +29,13 @@ DataViz = VisualizeDataset()
 
 # Read the result from the previous chapter, and make sure the index is of the type datetime.
 dataset_path = './intermediate_datafiles/'
-dataset = pd.read_csv(dataset_path + 'chapter5_result.csv', index_col=0)
+
+try:
+    dataset = pd.read_csv(dataset_path + 'chapter5_result.csv', index_col=0)
+except IOError as e:
+    print('File not found, try to run previous crowdsignals scripts first!')
+    raise e
+
 dataset.index = dataset.index.to_datetime()
 
 # Let us consider our second task, namely the prediction of the heart rate. We consider this as a temporal task.

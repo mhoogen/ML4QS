@@ -14,9 +14,9 @@ from pykalman import KalmanFilter
 class KalmanFilters:
 
     # Very simple Kalman filter: fill missing values and remove outliers for single attribute.
-    # We assume a very simple transition and observation matrix and transition matrix, namely
-    # simple a 1. It is however still useful as it is able to dampen outliers and impute missing
-    # values. It creates a new column for this.
+    # We assume a very simple transition matrix, namely simply a [[1]]. It
+    # is however still useful as it is able to dampen outliers and impute missing values. The new
+    # values are appended in a new column.
     def apply_kalman_filter(self, data_table, col):
 
         # Initialize the Kalman filter with the trivial transition and observation matrices.

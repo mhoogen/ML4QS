@@ -21,6 +21,7 @@ from util import util
 import matplotlib.pyplot as plot
 import numpy as np
 from sklearn.model_selection import train_test_split
+import os
 
 
 # Of course we repeat some stuff from Chapter 3, namely to load the dataset
@@ -28,8 +29,19 @@ from sklearn.model_selection import train_test_split
 DataViz = VisualizeDataset()
 
 # Read the result from the previous chapter, and make sure the index is of the type datetime.
+
 dataset_path = './intermediate_datafiles/'
-dataset = pd.read_csv(dataset_path + 'chapter5_result.csv', index_col=0)
+export_tree_path = 'Example_graphs/Chapter7/'
+
+try:
+    dataset = pd.read_csv(dataset_path + 'chapter5_result.csv', index_col=0)
+except IOError as e:
+    print('File not found, try to run previous crowdsignals scripts first!')
+    raise e
+
+if not os.path.exists(export_tree_path):
+    os.makedirs(export_tree_path)
+
 dataset.index = dataset.index.to_datetime()
 
 # Let us consider our first task, namely the prediction of the label. We consider this as a non-temporal task.
@@ -77,13 +89,13 @@ plot.xlabel('number of features')
 plot.ylabel('accuracy')
 plot.show()
 
- Based on the plot we select the top 10 features.
+# Based on the plot we select the top 10 features.
 
 selected_features = ['acc_phone_y_freq_0.0_Hz_ws_40', 'press_phone_pressure_temp_mean_ws_120', 'gyr_phone_x_temp_std_ws_120',
                      'mag_watch_y_pse', 'mag_phone_z_max_freq', 'gyr_watch_y_freq_weighted', 'gyr_phone_y_freq_1.0_Hz_ws_40',
                      'acc_phone_x_freq_1.9_Hz_ws_40', 'mag_watch_z_freq_0.9_Hz_ws_40', 'acc_watch_y_freq_0.5_Hz_ws_40']
 
- Let us first study the impact of regularization and model complexity: does regularization prevent overfitting?
+# Let us first study the impact of regularization and model complexity: does regularization prevent overfitting?
 
 learner = ClassificationAlgorithms()
 eval = ClassificationEvaluation()
@@ -214,11 +226,12 @@ for i in range(0, len(possible_feature_sets)):
 
 DataViz.plot_performances_classification(['NN', 'RF', 'SVM', 'KNN', 'DT', 'NB'], feature_names, scores_over_all_algs)
 
-# And we study the promising ones in more detail. First let us consider the decision tree which works best with the selected
+# And we study two promising ones in more detail. First let us consider the decision tree which works best with the selected
 # features.
 #
 class_train_y, class_test_y, class_train_prob_y, class_test_prob_y = learner.decision_tree(train_X[selected_features], train_y, test_X[selected_features],
-                                                                                           gridsearch=True, print_model_details=True)
+                                                                                           gridsearch=True,
+                                                                                           print_model_details=True, export_tree_path=export_tree_path)
 
 class_train_y, class_test_y, class_train_prob_y, class_test_prob_y = learner.random_forest(train_X[selected_features], train_y, test_X[selected_features],
                                                                                            gridsearch=True, print_model_details=True)

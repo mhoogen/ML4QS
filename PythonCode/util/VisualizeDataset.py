@@ -21,8 +21,8 @@ class VisualizeDataset:
     # Plot the dataset, here columns can specify a specific attribute, but also a generic name that occurs
     # among multiple attributes (e.g. label which occurs as labelWalking, etc). In such a case they are plotted
     # in the same graph. The display should express whether points or a line should be plotted.
-    # Match can be exact or like.
-    def plot_dataset(self, data_table, columns, match, display):
+    # Match can be 'exact' or 'like'. Display can be 'points' or 'line'.
+    def plot_dataset(self, data_table, columns, match='like', display='line'):
         names = list(data_table.columns)
 
         # Create subplots if more columns are specified.
@@ -32,7 +32,6 @@ class VisualizeDataset:
             f, xar = plot.subplots()
             xar = [xar]
 
-#        f.subplots_adjust(hspace=0.05)
         f.subplots_adjust(hspace=0.4)
         plot.hold(True)
         xfmt = md.DateFormatter('%H:%M')
@@ -44,8 +43,10 @@ class VisualizeDataset:
             # which we need to find columns names in the dataset that contain the name.
             if match[i] == 'exact':
                 relevant_dataset_cols = [columns[i]]
-            else:
+            elif match[i] == 'like':
                 relevant_dataset_cols = [name for name in names if columns[i] == name[0:len(columns[i])]]
+            else:
+                raise ValueError("Match should be 'exact' or 'like' for " + str(i) + ".")
 
             max_values = []
             min_values = []
@@ -53,22 +54,20 @@ class VisualizeDataset:
             for j in range(0, len(relevant_dataset_cols)):
                 # Create a mask to ignore the NaN values when plotting:
                 mask = data_table[relevant_dataset_cols[j]].notnull()
-                max_values.append(max(data_table[relevant_dataset_cols[j]][mask]))
-                min_values.append(min(data_table[relevant_dataset_cols[j]][mask]))
+                max_values.append(data_table[relevant_dataset_cols[j]][mask].max())
+                min_values.append(data_table[relevant_dataset_cols[j]][mask].min())
 
                 # Display point, or as a line
                 if display[i] == 'points':
                     xar[i].plot(data_table.index[mask], data_table[relevant_dataset_cols[j]][mask], self.point_displays[j%len(self.point_displays)])
                 else:
                     xar[i].plot(data_table.index[mask], data_table[relevant_dataset_cols[j]][mask], self.line_displays[j%len(self.line_displays)])
-#            xar[i].legend(relevant_dataset_cols, fontsize='xx-small', numpoints=1, loc='center left', bbox_to_anchor=(1, 0.5))
             xar[i].tick_params(axis='y', labelsize=10)
             xar[i].legend(relevant_dataset_cols, fontsize='xx-small', numpoints=1, loc='upper center',  bbox_to_anchor=(0.5, 1.3), ncol=len(relevant_dataset_cols), fancybox=True, shadow=True)
             xar[i].set_ylim([min(min_values) - 0.1*(max(max_values) - min(min_values)), max(max_values) + 0.1*(max(max_values) - min(min_values))])
         # Make sure we get a nice figure with only a single x-axis and labels there.
         plot.setp([a.get_xticklabels() for a in f.axes[:-1]], visible=False)
         plot.xlabel('time')
-        #plot.tight_layout()
         plot.show()
 
     def plot_dataset_boxplot(self, dataset, cols):
@@ -87,8 +86,8 @@ class VisualizeDataset:
         plot.hold(False)
         plot.show()
 
-    # Plot outliers in case of a binary outlier score. Here, the col species the real data column and outlier_col
-    # the columns with a binary value (outlier or not)
+    # Plot outliers in case of a binary outlier score. Here, the col specifies the real data
+    # column and outlier_col the columns with a binary value (outlier or not)
     def plot_binary_outliers(self, data_table, col, outlier_col):
         data_table = data_table.dropna(axis=0, subset=[col, outlier_col])
         data_table[outlier_col] = data_table[outlier_col].astype('bool')
@@ -119,7 +118,6 @@ class VisualizeDataset:
             xar = [xar]
 
         f.subplots_adjust(hspace=0.4)
-        #f.suptitle("plot of value imputation for " + col, fontsize=14)
         plot.hold(True)
 
         # plot the regular dataset.
@@ -301,7 +299,6 @@ class VisualizeDataset:
 
         plot.ylabel(label)
         plot.xlabel('time')
-        plot.ylim([40,220])
         plot.annotate('', xy=(train_time[0],y_coord_labels), xycoords='data', xytext=(train_time[-1], y_coord_labels), textcoords='data', arrowprops={'arrowstyle': '<->'})
         plot.annotate('training set', xy=(train_time[int(float(len(train_time))/2)], y_coord_labels*1.02), color='blue', xycoords='data', ha='center')
         plot.annotate('', xy=(test_time[0], y_coord_labels), xycoords='data', xytext=(test_time[-1], y_coord_labels), textcoords='data', arrowprops={'arrowstyle': '<->'})
