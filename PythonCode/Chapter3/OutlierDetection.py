@@ -53,12 +53,12 @@ class DistributionBasedOutlierDetection:
     def mixture_model(self, data_table, col):
         # Fit a mixture model to our data.
         data = data_table[data_table[col].notnull()][col]
-        g = mixture.GMM(n_components=3, n_iter=1)
+        g = mixture.GaussianMixture(n_components=3, max_iter=1)
 
-        g.fit(data.reshape(-1,1))
+        g.fit(data.values.reshape(-1,1))
 
         # Predict the probabilities
-        probs = g.score(data.reshape(-1,1))
+        probs = g.score(data.values.reshape(-1,1))
 
         # Create the right data frame and concatenate the two.
         data_probs = pd.DataFrame(np.power(10, probs), index=data.index, columns=[col+'_mixture'])
