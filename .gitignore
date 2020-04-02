@@ -1,4 +1,4 @@
 *.pyc
-datasets
+PythonCode/datasets
 PythonCode/intermediate_datafiles/
 PythonCode/Example_graphs/

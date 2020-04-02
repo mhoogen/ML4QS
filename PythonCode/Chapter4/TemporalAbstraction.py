@@ -59,7 +59,7 @@ class NumericalAbstraction:
         # and compute the values.
         for i in range(window_size, len(data_table.index)):
             for col in cols:
-                data_table.ix[i, col + '_temp_' + aggregation_function + '_ws_' +str(window_size)] = self.aggregate_value(data_table[col][i-window_size:min(i+1, len(data_table.index))], aggregation_function)
+                data_table[f'{col}_temp_{aggregation_function}_ws_{window_size}'].iloc[i] = self.aggregate_value(data_table[col].iloc[i-window_size:min(i+1, len(data_table.index))], aggregation_function)
 
         return data_table
 
@@ -79,7 +79,7 @@ class CategoricalAbstraction:
         # If we have a pattern of length one
         if len(pattern) == 1:
             # If it is in the cache, we get the times from the cache.
-            if self.cache.has_key(self.to_string(pattern)):
+            if self.to_string(pattern) in self.cache:
                 times = self.cache[self.to_string(pattern)]
             # Otherwise we identify the time points at which we observe the value.
             else:
@@ -134,10 +134,10 @@ class CategoricalAbstraction:
             # value to 1 at which it occurs.
             if support >= min_support:
                 selected_patterns.append(pattern)
-                print self.to_string(pattern)
+                print(self.to_string(pattern))
                 # Set the occurrence of the pattern in the row to 0.
                 data_table[self.pattern_prefix + self.to_string(pattern)] = 0
-                data_table.ix[times, self.pattern_prefix + self.to_string(pattern)] = 1
+                data_table[self.pattern_prefix + self.to_string(pattern)][times] = 1
         return data_table, selected_patterns
 
 
@@ -175,7 +175,7 @@ class CategoricalAbstraction:
 
         new_data_table, one_patterns = self.select_k_patterns(data_table, potential_1_patterns, min_support, window_size)
         selected_patterns.extend(one_patterns)
-        print 'Number of patterns of size 1 is ' + str(len(one_patterns))
+        print(f'Number of patterns of size 1 is {len(one_patterns)}')
 
         k = 1
         k_patterns = one_patterns
@@ -186,7 +186,7 @@ class CategoricalAbstraction:
             potential_k_patterns = self.extend_k_patterns(k_patterns, one_patterns)
             new_data_table, selected_new_k_patterns = self.select_k_patterns(new_data_table, potential_k_patterns, min_support, window_size)
             selected_patterns.extend(selected_new_k_patterns)
-            print 'Number of patterns of size ' + str(k) + ' is ' + str(len(selected_new_k_patterns))
+            print(f'Number of patterns of size {k} is {len(selected_new_k_patterns)}')
 
         return new_data_table
 
