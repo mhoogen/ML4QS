@@ -20,9 +20,9 @@ class KalmanFilters:
     def apply_kalman_filter(self, data_table, col):
 
         # Initialize the Kalman filter with the trivial transition and observation matrices.
-        kf = KalmanFilter(transition_matrices = [[1]], observation_matrices = [[1]])
+        kf = KalmanFilter(transition_matrices=[[1]], observation_matrices=[[1]])
 
-        numpy_array_state = data_table.as_matrix(columns=[col])
+        numpy_array_state = data_table[col].values
         numpy_array_state = numpy_array_state.astype(np.float32)
         numpy_matrix_state_with_mask = np.ma.masked_invalid(numpy_array_state)
 
