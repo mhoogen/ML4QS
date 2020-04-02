@@ -3,7 +3,7 @@
 This repository provides all the code associated with the book titled "Machine Learning for the Quantified Self", authored by Mark Hoogendoorn and Burkhardt Funk and published by Springer in 2017. The website of the book can be found on ml4qs.org
 
 The Python code requires the following packages to run everything (note that we indicate the version we have tested with):
-[Requirements not frozen; Python 3.6.9, see requirements.txt]
+[Requirements not yet frozen; Python 3.6.9, see requirements.txt]
 
 Installation with Docker: Run `start-docker.bat` (on Windows) or `start-docker.sh` (on MacOS/Linux) in the root directory 
 Installation with Anaconda: Create and activate an environment and install all package versions using `pip install -r requirements.txt`.
