@@ -8,9 +8,6 @@
 ##############################################################
 
 from util.VisualizeDataset import VisualizeDataset
-from Chapter5.DistanceMetrics import InstanceDistanceMetrics
-from Chapter5.DistanceMetrics import PersonDistanceMetricsNoOrdering
-from Chapter5.DistanceMetrics import PersonDistanceMetricsOrdering
 from Chapter5.Clustering import NonHierarchicalClustering
 from Chapter5.Clustering import HierarchicalClustering
 import copy
