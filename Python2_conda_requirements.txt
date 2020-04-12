@@ -1,5 +1,5 @@
 gensim==0.13.3
-nltk==3.2.1
+nltk==3.4.5
 unidecode==0.04.20
 statsmodels==0.6.1
 matplotlib==1.5.3
