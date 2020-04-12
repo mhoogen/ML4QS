@@ -4,5 +4,5 @@ This repository provides all the code associated with the book titled "Machine L
 
 Note that we have tried to make the code as robust as we can, but we cannot provide any guarantees on its correctness. This code is made available under the GNU public license. We have used snippets of code from other sources and have tried to add references to these in our code where possible. When using the code for publications, please include a reference to the book in your paper:
 
-Hoogendoorn, M. and Funk, B., Machine Learning for the Quantified Self - On the Art of Learning from Sensory Data, Springer, 2017.
+Hoogendoorn, M. and Funk, B., Machine Learning for the Quantified Self - On the Art of Learning from Sensory Data, Springer, 2018.
 
