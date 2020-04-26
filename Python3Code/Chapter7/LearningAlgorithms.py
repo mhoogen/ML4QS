@@ -24,6 +24,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 import pandas as pd
 import numpy as np
+import os
 
 class ClassificationAlgorithms:
 
@@ -35,8 +36,9 @@ class ClassificationAlgorithms:
 
 
         if gridsearch:
+            # With the current parameters for max_iter and Python 3 packages convergence is not always reached, therefore increased +1000.
             tuned_parameters = [{'hidden_layer_sizes': [(5,), (10,), (25,), (100,), (100,5,), (100,10,),], 'activation': [activation],
-                                 'learning_rate': [learning_rate], 'max_iter': [1000, 2000], 'alpha': [alpha]}]
+                                 'learning_rate': [learning_rate], 'max_iter': [2000, 3000], 'alpha': [alpha]}]
             nn = GridSearchCV(MLPClassifier(), tuned_parameters, cv=5, scoring='accuracy')
         else:
             # Create the model
@@ -165,7 +167,7 @@ class ClassificationAlgorithms:
     # and use the created model to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
-    def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='gini', print_model_details=False, export_tree_path='Example_graphs/Chapter7/', export_tree_name='tree.dot', gridsearch=True):
+    def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='gini', print_model_details=False, export_tree_path='./figures/crowdsignals_ch7_classification/', export_tree_name='tree.dot', gridsearch=True):
         # Create the model
         if gridsearch:
             tuned_parameters = [{'min_samples_leaf': [2, 10, 50, 100, 200],
@@ -196,10 +198,12 @@ class ClassificationAlgorithms:
             ordered_indices = [i[0] for i in sorted(enumerate(dtree.feature_importances_), key=lambda x:x[1], reverse=True)]
             print('Feature importance decision tree:')
             for i in range(0, len(dtree.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
+                print(train_X.columns[ordered_indices[i]], end='')
+                print(' & ', end='')
                 print(dtree.feature_importances_[ordered_indices[i]])
-            tree.export_graphviz(dtree, out_file=export_tree_path + export_tree_name, feature_names=train_X.columns, class_names=dtree.classes_)
+            if not (os.path.exists(export_tree_path)):
+                os.makedirs(str(export_tree_path))
+            tree.export_graphviz(dtree, out_file=str(export_tree_path) + '/' + export_tree_name, feature_names=train_X.columns, class_names=dtree.classes_)
 
         return pred_training_y, pred_test_y, frame_prob_training_y, frame_prob_test_y
 
@@ -260,8 +264,8 @@ class ClassificationAlgorithms:
             ordered_indices = [i[0] for i in sorted(enumerate(rf.feature_importances_), key=lambda x:x[1], reverse=True)]
             print('Feature importance random forest:')
             for i in range(0, len(rf.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
+                print(train_X.columns[ordered_indices[i]], end='')
+                print(' & ', end='')
                 print(rf.feature_importances_[ordered_indices[i]])
 
         return pred_training_y, pred_test_y, frame_prob_training_y, frame_prob_test_y
@@ -273,8 +277,9 @@ class RegressionAlgorithms:
     # test and training set. It returns the categorical numerical predictions for the training and test set.
     def feedforward_neural_network(self, train_X, train_y, test_X, hidden_layer_sizes=(100,), max_iter=500, activation='identity', learning_rate='adaptive', gridsearch=True, print_model_details=False):
         if gridsearch:
+            # With the current parameters for max_iter and Python 3 packages convergence is not always reached, therefore increased +1000.
             tuned_parameters = [{'hidden_layer_sizes': [(5,), (10,), (25,), (100,), (100,5,), (100,10,),], 'activation': ['identity'],
-                                 'learning_rate': ['adaptive'], 'max_iter': [1000, 2000]}]
+                                 'learning_rate': ['adaptive'], 'max_iter': [4000, 10000]}]
             nn = GridSearchCV(MLPRegressor(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
         else:
             # Create the model
@@ -327,7 +332,8 @@ class RegressionAlgorithms:
     # test and training set. It returns the predictions for the training and test set.
     def support_vector_regression_without_kernel(self, train_X, train_y, test_X, C=1, tol=1e-3, max_iter=1000, gridsearch=True, print_model_details=False):
         if gridsearch:
-            tuned_parameters = [{'max_iter': [1000, 2000], 'tol': [1e-3, 1e-4],
+            # With the current parameters for max_iter and Python 3 packages convergence is not always reached, with increased iterations/tolerance often still fails to converge.
+            tuned_parameters = ['max_iter': [1000, 2000], 'tol': [1e-3, 1e-4],
                          'C': [1, 10, 100]}]
             svr = GridSearchCV(LinearSVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
         else:
@@ -380,7 +386,7 @@ class RegressionAlgorithms:
     # the minimum samples in the leaf, and the export path and files if print_model_details=True)
     # and use the created model to predict the outcome for both the
     # test and training set. It returns the predictions for the training and test set.
-    def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='mse', print_model_details=False, export_tree_path='Example_graphs/Chapter7/', export_tree_name='tree.dot', gridsearch=True):
+    def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='mse', print_model_details=False, export_tree_path='./figures/crowdsignals_ch7_regression/', export_tree_name='tree.dot', gridsearch=True):
         # Create the model
         if gridsearch:
             tuned_parameters = [{'min_samples_leaf': [2, 10, 50, 100, 200],
@@ -407,10 +413,12 @@ class RegressionAlgorithms:
             print('Feature importance decision tree:')
             ordered_indices = [i[0] for i in sorted(enumerate(dtree.feature_importances_), key=lambda x:x[1], reverse=True)]
             for i in range(0, len(dtree.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
+                print(train_X.columns[ordered_indices[i]], end='')
+                print(' & ', end='')
                 print(dtree.feature_importances_[ordered_indices[i]])
-            tree.export_graphviz(dtree, out_file=export_tree_path + export_tree_name, feature_names=train_X.columns, class_names=dtree.classes_)
+            if not (os.path.exists(export_tree_path)):
+                os.makedirs(str(export_tree_path))
+            tree.export_graphviz(dtree, out_file=str(export_tree_path) + '/' + export_tree_name, feature_names=train_X.columns, class_names=dtree.classes_)
 
         return pred_training_y, pred_test_y
 
@@ -447,8 +455,8 @@ class RegressionAlgorithms:
             ordered_indices = [i[0] for i in sorted(enumerate(rf.feature_importances_), key=lambda x:x[1], reverse=True)]
 
             for i in range(0, len(rf.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
+                print(train_X.columns[ordered_indices[i]], end='')
+                print(' & ', end='')
                 print(rf.feature_importances_[ordered_indices[i]])
 
         return pred_training_y, pred_test_y

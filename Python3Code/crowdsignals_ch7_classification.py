@@ -29,7 +29,7 @@ from util.VisualizeDataset import VisualizeDataset
 DATA_PATH = Path('./intermediate_datafiles/')
 DATASET_FNAME = 'chapter5_result.csv'
 RESULT_FNAME = 'chapter7_classification_result.csv'
-EXPORT_TREE_PATH = Path('Example_graphs/Chapter7/')
+EXPORT_TREE_PATH = Path('./figures/crowdsignals_ch7_classification/')
 
 # Next, we declare the parameters we'll use in the algorithms.
 N_FORWARD_SELECTION = 50
@@ -54,7 +54,6 @@ DataViz = VisualizeDataset(__file__)
 prepare = PrepareDatasetForLearning()
 
 train_X, test_X, train_y, test_y = prepare.split_single_dataset_classification(dataset, ['label'], 'like', 0.7, filter=True, temporal=False)
-#train_X, test_X, train_y, test_y = prepare.split_single_dataset_classification(dataset, ['label'], 'like', 0.01, filter=True, temporal=False)
 
 print('Training set length is: ', len(train_X.index))
 print('Test set length is: ', len(test_X.index))
@@ -89,7 +88,8 @@ print(ordered_features)
 DataViz.plot_xy(x=[range(1, N_FORWARD_SELECTION+1)], y=[ordered_scores],
                 xlabel='number of features', ylabel='accuracy')
 
-# Based on the plot we select the top 10 features.
+# Based on the plot we select the top 10 features (note: slightly different compared to Python 2, we use
+# those feartures here).
 
 selected_features = ['acc_phone_y_freq_0.0_Hz_ws_40', 'press_phone_pressure_temp_mean_ws_120', 'gyr_phone_x_temp_std_ws_120',
                      'mag_watch_y_pse', 'mag_phone_z_max_freq', 'gyr_watch_y_freq_weighted', 'gyr_phone_y_freq_1.0_Hz_ws_40',

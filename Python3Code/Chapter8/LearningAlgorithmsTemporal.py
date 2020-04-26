@@ -605,7 +605,7 @@ class TemporalRegressionAlgorithms:
 
         model = pf.ARIMAX(data=train_dataset,formula=formula,ar=ar,ma=ma)
         x = model.fit()
-        x.summary()
+        #x.summary()
         model_pred = model.predict(h=len(train_y.index)-max(ar, ma), oos_data=train_dataset)
         values = np.empty((len(model_pred) + max(ar, ma),1))
         values[:] = np.nan

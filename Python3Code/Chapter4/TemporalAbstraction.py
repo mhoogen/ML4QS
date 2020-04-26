@@ -54,12 +54,11 @@ class NumericalAbstraction:
         # Create new columns for the temporal data.
         for col in cols:
             data_table[col + '_temp_' + aggregation_function + '_ws_' + str(window_size)] = np.nan
-
         # Pass over the dataset (we cannot compute it when we do not have enough history)
         # and compute the values.
         for i in range(window_size, len(data_table.index)):
             for col in cols:
-                data_table[f'{col}_temp_{aggregation_function}_ws_{window_size}'].iloc[i] = self.aggregate_value(data_table[col].iloc[i-window_size:min(i+1, len(data_table.index))], aggregation_function)
+                data_table.iloc[i, data_table.columns.get_loc(f'{col}_temp_{aggregation_function}_ws_{window_size}')] = self.aggregate_value(data_table[col].iloc[i-window_size:min(i+1, len(data_table.index))], aggregation_function)
 
         return data_table
 
@@ -130,14 +129,15 @@ class CategoricalAbstraction:
             times = self.determine_pattern_times(data_table, pattern, window_size)
             # Compute the support
             support = float(len(times))/len(data_table.index)
-            # If we meet the minum support, append the selected patterns and set the
+            # If we meet the minimum support, append the selected patterns and set the
             # value to 1 at which it occurs.
             if support >= min_support:
                 selected_patterns.append(pattern)
                 print(self.to_string(pattern))
                 # Set the occurrence of the pattern in the row to 0.
                 data_table[self.pattern_prefix + self.to_string(pattern)] = 0
-                data_table[self.pattern_prefix + self.to_string(pattern)][times] = 1
+                #data_table[self.pattern_prefix + self.to_string(pattern)][times] = 1
+                data_table.iloc[times, data_table.columns.get_loc(self.pattern_prefix + self.to_string(pattern))] = 1
         return data_table, selected_patterns
 
 

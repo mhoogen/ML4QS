@@ -1,5 +1,6 @@
 from util.util import get_chapter
 
+import matplotlib.colors as cl
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
 import numpy as np
@@ -58,12 +59,13 @@ class VisualizeDataset:
             xar = [xar]
 
         f.subplots_adjust(hspace=0.4)
-        # plt.hold(True)
+
         xfmt = md.DateFormatter('%H:%M')
 
         # Pass through the columns specified.
         for i in range(0, len(columns)):
             xar[i].xaxis.set_major_formatter(xfmt)
+            xar[i].set_prop_cycle(color=['b', 'g', 'r', 'c', 'm', 'y', 'k'])
             # if a column match is specified as 'exact', select the column name(s) with an exact match.
             # If it's specified as 'like', select columns containing the name.
 
@@ -78,6 +80,9 @@ class VisualizeDataset:
 
             max_values = []
             min_values = []
+
+
+
             # Pass through the relevant columns.
             for j in range(0, len(relevant_cols)):
                 # Create a mask to ignore the NaN values when plotting:
@@ -88,10 +93,10 @@ class VisualizeDataset:
                 # Display point, or as a line
                 if display[i] == 'points':
                     xar[i].plot(data_table.index[mask], data_table[relevant_cols[j]][mask],
-                                self.point_displays[j % len(self.point_displays)])
+                                self.point_displays[j%len(self.point_displays)])
                 else:
                     xar[i].plot(data_table.index[mask], data_table[relevant_cols[j]][mask],
-                                self.line_displays[j % len(self.line_displays)])
+                                self.line_displays[j%len(self.line_displays)])
 
             xar[i].tick_params(axis='y', labelsize=10)
             xar[i].legend(relevant_cols, fontsize='xx-small', numpoints=1, loc='upper center',
@@ -124,8 +129,8 @@ class VisualizeDataset:
             if title is not None: plt.title(title)
             if names is not None: plt.legend(names)
 
-            self.save(plt)
-            plt.show()
+        self.save(plt)
+        plt.show()
 
     def plot_dataset_boxplot(self, dataset, cols):
         plt.Figure(); dataset[cols].plot.box()
@@ -146,8 +151,8 @@ class VisualizeDataset:
     # Plot outliers in case of a binary outlier score. Here, the col specifies the real data
     # column and outlier_col the columns with a binary value (outlier or not)
     def plot_binary_outliers(self, data_table, col, outlier_col):
-        data_table = data_table.dropna(axis=0, subset=[col, outlier_col])
-        data_table[outlier_col] = data_table[outlier_col].astype('bool')
+        data_table.loc[:,:] = data_table.dropna(axis=0, subset=[col, outlier_col])
+        data_table.loc[:,outlier_col] = data_table[outlier_col].astype('bool')
         f, xar = plt.subplots()
         xfmt = md.DateFormatter('%H:%M')
         xar.xaxis.set_major_formatter(xfmt)
@@ -174,7 +179,6 @@ class VisualizeDataset:
             xar = [xar]
 
         f.subplots_adjust(hspace=0.4)
-        # plot.hold(True)
 
         # plot the regular dataset.
 
@@ -228,7 +232,6 @@ class VisualizeDataset:
                 plot_color = self.colors[color_index%len(self.colors)]
                 plot_marker = point_displays[marker_index%len(point_displays)]
                 pt = ax.scatter(rows[data_cols[0]], rows[data_cols[1]], rows[data_cols[2]], c=plot_color, marker=plot_marker)
-                # plt.hold(True)
                 if color_index == 0:
                     handles.append(pt)
                 ax.set_xlabel(data_cols[0])
@@ -332,18 +335,18 @@ class VisualizeDataset:
     # with reg_ are the predictions.
     def plot_numerical_prediction_versus_real(self, train_time, train_y, regr_train_y, test_time, test_y, regr_test_y, label):
         self.legends = {}
-        plt.title('Performance of model for ' + str(label))
 
         # Plot the values, training set cases in blue, test set in red.
-        f, xar = plt.subplots()
-        # plt.hold(True)
+        f, xar = plt.subplots(1, 1)
+
         xfmt = md.DateFormatter('%H:%M')
         xar.xaxis.set_major_formatter(xfmt)
-        xar.plot(train_time, train_y, '-', linewidth=0.5)
-        xar.plot(train_time, regr_train_y, '--', linewidth=0.5)
+        xar.set_prop_cycle(color=['b', 'g', 'r', 'c', 'm', 'y', 'k'])
+        plt.plot(train_time, train_y, '-', linewidth=0.5)
+        plt.plot(train_time, regr_train_y, '--', linewidth=0.5)
 
-        xar.plot(test_time, test_y, '-', linewidth=0.5)
-        xar.plot(test_time, regr_test_y, '--', linewidth=0.5)
+        plt.plot(test_time, test_y, '-', linewidth=0.5)
+        plt.plot(test_time, regr_test_y, '--', linewidth=0.5)
 
         plt.legend(['real values training', 'predicted values training', 'real values test', 'predicted values test'], loc=4)
 
@@ -355,6 +358,7 @@ class VisualizeDataset:
         y_coord_labels = max(max(train_y.tolist()), max(regr_train_y.tolist()), max(test_y.tolist()), max(regr_test_y.tolist()))+(0.01*range)
 
 
+        plt.title('Performance of model for ' + str(label))
         plt.ylabel(label)
         plt.xlabel('time')
         plt.annotate('', xy=(train_time[0],y_coord_labels), xycoords='data', xytext=(train_time[-1], y_coord_labels), textcoords='data', arrowprops={'arrowstyle': '<->'})
@@ -375,11 +379,10 @@ class VisualizeDataset:
         for row in dynsys_output:
             fit_1_train.append(row[1][0])
             fit_2_train.append(row[1][1])
-        # plt.hold(True)
 
         plt.scatter(fit_1_train, fit_2_train, color='r')
         plt.xlabel('mse on ' + str(dynsys_output[0][0].columns[0]))
-        plt.ylabel('mse on ' + str(dynsys_output[0][0].columns[0]))
+        plt.ylabel('mse on ' + str(dynsys_output[0][0].columns[1]))
         #plt.savefig('{0} Example ({1}).pdf'.format(ea.__class__.__name__, problem.__class__.__name__), format='pdf')
         self.save(plt)
         plt.show()
@@ -392,13 +395,11 @@ class VisualizeDataset:
         train_y = train_y[label]
         test_y = test_y[label]
         self.plot_numerical_prediction_versus_real(train_time, train_y, regr_train_y, test_time, test_y, regr_test_y, label)
-        self.save(plt)
 
     # Visualizes the performance of different algorithms over different feature sets. Assumes the scores to contain
     # a score on the training set followed by an sd, and the same for the test set.
     def plot_performances(self, algs, feature_subset_names, scores_over_all_algs, ylim, std_mult, y_name):
 
-        # plt.hold(True)
         width = float(1)/(len(feature_subset_names)+1)
         ind = np.arange(len(algs))
         for i in range(0, len(feature_subset_names)):
@@ -413,8 +414,7 @@ class VisualizeDataset:
         plt.legend(feature_subset_names, loc=4, numpoints=1)
         if not ylim is None:
             plt.ylim(ylim)
-        # plt.tight_layout()
-        plt.savefig('figures/perf_overview.png') # todo: old output
+        self.save(plt)
         plt.show()
 
     def plot_performances_classification(self, algs, feature_subset_names, scores_over_all_algs):

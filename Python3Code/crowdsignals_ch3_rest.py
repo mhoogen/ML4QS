@@ -38,7 +38,7 @@ except IOError as e:
 DataViz = VisualizeDataset(__file__)
 
 # Compute the number of milliseconds covered by an instance based on the first two rows
-milliseconds_per_instance = (dataset.index[1] - dataset.index[0]).microseconds/1000 # todo: I believe this command doesn't work for a whole-second interval (returns 0ms)
+milliseconds_per_instance = (dataset.index[1] - dataset.index[0]).microseconds/1000
 
 # Let us impute the missing values and plot an example.
 

@@ -87,7 +87,7 @@ feature_names = ['initial set', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Selected
 learner = RegressionAlgorithms()
 eval = RegressionEvaluation()
 
-# We repeat the experiment a number of times to get a bit more robust data as the initialization of the NN is random.
+# We repeat the experiment a number of times to get a bit more robust data as the initialization of e.g. the NN is random.
 
 repeats = 5
 
@@ -143,6 +143,7 @@ for i in range(0, len(possible_feature_sets)):
 
     # And we run our deterministic algorithms:
 
+    # Convergence of the SVR does not always occur (even adjusting tolerance and iterations does not help)
     regr_train_y, regr_test_y = learner.support_vector_regression_without_kernel(selected_train_X, train_y, selected_test_X, gridsearch=True)
     mean_tr, std_tr = eval.mean_squared_error_with_std(train_y, regr_train_y)
     mean_te, std_te = eval.mean_squared_error_with_std(test_y, regr_test_y)
@@ -176,8 +177,7 @@ for i in range(0, len(possible_feature_sets)):
     util.print_table_row_performances_regression(feature_names[i], len(selected_train_X.index), len(selected_test_X.index), scores_with_sd)
     scores_over_all_algs.append(scores_with_sd)
 
-print(scores_over_all_algs)
 DataViz.plot_performances_regression(['NN', 'RF', 'SVM', 'KNN', 'DT'], feature_names, scores_over_all_algs)
 
-regr_train_y, regr_test_y = learner.random_forest(train_X[features_after_chapter_5], train_y, test_X[features_after_chapter_5], gridsearch=True, print_model_details=True)
+regr_train_y, regr_test_y = learner.random_forest(train_X[features_after_chapter_5], train_y, test_X[features_after_chapter_5], gridsearch=False, print_model_details=True)
 DataViz.plot_numerical_prediction_versus_real(train_X.index, train_y, regr_train_y, test_X.index, test_y, regr_test_y, 'heart rate')
