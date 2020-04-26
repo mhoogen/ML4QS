@@ -9,7 +9,7 @@
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
 import math
 import copy
 from scipy.stats import norm
@@ -30,12 +30,11 @@ c1 = 3 * np.sin(2 * math.pi * 0.2 * df['X'])
 c2 = 2 * np.sin(2 * math.pi * 0.25 * (df['X']-2)) + 5
 df['Y'] = c1 + c2
 
-plot.hold(True)
-plot.plot(df['X'], df['Y'], 'b-')
-plot.legend(['$example$ $measurement$ $sequence$'], loc=3, fontsize='small')
-plot.xlabel('time')
-plot.ylabel('$X_{1}$')
-plot.show()
+plt.plot(df['X'], df['Y'], 'b-')
+plt.legend(['$example$ $measurement$ $sequence$'], loc=3, fontsize='small')
+plt.xlabel('time')
+plt.ylabel('$X_{1}$')
+plt.show()
 
 # Figure 4.2
 
@@ -49,14 +48,13 @@ for col in data_table.columns:
     if len(val) > 0:
         frequency = float((val[0])[5:len(val)-4])
         frequencies.append(frequency)
-        values.append(data_table.ix[data_table.index, col])
+        values.append(data_table.loc[data_table.index, col])
 
-fig = plot.figure()
-plot.hold(True)
+fig = plt.figure()
 ax1 = fig.add_subplot(111)
-plot.xlim([0, 5])
+plt.xlim([0, 5])
 ax1.plot(frequencies, values, 'b+')
 ax1.set_xlabel('Frequency (Hz)')
 ax1.set_ylabel('$a$')
-plot.show()
+plt.show()
 

@@ -64,7 +64,7 @@ class Evaluator():
     def evaluator_internal(self, candidate, dataset, per_time_step=False):
         self.model.reset()
         y = []
-        y.append(dataset.ix[0,self.cleaned_eval_aspects].values)
+        y.append(dataset.iloc[0,[dataset.columns.get_loc(x) for x in self.cleaned_eval_aspects]].values)
 
         # Go through the dataset, all but last as we need to evaluate our
         # prediction with the next time point.
@@ -77,7 +77,7 @@ class Evaluator():
                 # Overwrite the values we predicted previously for the evaluation states
                 # if we do it per time step or if we do not have any prediction yet.
                 if per_time_step or (step == 0):
-                    state_values.append(dataset.ix[step, col[len(self.default_start):]])
+                    state_values.append(dataset.iloc[step, dataset.columns.get_loc(col[len(self.default_start):])])
 
                 # Only overwrite values for the non eval states if we do not do it
                 # per time step and use our predicted value for the eval aspects.
@@ -85,7 +85,7 @@ class Evaluator():
                     if col in self.eval_aspects:
                         state_values.append(pred_values[self.eval_aspects.index(col)])
                     else:
-                        state_values.append(dataset.ix[step, col[len(self.default_start):]])
+                        state_values.append(dataset.iloc[step, dataset.columns.get_loc(col[len(self.default_start):])])
 
             # Set the state values, parameter values, and execute the model.
             self.model.set_state_values(state_values)
@@ -99,7 +99,7 @@ class Evaluator():
             for eval in self.eval_aspects:
                 pred_value = self.model.get_values(eval)[-1]
                 pred_values.append(pred_value)
-                mse = mean_squared_error([pred_value], [dataset.ix[step+1, col[len(self.default_start):]]])
+                mse = mean_squared_error([pred_value], [dataset.iloc[step+1, dataset.columns.get_loc(col[len(self.default_start):])]])
                 evals.append(mse)
 
             # Store the fitness for all aspects.

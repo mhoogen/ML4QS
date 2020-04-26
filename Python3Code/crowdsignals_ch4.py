@@ -34,7 +34,7 @@ dataset.index = pd.to_datetime(dataset.index)
 # Let us create our visualization class again.
 DataViz = VisualizeDataset(__file__)
 
-# Compute the number of milliseconds covered by an instane based on the first two rows
+# Compute the number of milliseconds covered by an instance based on the first two rows
 milliseconds_per_instance = (dataset.index[1] - dataset.index[0]).microseconds/1000
 
 
@@ -57,6 +57,8 @@ ws = int(float(0.5*60000)/milliseconds_per_instance)
 selected_predictor_cols = [c for c in dataset.columns if not 'label' in c]
 dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'mean')
 dataset = NumAbs.abstract_numerical(dataset, selected_predictor_cols, ws, 'std')
+
+DataViz.plot_dataset(dataset, ['acc_phone_x', 'gyr_phone_x', 'hr_watch_rate', 'light_phone_lux', 'mag_phone_x', 'press_phone_', 'pca_1', 'label'], ['like', 'like', 'like', 'like', 'like', 'like', 'like','like'], ['line', 'line', 'line', 'line', 'line', 'line', 'line', 'points'])
 
 
 CatAbs = CategoricalAbstraction()

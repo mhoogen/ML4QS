@@ -52,25 +52,19 @@ class DistributionBasedOutlierDetection:
     # of observing the value given the mixture model.
     def mixture_model(self, data_table, col):
 
-        print('doing mix')
+        print('Doing mixture models')
         # Fit a mixture model to our data.
         data = data_table[data_table[col].notnull()][col]
-
-        # g = mixture.GMM(n_components=3, n_iter=1) <<< DEPRECATED
-        # todo: package module GMM was changed in Python 3, GaussianMixture equivalent not correctly plotted (?)
-        #       GMM was changed to GaussianMixture(n_components, max_iter, n_init)
-        #       I tried running the model with these parameters
-        # g = GaussianMixture(n_components=3, max_iter=100, n_init=1)
-        # g = GaussianMixture(n_components=3, max_iter=1, n_init=100)
-        g = GaussianMixture(n_components=3, max_iter=100, n_init=50)
-
-        g.fit(data.values.reshape(-1,1))
+        g = GaussianMixture(n_components=3, max_iter=100, n_init=1)
+        reshaped_data = np.array(data.values.reshape(-1,1))
+        g.fit(reshaped_data)
 
         # Predict the probabilities
-        probs = g.score(data.values.reshape(-1,1))
+        probs = g.score_samples(reshaped_data)
 
         # Create the right data frame and concatenate the two.
         data_probs = pd.DataFrame(np.power(10, probs), index=data.index, columns=[col+'_mixture'])
+
         data_table = pd.concat([data_table, data_probs], axis=1)
 
         return data_table

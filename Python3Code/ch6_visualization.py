@@ -49,7 +49,6 @@ e_df = pd.DataFrame(result, columns=['b', 'a', 'error'])
 Z = e_df['error'].values.reshape(len(X),len(Y))
 
 fig = plot.figure()
-plot.hold(True)
 ax = fig.gca(projection='3d')
 surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='brg_r')
 #ax.scatter(e_df['a'], e_df['b'], e_df['error'])
@@ -57,22 +56,17 @@ ax.set_xlabel('$\\theta_{1}$')
 ax.set_ylabel('$\\theta_{2}$')
 ax.set_zlabel('$E_{in}(h)$')
 fig.colorbar(surf, shrink=0.5, aspect=5)
-print e_df
 
-plot.hold(False)
 plot.show()
 
 # Figure 6.2
 
-plot.hold(True)
 V, U = np.gradient(Z, .2, .2)
 Q = plot.quiver(X, Y, -U, -V, pivot='mid', units='inches')
 plot.xlabel('$\\theta_{1}$')
 plot.ylabel('$\\theta_{2}$')
-plot.hold(False)
 plot.show()
 
-plot.hold(True)
 p = plot.contour(X, Y, Z,cmap='brg_r')
 plot.clabel(p, fontsize=9, inline=1)
 current_value = np.array([0,0])
@@ -81,7 +75,8 @@ y_values = [0]
 V, U = np.gradient(Z, .1, .1)
 steps = 1000
 for i in range(0, steps):
-    current_value = current_value - [0.1*V[current_value[0]/0.1, current_value[1]/0.1], 0.1*U[current_value[0]/0.1, current_value[1]/0.1]]
+    current_value = current_value - [0.1*V[int(current_value[0]/0.1), int(current_value[1]/0.1)],
+                                     0.1*U[int(current_value[0]/0.1), int(current_value[1]/0.1)]]
     x_values.append(current_value[0])
     y_values.append(current_value[1])
 plot.plot(x_values, y_values, 'k:')
@@ -90,5 +85,4 @@ plot.xlabel('$\\theta_{1}$')
 plot.ylabel('$\\theta_{2}$')
 plot.legend(['$gradient$ $descent$ $path$'], loc=1, fontsize='small')
 
-plot.hold(False)
 plot.show()

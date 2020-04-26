@@ -20,12 +20,7 @@ class LowPassFilter:
         # Cutoff frequencies are expressed as the fraction of the Nyquist frequency, which is half the sampling frequency
         nyq = 0.5 * sampling_frequency
         cut = cutoff_frequency / nyq
-        print(data_table)
-        print('nyq:', nyq)
-        print('cutoff_frequency:', cutoff_frequency)
-        print('cut:', cut)
 
-        # b, a = butter(order, cut, btype='low', analog=False) # todo: This method has been changed and no longer works
         b, a = butter(order, cut, btype='low', output='ba', analog=False)
         if phase_shift:
             data_table[col + '_lowpass'] = filtfilt(b, a, data_table[col])

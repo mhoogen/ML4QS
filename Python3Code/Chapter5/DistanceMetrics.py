@@ -81,7 +81,7 @@ class PersonDistanceMetricsNoOrdering:
                 # Compute the mean per column and assign that
                 # value for the row representing the current
                 # dataset.
-                new_dataset.ix[i, col] = datasets[i][col].mean()
+                new_dataset.iloc[i, new_dataset.columns.get_loc(col)] = datasets[i][col].mean()
 
         return new_dataset
 
@@ -101,8 +101,8 @@ class PersonDistanceMetricsNoOrdering:
                 # Fit the distribution and assign the values to the
                 # row representing the dataset.
                 mu, sigma = norm.fit(datasets[i][col])
-                new_dataset.ix[i, col + '_mu'] = mu
-                new_dataset.ix[i, col + '_sigma'] = sigma
+                new_dataset.iloc[i, new_dataset.columns.get_loc(col + '_mu')] = mu
+                new_dataset.iloc[i, new_dataset.columns.get_loc(col + '_sigma')] = sigma
 
         return new_dataset
 

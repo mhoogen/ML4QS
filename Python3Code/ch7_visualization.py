@@ -26,7 +26,6 @@ np.random.seed(0)
 
 # Figure 7.2
 
-plot.hold(True)
 df1 = pd.DataFrame(np.random.normal(30,5,size=(50, 2)), columns=list('XY'))
 df2 = pd.DataFrame(np.random.normal(70,5,size=(50, 2)), columns=list('XY'))
 df1 = df1 / float(100)
@@ -40,12 +39,10 @@ plot.xlim([0,1])
 plot.ylim([0,1])
 plot.xlabel('$X_{1}$')
 plot.ylabel('$X_{2}$')
-plot.hold(False)
 plot.show()
 
 # Figure 7.3
 
-plot.hold(True)
 df1 = pd.DataFrame(np.vstack([np.hstack([np.random.normal(50,5,size=(50, 1)), np.random.normal(80,5,size=(50, 1))]),
                               np.hstack([np.random.normal(50,5,size=(50, 1)), np.random.normal(20,5,size=(50, 1))])]),
                               columns=list('XY'))
@@ -62,7 +59,7 @@ y1 = x
 y2 = 1-x
 plot.plot(x,y1,'k:')
 plot.plot(x,y2,'k:')
-ax = plot.axes()
+ax = plot.gca()
 ax.fill_between(x, y1, y2, where=y1<=y2, facecolor='grey', linewidth=0.0)
 ax.fill_between(x, y2, y1, where=y1>=y2, facecolor='grey', linewidth=0.0)
 ax.annotate('$P_{1}$', xy=(0.2, 0.2), xytext=(0.3, 0.1),
@@ -75,11 +72,9 @@ plot.xlim([0,1])
 plot.ylim([0,1])
 plot.xlabel('$X_{1}$')
 plot.ylabel('$X_{2}$')
-plot.hold(False)
 plot.show()
 
 # Figure 7.6
-plot.hold(True)
 df1 = pd.DataFrame(np.random.normal(30,5,size=(50, 2)), columns=list('XY'))
 df2 = pd.DataFrame(np.random.normal(70,5,size=(50, 2)), columns=list('XY'))
 df1 = df1 / float(100)
@@ -98,8 +93,8 @@ df2['dist'] = result2
 index_closest_point_2 = df2['dist'].idxmin(axis=0)
 
 # And draw the two lines that go through this point:
-b_1 = df1.ix[index_closest_point_1, 'X'] + df1.ix[index_closest_point_1, 'Y']
-b_2 = df2.ix[index_closest_point_2, 'X'] + df2.ix[index_closest_point_2, 'Y']
+b_1 = df1.loc[index_closest_point_1, 'X'] + df1.loc[index_closest_point_1, 'Y']
+b_2 = df2.loc[index_closest_point_2, 'X'] + df2.loc[index_closest_point_2, 'Y']
 x = np.arange(0,1.1, 0.1)
 y_1 = -1 * x + b_1
 y_2 = -1 * x + b_2
@@ -125,11 +120,10 @@ ax.annotate('$w^{T}x + b=0$', xy=(x[8], y[8]), xytext=(x[8] - 0.08, y[8] + 0.08)
             arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=3.5, headlength=3), fontsize=15)
 ax.annotate('$w^{T}x + b=-1$', xy=(x[7], y_1[7]), xytext=(x[7] - 0.08, y_1[7] + 0.08),
             arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=3.5, headlength=3), fontsize=15)
-ax.annotate ('', (x[2], y_1[2]), (x[4]-0.02, y_2[4]+0.02), arrowprops={'arrowstyle':'<->'})
+ax.annotate('', (x[2], y_1[2]), (x[4]-0.02, y_2[4]+0.02), arrowprops={'arrowstyle':'<->'})
 ax.text(0.25, 0.6, '$2/|W|$',
         verticalalignment='bottom', horizontalalignment='left',
         color='black', fontsize=10)
-plot.hold(False)
 plot.show()
 
 # Figure 7.7
@@ -153,7 +147,6 @@ for i in range(0,1000):
 fig = plot.figure(figsize=plot.figaspect(2.))
 ax = fig.add_subplot(1, 2, 1)
 
-plot.hold(True)
 ax.plot(x_1,y_1,'ro')
 ax.plot(x_2,y_2,'bo')
 ax.legend(['$class$ $1$ $(other$ $activity)$', '$class$ $2$ $(walking)$'], loc=2, fontsize='small', numpoints=1)
@@ -169,8 +162,8 @@ df2 = pd.DataFrame(columns=list('XY'))
 df2['X'] = x_2
 df2['Y'] = y_2
 sigma = 1
-z_1 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df1, Y=np.array([0.5, 0.5]))/2 * math.pow(sigma, 2)))
-z_2 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df2, Y=np.array([0.5, 0.5]))/2 * math.pow(sigma, 2)))
+z_1 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df1, Y=np.array([0.5, 0.5]).reshape(1, -1))/2 * math.pow(sigma, 2)))
+z_2 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df2, Y=np.array([0.5, 0.5]).reshape(1, -1))/2 * math.pow(sigma, 2)))
 ax = fig.add_subplot(1, 2, 2, projection='3d')
 
 ax.scatter(x_1, y_1, z_1, color='r', marker='o')
@@ -180,12 +173,10 @@ ax.set_ylabel('$X_{2}$')
 ax.set_zlabel('$e^{||x-x''||^{2}/2\cdot\sigma^{2}}$')
 ax.legend(['$class$ $1$ $(other$ $activity)$', '$class$ $2$ $(walking)$'], loc=2, fontsize='small', numpoints=1)
 
-plot.hold(False)
 plot.show()
 
 # Figure 7.8
 
-plot.hold(True)
 df1 = pd.DataFrame(np.random.normal(30,5,size=(50, 2)), columns=list('XY'))
 df2 = pd.DataFrame(np.random.normal(70,5,size=(50, 2)), columns=list('XY'))
 df1 = df1 / float(100)
@@ -196,7 +187,7 @@ plot.plot(df2['X'], df2['Y'], 'bo')
 plot.plot([0.51],[0.51],'ko')
 k = 3
 df_full = pd.concat([df1, df2], ignore_index=True)
-distances_df_full = sklearn.metrics.pairwise.euclidean_distances(X=df_full, Y=np.array([0.51, 0.51])).flatten()
+distances_df_full = sklearn.metrics.pairwise.euclidean_distances(X=df_full, Y=np.array([0.51, 0.51]).reshape(1, -1)).flatten()
 ind = np.argsort(distances_df_full)[:k]
 plot.plot(df_full.loc[ind, 'X'], df_full.loc[ind, 'Y'] ,'y*', markersize=12)
 
@@ -206,5 +197,4 @@ plot.xlim([0,1])
 plot.ylim([0,1])
 plot.xlabel('$X_{1}$')
 plot.ylabel('$X_{2}$')
-plot.hold(False)
 plot.show()

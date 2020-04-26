@@ -88,7 +88,7 @@ DataViz.plot_xy(x=[k_values], y=[silhouette_values], xlabel='k', ylabel='silhoue
 
 # k = 6 # todo: replaced with np.argmax call over silhouette scores
 k = k_values[np.argmax(silhouette_values)]
-print(f'Highest K-Means silhouette score: k = {k}')
+print(f'Highest K-Medoids silhouette score: k = {k}')
 
 dataset_kmed = clusteringNH.k_medoids_over_instances(copy.deepcopy(dataset), ['acc_phone_x', 'acc_phone_y', 'acc_phone_z'], k, 'default', 20, n_inits=50)
 DataViz.plot_clusters_3d(dataset_kmed, ['acc_phone_x', 'acc_phone_y', 'acc_phone_z'], 'cluster', ['label'])

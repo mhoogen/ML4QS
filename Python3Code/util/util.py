@@ -42,27 +42,24 @@ def print_statistics(dataset, describe=True):
                            f'{dataset[col].max():6.3f}']))
 
 def print_table_cell(value1, value2):
-    print("{0:.2f}".format(value1), ' / ', "{0:.2f}".format(value2)),
+    print("{0:.2f}".format(value1), ' / ', "{0:.2f}".format(value2), end='')
 
 def print_latex_table_statistics_two_datasets(dataset1, dataset2):
     print('attribute, fraction missing values, mean, standard deviation, min, max')
     dataset1_length = len(dataset1.index)
     dataset2_length = len(dataset2.index)
     for col in dataset1.columns:
-        print(' & '.join([col,
-                          f'']))
-        print(col, '&')
-        print(col, '&'),
+        print(col, '& ', end='')
         print_table_cell((float((dataset1_length - dataset1[col].count()))/dataset1_length)*100, (float((dataset2_length - dataset2[col].count()))/dataset2_length)*100)
-        print(' & '),
+        print(' & ', end='')
         print_table_cell(dataset1[col].mean(), dataset2[col].mean())
-        print(' & '),
+        print(' & ', end='')
         print_table_cell(dataset1[col].std(), dataset2[col].std())
-        print(' & '),
+        print(' & ', end='')
         print_table_cell(dataset1[col].min(), dataset2[col].min())
-        print(' & '),
+        print(' & ', end='')
         print_table_cell(dataset1[col].max(), dataset2[col].max())
-        print
+        print('\\\\')
 
 def print_latex_statistics_clusters(dataset, cluster_col, input_cols, label_col):
     label_cols = [c for c in dataset.columns if label_col == c[0:len(label_col)]]
@@ -70,33 +67,33 @@ def print_latex_statistics_clusters(dataset, cluster_col, input_cols, label_col)
     clusters = dataset[cluster_col].unique()
 
     for c in input_cols:
-        print('\multirow{2}{*}{', c, '} & mean '),
+        print('\multirow{2}{*}{', c, '} & mean ', end='')
         for cluster in clusters:
-            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, c].mean())),
+            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, c].mean()), end='')
         print('\\\\')
-        print(' & std '),
+        print(' & std ', end='')
         for cluster in clusters:
-            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, c].std())),
+            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, c].std()), end='')
         print('\\\\')
 
     for l in label_cols:
-        print(l, ' & percentage '),
+        print(l, ' & percentage ', end='')
         for cluster in clusters:
-            print(' & ', "{0:.2f}".format((float(dataset.loc[dataset[cluster_col] == cluster, l].sum())/len(dataset[dataset[l] == 1].index) * 100)), '\%'),
+            print(' & ', "{0:.2f}".format((float(dataset.loc[dataset[cluster_col] == cluster, l].sum())/len(dataset[dataset[l] == 1].index) * 100)), '\%', end='')
         print('\\\\')
 
 def print_table_row_performances(row_name, training_len, test_len, values):
     scores_over_sd = []
-    print(row_name),
+    print(row_name, end='')
 
     for val in values:
-        print(' & '),
+        print(' & ', end='')
         sd_train = math.sqrt((val[0]*(1-val[0]))/training_len)
-        print("{0:.4f}".format(val[0])),
-        print('\\emph{(', "{0:.4f}".format(val[0]-2*sd_train), '-', "{0:.4f}".format(val[0]+2*sd_train), ')}', ' & '),
+        print("{0:.4f}".format(val[0]), end='')
+        print('\\emph{(', "{0:.4f}".format(val[0]-2*sd_train), '-', "{0:.4f}".format(val[0]+2*sd_train), ')}', ' & ', end='')
         sd_test = math.sqrt((val[1]*(1-val[1]))/test_len)
-        print("{0:.4f}".format(val[1])),
-        print('\\emph{(', "{0:.4f}".format(val[1]-2*sd_test), '-', "{0:.4f}".format(val[1]+2*sd_test), ')}'),
+        print("{0:.4f}".format(val[1]), end='')
+        print('\\emph{(', "{0:.4f}".format(val[1]-2*sd_test), '-', "{0:.4f}".format(val[1]+2*sd_test), ')}', end='')
         scores_over_sd.append([val[0], sd_train, val[1], sd_test])
     print('\\\\\\hline')
     return scores_over_sd
@@ -105,11 +102,11 @@ def print_table_row_performances_regression(row_name, training_len, test_len, va
     print(row_name),
 
     for val in values:
-        print(' & '),
-        print("{0:.4f}".format(val[0])),
-        print('\\emph{(', "{0:.4f}".format(val[1]), ')}', ' & '),
-        print("{0:.4f}".format(val[2])),
-        print('\\emph{(', "{0:.4f}".format(val[3]), ')}'),
+        print(' & ', end='')
+        print("{0:.4f}".format(val[0]), end='')
+        print('\\emph{(', "{0:.4f}".format(val[1]), ')}', ' & ', end='')
+        print("{0:.4f}".format(val[2]), end='')
+        print('\\emph{(', "{0:.4f}".format(val[3]), ')}', end='')
     print('\\\\\\hline')
 
 def print_pearson_correlations(correlations):

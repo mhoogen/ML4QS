@@ -99,7 +99,6 @@ feature_names = ['initial set', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Selected
 # Let us first study whether the time series is stationary and what the autocorrelations are.
 
 dftest = adfuller(dataset['hr_watch_rate'], autolag='AIC')
-print(dftest)
 
 plt.Figure(); autocorrelation_plot(dataset['hr_watch_rate'])
 DataViz.save(plt)
@@ -110,9 +109,9 @@ plt.show()
 learner = TemporalRegressionAlgorithms()
 eval = RegressionEvaluation()
 
-# We repeat the experiment a number of times to get a bit more robust data as the initialization of the NN is random.
+# We repeat the experiment a number of times to get a bit more robust data as the initialization of e.g. the NN is random.
 
-repeats = 5
+repeats = 10
 
 # we set a washout time to give the NN's the time to stabilize. We do not compute the error during the washout time.
 
@@ -189,15 +188,43 @@ for i in range(0, len(possible_feature_sets)):
     scores_with_sd = [(overall_performance_tr_res, overall_performance_tr_res_std, overall_performance_te_res, overall_performance_te_res_std),
                       (overall_performance_tr_rnn, overall_performance_tr_rnn_std, overall_performance_te_rnn, overall_performance_te_rnn_std),
                       (overall_performance_tr_ts, overall_performance_tr_ts_std, overall_performance_te_ts, overall_performance_te_ts_std)]
-    print(scores_with_sd)
     util.print_table_row_performances_regression(feature_names[i], len(selected_train_X.index), len(selected_test_X.index), scores_with_sd)
     scores_over_all_algs.append(scores_with_sd)
 
 DataViz.plot_performances_regression(['Reservoir', 'RNN', 'Time series'], feature_names, scores_over_all_algs)
 
-regr_train_y, regr_test_y = learner.reservoir_computing(train_X[features_after_chapter_5], train_y, test_X[features_after_chapter_5], test_y, gridsearch=True)
+regr_train_y, regr_test_y = learner.reservoir_computing(train_X[features_after_chapter_5], train_y, test_X[features_after_chapter_5], test_y, gridsearch=False)
 DataViz.plot_numerical_prediction_versus_real(train_X.index, train_y, regr_train_y['hr_watch_rate'], test_X.index, test_y, regr_test_y['hr_watch_rate'], 'heart rate')
 regr_train_y, regr_test_y = learner.recurrent_neural_network(train_X[basic_features], train_y, test_X[basic_features], test_y, gridsearch=True)
 DataViz.plot_numerical_prediction_versus_real(train_X.index, train_y, regr_train_y['hr_watch_rate'], test_X.index, test_y, regr_test_y['hr_watch_rate'], 'heart rate')
-regr_train_y, regr_test_y = learner.time_series(train_X[basic_features], train_y, test_X[features_after_chapter_5], test_y, gridsearch=True)
+regr_train_y, regr_test_y = learner.time_series(train_X[basic_features], train_y, test_X[basic_features], test_y, gridsearch=True)
 DataViz.plot_numerical_prediction_versus_real(train_X.index, train_y, regr_train_y['hr_watch_rate'], test_X.index, test_y, regr_test_y['hr_watch_rate'], 'heart rate')
+
+# And now some example code for using the dynamical systems model with parameter tuning (note: focus on predicting accelerometer data):
+
+train_X, test_X, train_y, test_y = prepare.split_single_dataset_regression(copy.deepcopy(dataset), ['acc_phone_x', 'acc_phone_y'], 0.9, filter=False, temporal=True)
+
+output_sets = learner.dynamical_systems_model_nsga_2(train_X, train_y, test_X, test_y, ['self.acc_phone_x', 'self.acc_phone_y', 'self.acc_phone_z'],
+                                                     ['self.a * self.acc_phone_x + self.b * self.acc_phone_y', 'self.c * self.acc_phone_y + self.d * self.acc_phone_z', 'self.e * self.acc_phone_x + self.f * self.acc_phone_z'],
+                                                     ['self.acc_phone_x', 'self.acc_phone_y'],
+                                                     ['self.a', 'self.b', 'self.c', 'self.d', 'self.e', 'self.f'],
+                                                     pop_size=10, max_generations=10, per_time_step=True)
+DataViz.plot_pareto_front(output_sets)
+
+DataViz.plot_numerical_prediction_versus_real_dynsys_mo(train_X.index, train_y, test_X.index, test_y, output_sets, 0, 'acc_phone_x')
+
+regr_train_y, regr_test_y = learner.dynamical_systems_model_ga(train_X, train_y, test_X, test_y, ['self.acc_phone_x', 'self.acc_phone_y', 'self.acc_phone_z'],
+                                                     ['self.a * self.acc_phone_x + self.b * self.acc_phone_y', 'self.c * self.acc_phone_y + self.d * self.acc_phone_z', 'self.e * self.acc_phone_x + self.f * self.acc_phone_z'],
+                                                     ['self.acc_phone_x', 'self.acc_phone_y'],
+                                                     ['self.a', 'self.b', 'self.c', 'self.d', 'self.e', 'self.f'],
+                                                     pop_size=5, max_generations=10, per_time_step=True)
+
+DataViz.plot_numerical_prediction_versus_real(train_X.index, train_y['acc_phone_x'], regr_train_y['acc_phone_x'], test_X.index, test_y['acc_phone_x'], regr_test_y['acc_phone_x'], 'acc_phone_x')
+
+regr_train_y, regr_test_y = learner.dynamical_systems_model_sa(train_X, train_y, test_X, test_y, ['self.acc_phone_x', 'self.acc_phone_y', 'self.acc_phone_z'],
+                                                     ['self.a * self.acc_phone_x + self.b * self.acc_phone_y', 'self.c * self.acc_phone_y + self.d * self.acc_phone_z', 'self.e * self.acc_phone_x + self.f * self.acc_phone_z'],
+                                                     ['self.acc_phone_x', 'self.acc_phone_y'],
+                                                     ['self.a', 'self.b', 'self.c', 'self.d', 'self.e', 'self.f'],
+                                                     max_generations=10, per_time_step=True)
+
+DataViz.plot_numerical_prediction_versus_real(train_X.index, train_y['acc_phone_x'], regr_train_y['acc_phone_x'], test_X.index, test_y['acc_phone_x'], regr_test_y['acc_phone_x'], 'acc_phone_x')

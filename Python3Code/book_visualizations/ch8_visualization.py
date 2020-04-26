@@ -37,7 +37,6 @@ np.random.seed(0)
 
 # Figure 8.1
 
-plot.hold(True)
 time = np.arange(1,15,1)
 
 pred_mood = [0.5]
@@ -64,12 +63,10 @@ plot.ylim([0,1])
 plot.xlabel('time')
 plot.ylabel('value')
 plot.legend(['$mood$', '$activity$ $level$'], loc=4, fontsize='small', numpoints=1)
-plot.hold(False)
 plot.show()
 
 # Figure 8.2
 
-plot.hold(True)
 f, axarr = plot.subplots(3, 2)
 f.subplots_adjust(hspace=0.5)
 f.subplots_adjust(wspace=0.5)
@@ -86,7 +83,6 @@ axarr[0, 1].set_xlim([0, 30])
 axarr[0, 1].set_ylim([-1.1, 1.1])
 
 rolling_window_data = pd.rolling_mean(random_time_series['value'], 10)
-print(rolling_window_data)
 axarr[1,0].plot(random_time_series.index, rolling_window_data)
 axarr[1,0].set_xlim([101, 500])
 axarr[1,0].set_ylim([-10, 10])
@@ -98,7 +94,6 @@ axarr[1, 1].set_xlim([0, 30])
 axarr[1, 1].set_ylim([-1.1, 1.1])
 
 cumsum_data = random_time_series.cumsum(axis=0)
-print(rolling_window_data)
 axarr[2,0].plot(random_time_series.index, cumsum_data)
 axarr[2,0].set_xlim([0, 5000])
 axarr[2,0].set_xlabel('time')
@@ -107,12 +102,10 @@ axarr[2,0].set_ylabel('value')
 autocorrelation_plot(cumsum_data, ax=axarr[2, 1])
 axarr[2, 1].set_xlim([0, 30])
 axarr[2, 1].set_ylim([-1.1, 1.1])
-plot.hold(False)
 plot.show()
 
 # Figure 8.3
 
-plot.hold(True)
 plot.plot(random_time_series.index, cumsum_data, 'b-')
 plot.plot(random_time_series.index, cumsum_data.ewm(alpha=0.2).mean(), 'k:')
 plot.plot(random_time_series.index, cumsum_data.ewm(alpha=0.05).mean(), 'r:')
@@ -121,12 +114,10 @@ plot.ylim([-50, 100])
 plot.xlabel('time')
 plot.ylabel('value')
 plot.legend(['$original$ $series$', '$\\alpha=0.2$', '$\\alpha=0.05$'], fontsize='small')
-plot.hold(False)
 plot.show()
 
 # Figure 8.4
 
-plot.hold(True)
 random_time_series = pd.DataFrame(np.random.normal(0, 1, 5200), index=range(0, 5200), columns=['value'])
 random_time_series['value'] = random_time_series['value'] + 5
 random_time_series.ix[1000:3999, 'value'] = random_time_series.ix[1000:3999, 'value'] + 20
@@ -141,12 +132,10 @@ plot.xlim([0, 5200])
 plot.xlabel('time')
 plot.ylabel('value')
 plot.legend(['$original$ $series$', '$trend$ $using $ $\\alpha=0.05$', '$detrended$'], fontsize='small')
-plot.hold(False)
 plot.show()
 
 # Figure 8.5
 
-plot.hold(True)
 dataset_path = './intermediate_datafiles/'
 dataset = pd.read_csv(dataset_path + 'chapter2_result_backup.csv', index_col=0)
 dataset.index = dataset.index.to_datetime()
@@ -164,12 +153,10 @@ axarr[1].plot(dataset.index, dataset['acc_phone_x'].diff(periods=1), 'k-')
 axarr[1].set_xlabel('time')
 axarr[1].set_ylabel('value')
 axarr[1].xaxis.set_major_formatter(xfmt)
-plot.hold(False)
 plot.show()
 
 # Figure 8.6
 
-plot.hold(True)
 dataset_path = './intermediate_datafiles/'
 dataset = pd.read_csv(dataset_path + 'chapter2_result_backup.csv', index_col=0)
 dataset.index = dataset.index.to_datetime()
@@ -188,13 +175,11 @@ dataset['radius'] = dataset['filtered_acc_x'].pow(2) + dataset['filtered_acc_y']
 dataset['radius'] = dataset['radius'].pow(0.5)
 plot.plot(dataset.index, dataset['radius'], 'r-')
 plot.legend(['$original$ $series$', '$filtered$', '$||a||(filtered)$'], fontsize='small')
-plot.hold(False)
 plot.show()
 
 # Figure 8.7
 
 f, axarr = plot.subplots(1, 2)
-plot.hold(True)
 dataset_path = '../datasets/crowdsignals.io/csv-participant-one/'
 dataset = pd.read_csv(dataset_path + 'accelerometer_phone.csv', index_col=0)
 dataset.index = pd.to_datetime(dataset['timestamps']).values
@@ -214,7 +199,6 @@ pacf_x, confint = pacf(temp_ts, nlags=100, alpha=.05)
 df = pd.DataFrame(confint, columns=['lower', 'upper'])
 df['lower'] = df['lower'] - np.array(pacf_x)
 df['upper'] = df['upper'] - np.array(pacf_x)
-print(pacf_x.shape)
 axarr[1].plot(range(0, 101), pacf_x, 'b-')
 axarr[1].plot(range(1, 101), df.ix[1:,'lower'], color='0.5')
 axarr[1].plot(range(0, 101), [0]*101, color='0')
@@ -223,12 +207,9 @@ axarr[1].grid()
 axarr[1].set_ylim([-1,1])
 axarr[1].set_xlabel('Lag')
 axarr[1].set_ylabel('Partial Autocorrelation')
-plot.hold(False)
 plot.show()
 
 # Figure 8.8
-
-plot.hold(True)
 
 model = ARIMA(temp_ts[0:500], order=(3,1,2))
 results_AR = model.fit(disp=-1)
@@ -246,12 +227,10 @@ plot.legend(['$original$ $series$', '$predicted$', '$difference$'], fontsize='sm
 plot.xlabel('time')
 plot.ylabel('value')
 
-plot.hold(False)
 plot.show()
 
 #Figure 8.9
 
-plot.hold(True)
 xfmt = md.DateFormatter('%H:%M:%S')
 plot.gca().xaxis.set_major_formatter(xfmt)
 df = pd.DataFrame(temp_ts[0:400], index=temp_ts.index[0:400], columns=['x'])
@@ -259,8 +238,6 @@ df = pd.DataFrame(temp_ts[0:400], index=temp_ts.index[0:400], columns=['x'])
 model = pf.ARIMA(df, ar=3, ma=2)
 x = model.fit()
 predictions = model.predict(h=100, intervals=True)
-print(df)
-print(predictions)
 plot.plot(temp_ts.index[400:500], predictions['x'], 'r:')
 y1 = predictions['5% Prediction Interval']
 y2 = predictions['95% Prediction Interval']
@@ -274,7 +251,6 @@ plot.show()
 
 #Figure 8.10
 
-plot.hold(True)
 xfmt = md.DateFormatter('%H:%M:%S')
 plot.gca().xaxis.set_major_formatter(xfmt)
 df = pd.DataFrame(temp_ts[0:500], index=temp_ts.index[0:500], columns=['x'])
@@ -300,12 +276,10 @@ axarr[2].xaxis.set_major_formatter(xfmt)
 axarr[2].set_ylabel('value')
 axarr[2].set_xlabel('time')
 
-plot.hold(False)
 plot.show()
 
 #Figure 8.11
 
-plot.hold(True)
 df = pd.DataFrame(residual[0:480], index=temp_ts.index[0:480], columns=['x'])
 model = pf.ARIMA(df, ar=3, ma=2)
 x = model.fit()
@@ -320,14 +294,12 @@ plot.legend(['$predicted$', '$original$ $series$'], fontsize='small')
 plot.xlabel('time')
 plot.ylabel('value')
 plot.gca().xaxis.set_major_formatter(xfmt)
-plot.hold(False)
 plot.show()
 
 
 # Figure 8.16
 
 
-plot.hold(True)
 f, axarr = plot.subplots(1, 2)
 
 pred_mood = [0.5]
@@ -379,12 +351,10 @@ axarr[1].legend(['$mood$', '$activity$ $level$', '$predicted$ $mood$ $with$ $\ga
              '$predicted$ $mood$ $with$ $\gamma_{1}=5, \gamma_{2}=0.75, \gamma_{3}=0.3, \gamma_{4}=\gamma_{5}=1$'], loc=4, fontsize='small', numpoints=1)
 
 
-plot.hold(False)
 plot.show()
 
 # Figure 8.19
 
-plot.hold(True)
 x = np.arange(0.05, 1.01, 0.01)
 y = 0.05/x
 plot.plot(x, y, 'r-')
@@ -395,5 +365,4 @@ plot.xlim([0,1])
 plot.ylim([0,1])
 plot.xlabel('$E_{X_{1}}$')
 plot.ylabel('$E{X_{2}}$')
-plot.hold(False)
 plot.show()
