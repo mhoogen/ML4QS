@@ -8,7 +8,7 @@ Installing with Docker means you won't have to do any setup yourself. Docker run
 2. clone/download the ML4QS data from the ML4QS repository by running `git clone https://www.github.com/mhoogen/ML4QS.git`
 3. Open a command prompt or terminal window and navigate to the ML4QS folder by entering `cd path/to/ML4QS`.
 3. <i>On Windows</i>: Enter `start Python3_start_docker.bat` into command prompt to build and run the Docker image.
-   <i>On MacOS/Linux</i>: Enter `./Python3_start_docker.sh` into terminal to build and run the Docker image.
+   <i>On MacOS/Linux</i>: Enter `./Python3_start_docker.sh` into terminal to build and run the Docker image. You may have to set permissions for the file first using `chmod +x Python3_start_docker.sh`.
    
 Once the docker image is finished building, you should be able to launch your Docker container by running the batch/shell script. The Python3Code directory has been attached to the container as a volume, so you can access or write to any file or directory in this volume. Run `ls` in the Docker terminal to list the contents of the folder. Once you've downloaded the crowdsignals.io data and placed it in the appropriate directory, you should be able to run `python3 crowdsignals_ch2.py` to execute the first script in Docker.
 
