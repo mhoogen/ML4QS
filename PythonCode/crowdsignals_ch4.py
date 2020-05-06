@@ -7,32 +7,26 @@
 #                                                            #
 ##############################################################
 
-import sys
-import copy
-import pandas as pd
-from pathlib import Path
-
 from util.VisualizeDataset import VisualizeDataset
 from Chapter4.TemporalAbstraction import NumericalAbstraction
 from Chapter4.TemporalAbstraction import CategoricalAbstraction
 from Chapter4.FrequencyAbstraction import FourierTransformation
 from Chapter4.TextAbstraction import TextAbstraction
+import copy
+import pandas as pd
+
+# Let us create our visualization class again.
+DataViz = VisualizeDataset()
 
 # Read the result from the previous chapter, and make sure the index is of the type datetime.
-DATA_PATH = Path('./intermediate_datafiles/')
-DATASET_FNAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter3_result_final.csv'
-RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter4_result.csv'
-
+dataset_path = './intermediate_datafiles/'
 try:
-    dataset = pd.read_csv(DATA_PATH / DATASET_FNAME, index_col=0)
+    dataset = pd.read_csv(dataset_path + 'chapter3_result_final.csv', index_col=0)
 except IOError as e:
     print('File not found, try to run previous crowdsignals scripts first!')
     raise e
 
-dataset.index = pd.to_datetime(dataset.index)
-
-# Let us create our visualization class again.
-DataViz = VisualizeDataset(__file__)
+dataset.index = dataset.index.to_datetime()
 
 # Compute the number of milliseconds covered by an instane based on the first two rows
 milliseconds_per_instance = (dataset.index[1] - dataset.index[0]).microseconds/1000
@@ -86,6 +80,6 @@ skip_points = int((1-window_overlap) * ws)
 dataset = dataset.iloc[::skip_points,:]
 
 
-dataset.to_csv(DATA_PATH / RESULT_FNAME)
+dataset.to_csv(dataset_path + 'chapter4_result.csv')
 
 DataViz.plot_dataset(dataset, ['acc_phone_x', 'gyr_phone_x', 'hr_watch_rate', 'light_phone_lux', 'mag_phone_x', 'press_phone_', 'pca_1', 'label'], ['like', 'like', 'like', 'like', 'like', 'like', 'like','like'], ['line', 'line', 'line', 'line', 'line', 'line', 'line', 'points'])

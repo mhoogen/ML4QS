@@ -68,8 +68,8 @@ class Model:
     # Some basic printing of the model.
     def print_model(self):
         for e in range(len(self.state_equations)):
-            print(str(self.state_names[e]) + ' = ',)
-            print(self.state_equations[e])
+            print str(self.state_names[e]) + ' = ',
+            print self.state_equations[e]
 
     # Prints the model to a file with the generation of the high level optimization algorithm.
     def print_model_to_file(self, file, generation):
@@ -121,7 +121,7 @@ class Model:
 
         # If we do not have any values, we do not do anything.
         if self.t == 0:
-            print('number of values ' + str(self.t))
+            print 'number of values ' + str(self.t)
         values = []
 
         # Get the index of the state

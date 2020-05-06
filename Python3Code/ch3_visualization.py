@@ -27,7 +27,7 @@ p = pd.DataFrame(norm.pdf(df,mean,sd), columns=list('p'))
 plt.plot(df, p)
 plt.xlabel('$X_{1}$')
 plt.ylabel('$P(X_{1})$')
-ax = plt.axes()
+ax = plt.gca()
 ax.fill_between(df['X'], 0, p['p'], where=df['X']<=0.3, facecolor='red')
 ax.fill_between(df['X'], 0, p['p'], where=df['X']>=0.7, facecolor='red')
 ax.annotate('outliers', xy=(0.3, 0.25), xytext=(0.45, 0.7),
@@ -57,7 +57,7 @@ circle = plt.Circle((0.5,0.5), radius, color='black', fill=False)
 fig = plt.gcf()
 fig.gca().add_artist(circle)
 
-ax = plt.axes()
+ax = plt.gca()
 ax.arrow(0.5, 0.5,
          (radius - 0.02) * math.cos(angle_rad),
          (radius - 0.02) * math.sin(angle_rad),
@@ -142,7 +142,7 @@ transformed_dataset = np.inner(first_component, df)
 plt.plot(transformed_dataset, [0]*transformed_dataset.shape[0], 'ro')
 plt.ylim([-0.05,1])
 plt.xlabel('$X\'_{1}$')
-ax = plt.axes()
+ax = plt.gca()
 ax.get_yaxis().set_visible(False)
 ax.spines['right'].set_visible(False)
 ax.spines['left'].set_visible(False)

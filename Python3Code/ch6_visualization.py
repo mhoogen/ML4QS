@@ -56,7 +56,6 @@ ax.set_xlabel('$\\theta_{1}$')
 ax.set_ylabel('$\\theta_{2}$')
 ax.set_zlabel('$E_{in}(h)$')
 fig.colorbar(surf, shrink=0.5, aspect=5)
-print(e_df)
 
 plot.show()
 

@@ -35,7 +35,7 @@ class FeatureSelectionClassification:
 
         # Select the appropriate number of features.
         for i in range(0, max_features):
-            print(i)
+            print i
 
             #Determine the features left to select.
             features_left = list(set(X_train.columns) - set(selected_features))

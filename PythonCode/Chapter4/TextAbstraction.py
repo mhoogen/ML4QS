@@ -101,7 +101,7 @@ class TextAbstraction:
             words = []
             text = ''
             for col in cols:
-                text = text + ' ' + data_table[col][i]
+                text = text + ' ' + data_table.ix[i, col]
 
             # Perform the NLP pipeline.
             words = self.tokenization(text)
@@ -132,7 +132,7 @@ class TextAbstraction:
 
             # And count the occurrences per row.
             for i in range(0, len(data_table.index)):
-                data_table[f'{cols[0]}_bow_{word}'][i] = data_table[self.col_name][i].count(word)
+                data_table.ix[i, cols[0] + '_bow_' + word] = data_table.ix[i, self.col_name].count(word)
 
         # Remove the temporary column we had created for the cleaned lists of words.
         del data_table[self.col_name]
@@ -153,8 +153,8 @@ class TextAbstraction:
             for i in range(0, len(data_table.index)):
 
                 # And count the tf score.
-                tf = data_table[self.col_name][i].count(word)
-                data_table[f'{cols[0]}_tf_idf_{word}'][i] = tf
+                tf = data_table.ix[i, self.col_name].count(word)
+                data_table.ix[i, cols[0] + '_tf_idf_' + word] = tf
 
             # Compute the idf score over all rows.
             idf = math.log(float(len(data_table.index))/len(data_table.loc[data_table[cols[0] + '_tf_idf_' + word] > 0].index))
@@ -184,13 +184,13 @@ class TextAbstraction:
 
         # Create columns for the topics.
         for topic in range(0, n_topics):
-            data_table[f'{cols[0]}_topic_{topic}'] = 0.0
+            data_table[cols[0] + '_topic_' + str(topic)] = 0.0
 
         # Score the topics per row and set the values accordingly.
         for i in range(0, len(data_table.index)):
-            topic_scores = model[dict_topics.doc2bow(data_table[self.col_name][i])]
+            topic_scores = model[dict_topics.doc2bow(data_table.ix[i, self.col_name])]
             for score in topic_scores:
-                data_table[f'{cols[0]}_topic_{score[0]}'][i] = score[1]
+                data_table.ix[i, cols[0] + '_topic_' + str(score[0])] = score[1]
         # Remove the temporary column we had created for the cleaned lists of words.
         del data_table[self.col_name]
         return data_table

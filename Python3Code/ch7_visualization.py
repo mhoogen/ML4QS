@@ -59,7 +59,7 @@ y1 = x
 y2 = 1-x
 plot.plot(x,y1,'k:')
 plot.plot(x,y2,'k:')
-ax = plot.axes()
+ax = plot.gca()
 ax.fill_between(x, y1, y2, where=y1<=y2, facecolor='grey', linewidth=0.0)
 ax.fill_between(x, y2, y1, where=y1>=y2, facecolor='grey', linewidth=0.0)
 ax.annotate('$P_{1}$', xy=(0.2, 0.2), xytext=(0.3, 0.1),
@@ -162,8 +162,8 @@ df2 = pd.DataFrame(columns=list('XY'))
 df2['X'] = x_2
 df2['Y'] = y_2
 sigma = 1
-z_1 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df1, Y=np.array([0.5, 0.5]))/2 * math.pow(sigma, 2)))
-z_2 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df2, Y=np.array([0.5, 0.5]))/2 * math.pow(sigma, 2)))
+z_1 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df1, Y=np.array([0.5, 0.5]).reshape(1, -1))/2 * math.pow(sigma, 2)))
+z_2 = np.power(math.e, -(sklearn.metrics.pairwise.euclidean_distances(X=df2, Y=np.array([0.5, 0.5]).reshape(1, -1))/2 * math.pow(sigma, 2)))
 ax = fig.add_subplot(1, 2, 2, projection='3d')
 
 ax.scatter(x_1, y_1, z_1, color='r', marker='o')
@@ -187,7 +187,7 @@ plot.plot(df2['X'], df2['Y'], 'bo')
 plot.plot([0.51],[0.51],'ko')
 k = 3
 df_full = pd.concat([df1, df2], ignore_index=True)
-distances_df_full = sklearn.metrics.pairwise.euclidean_distances(X=df_full, Y=np.array([0.51, 0.51])).flatten()
+distances_df_full = sklearn.metrics.pairwise.euclidean_distances(X=df_full, Y=np.array([0.51, 0.51]).reshape(1, -1)).flatten()
 ind = np.argsort(distances_df_full)[:k]
 plot.plot(df_full.loc[ind, 'X'], df_full.loc[ind, 'Y'] ,'y*', markersize=12)
 

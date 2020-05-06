@@ -46,7 +46,7 @@ class ClassificationAlgorithms:
         nn.fit(train_X, train_y.values.ravel())
 
         if gridsearch and print_model_details:
-            print(nn.best_params_)
+            print nn.best_params_
 
         if gridsearch:
             nn = nn.best_estimator_
@@ -78,7 +78,7 @@ class ClassificationAlgorithms:
         svm.fit(train_X, train_y.values.ravel())
 
         if gridsearch and print_model_details:
-            print(svm.best_params_)
+            print svm.best_params_
 
         if gridsearch:
             svm = svm.best_estimator_
@@ -110,7 +110,7 @@ class ClassificationAlgorithms:
         svm.fit(train_X, train_y.values.ravel())
 
         if gridsearch and print_model_details:
-            print(svm.best_params_)
+            print svm.best_params_
 
         if gridsearch:
             svm = svm.best_estimator_
@@ -145,7 +145,7 @@ class ClassificationAlgorithms:
         knn.fit(train_X, train_y.values.ravel())
 
         if gridsearch and print_model_details:
-            print(knn.best_params_)
+            print knn.best_params_
 
         if gridsearch:
             knn = knn.best_estimator_
@@ -179,7 +179,7 @@ class ClassificationAlgorithms:
         dtree.fit(train_X, train_y.values.ravel())
 
         if gridsearch and print_model_details:
-            print(dtree.best_params_)
+            print dtree.best_params_
 
         if gridsearch:
             dtree = dtree.best_estimator_
@@ -194,11 +194,11 @@ class ClassificationAlgorithms:
 
         if print_model_details:
             ordered_indices = [i[0] for i in sorted(enumerate(dtree.feature_importances_), key=lambda x:x[1], reverse=True)]
-            print('Feature importance decision tree:')
+            print 'Feature importance decision tree:'
             for i in range(0, len(dtree.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
-                print(dtree.feature_importances_[ordered_indices[i]])
+                print train_X.columns[ordered_indices[i]],
+                print ' & ',
+                print dtree.feature_importances_[ordered_indices[i]]
             tree.export_graphviz(dtree, out_file=export_tree_path + export_tree_name, feature_names=train_X.columns, class_names=dtree.classes_)
 
         return pred_training_y, pred_test_y, frame_prob_training_y, frame_prob_test_y
@@ -244,7 +244,7 @@ class ClassificationAlgorithms:
         rf.fit(train_X, train_y.values.ravel())
 
         if gridsearch and print_model_details:
-            print(rf.best_params_)
+            print rf.best_params_
 
         if gridsearch:
             rf = rf.best_estimator_
@@ -258,11 +258,11 @@ class ClassificationAlgorithms:
 
         if print_model_details:
             ordered_indices = [i[0] for i in sorted(enumerate(rf.feature_importances_), key=lambda x:x[1], reverse=True)]
-            print('Feature importance random forest:')
+            print 'Feature importance random forest:'
             for i in range(0, len(rf.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
-                print(rf.feature_importances_[ordered_indices[i]])
+                print train_X.columns[ordered_indices[i]],
+                print ' & ',
+                print rf.feature_importances_[ordered_indices[i]]
 
         return pred_training_y, pred_test_y, frame_prob_training_y, frame_prob_test_y
 
@@ -284,7 +284,7 @@ class RegressionAlgorithms:
         nn.fit(train_X, train_y)
 
         if gridsearch and print_model_details:
-            print(nn.best_params_)
+            print rf.best_params_
 
         if gridsearch:
             nn = nn.best_estimator_
@@ -311,7 +311,7 @@ class RegressionAlgorithms:
         svr.fit(train_X, train_y)
 
         if gridsearch and print_model_details:
-            print(svr.best_params_)
+            print svr.best_params_
 
         if gridsearch:
             svr = svr.best_estimator_
@@ -338,7 +338,7 @@ class RegressionAlgorithms:
         svr.fit(train_X, train_y)
 
         if gridsearch and print_model_details:
-            print(svr.best_params_)
+            print svr.best_params_
 
         if gridsearch:
             svr = svr.best_estimator_
@@ -365,7 +365,7 @@ class RegressionAlgorithms:
         knn.fit(train_X, train_y)
 
         if gridsearch and print_model_details:
-            print(knn.best_params_)
+            print knn.best_params_
 
         if gridsearch:
             knn = knn.best_estimator_
@@ -394,7 +394,7 @@ class RegressionAlgorithms:
         dtree.fit(train_X, train_y)
 
         if gridsearch and print_model_details:
-            print(dtree.best_params_)
+            print dtree.best_params_
 
         if gridsearch:
             dtree = dtree.best_estimator_
@@ -404,12 +404,12 @@ class RegressionAlgorithms:
         pred_test_y = dtree.predict(test_X)
 
         if print_model_details:
-            print('Feature importance decision tree:')
+            print 'Feature importance decision tree:'
             ordered_indices = [i[0] for i in sorted(enumerate(dtree.feature_importances_), key=lambda x:x[1], reverse=True)]
             for i in range(0, len(dtree.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
-                print(dtree.feature_importances_[ordered_indices[i]])
+                print train_X.columns[ordered_indices[i]],
+                print ' & ',
+                print dtree.feature_importances_[ordered_indices[i]]
             tree.export_graphviz(dtree, out_file=export_tree_path + export_tree_name, feature_names=train_X.columns, class_names=dtree.classes_)
 
         return pred_training_y, pred_test_y
@@ -433,7 +433,7 @@ class RegressionAlgorithms:
         rf.fit(train_X, train_y)
 
         if gridsearch and print_model_details:
-            print(rf.best_params_)
+            print rf.best_params_
 
         if gridsearch:
             rf = rf.best_estimator_
@@ -443,12 +443,12 @@ class RegressionAlgorithms:
         pred_test_y = rf.predict(test_X)
 
         if print_model_details:
-            print('Feature importance random forest:')
+            print 'Feature importance random forest:'
             ordered_indices = [i[0] for i in sorted(enumerate(rf.feature_importances_), key=lambda x:x[1], reverse=True)]
 
             for i in range(0, len(rf.feature_importances_)):
-                print(train_X.columns[ordered_indices[i]])
-                print(' & ')
-                print(rf.feature_importances_[ordered_indices[i]])
+                print train_X.columns[ordered_indices[i]],
+                print ' & ',
+                print rf.feature_importances_[ordered_indices[i]]
 
         return pred_training_y, pred_test_y

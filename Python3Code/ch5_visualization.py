@@ -313,7 +313,6 @@ numbers = np.vstack([np.random.randint(0,20,size=(20, 2)),
                      np.random.randint(40,60,size=(20, 2))])
 numbers = pd.DataFrame(numbers, columns=list('XY'))
 numbers = numbers / float(100)
-print(numbers)
 
 values = np.arange(0,1,0.2)
 plt.xlim([0,1])

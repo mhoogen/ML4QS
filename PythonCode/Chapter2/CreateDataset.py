@@ -16,10 +16,10 @@ import matplotlib.pyplot as plot
 import matplotlib.dates as md
 
 
-class CreateDataset:
+class CreateDataset():
 
     base_dir = ''
-    granularity = 0
+    granulairity = 0
     data_table = None
 
     def __init__(self, base_dir, granularity):
@@ -41,8 +41,7 @@ class CreateDataset:
 
     # Add numerical data, we assume timestamps in the form of nanoseconds from the epoch
     def add_numerical_dataset(self, file, timestamp_col, value_cols, aggregation='avg', prefix=''):
-        print(f'Reading data from {file}')
-        dataset = pd.read_csv(self.base_dir / file, skipinitialspace=True)
+        dataset = pd.read_csv(self.base_dir + file, skipinitialspace=True)
 
         # Convert timestamps to dates
         dataset[timestamp_col] = pd.to_datetime(dataset[timestamp_col])
@@ -68,7 +67,7 @@ class CreateDataset:
                     if aggregation == 'avg':
                         self.data_table.loc[self.data_table.index[i], str(prefix)+str(col)] = np.average(relevant_rows[col])
                     else:
-                        raise ValueError(f"Unknown aggregation {aggregation}")
+                        raise ValueError("Unknown aggregation '" + aggregation + "'")
                 else:
                     self.data_table.loc[self.data_table.index[i], str(prefix)+str(col)] = np.nan
 
@@ -79,8 +78,7 @@ class CreateDataset:
     # Add data in which we have rows that indicate the occurrence of a certain event with a given start and end time.
     # 'aggregation' can be 'sum' or 'binary'.
     def add_event_dataset(self, file, start_timestamp_col, end_timestamp_col, value_col, aggregation='sum'):
-        print(f'Reading data from {file}')
-        dataset = pd.read_csv(self.base_dir / file)
+        dataset = pd.read_csv(self.base_dir + file)
 
         # Convert timestamps to datetime.
         dataset[start_timestamp_col] = pd.to_datetime(dataset[start_timestamp_col])

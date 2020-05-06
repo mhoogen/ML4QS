@@ -1,0 +1,24 @@
+You have two main options to install the source code and packages:
+
+Option 1. Install with Docker
+
+Installing with Docker means you won't have to do any setup yourself. Docker runs a virtual container on your system with Linux installed, which will run all packages in an environment where compatibility is verified. It does deliver tend to deliver less performance on high end systems, and you need to have Hardware Virtualization enabled in the BIOS (see the FAQ down below if you are prompted by Docker). 
+
+1. Download and install Docker
+2. clone/download the ML4QS data from the ML4QS repository 
+3. <i>On Windows</i>: In the downloaded ML4QS directory, run `Python3_start_docker.bat` (or enter `start Python3_start_docker.bat` in `cmd`)
+   <i>On MacOS/Linux</i>: In the downloaded ML4QS directory, run `Python3_start_docker.sh` (or enter `start Python3_start_docker.bat` into terminal)
+
+Done - you should now be able to run the ML4QS code through your terminal window now. To test whether this works, let's try the following. In the Docker terminal, enter `python3 crowdsignals_ch2.py`. If you downloaded the data in the correct folder, the script should start to run.
+
+Option 2. Install with Anaconda 
+
+Using Anaconda, you can run the code in your favorite IDE and install the ML4QS requirements in a separate virtual env. 
+Download and install the latest version of Anaconda from https://www.anaconda.com/distribution/.
+
+Start by creating a new virtual environment. You can use the Anaconda Navigator or the Anaconda Prompt (Windows) or terminal (MacOS/Linux) to create one. Simply enter `conda create --name <my_env_name> anaconda` to create one and then activate it by entering `conda activate <my_env_name>`. Navigate to your ML4QS folder using `cd path/to/ML4QS`, and then run `pip install -r Python3_requirements.txt`. 
+
+If you have any more questions or can't seem to get the code working on your system, send me an e-mail at t.m.maaiveld@student.vu.nl.
+
+FAQ
+< to be added > 

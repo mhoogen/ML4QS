@@ -90,7 +90,7 @@ class TemporalClassificationAlgorithms:
         for t in range(0, len(X.index)):
 
             # Set the input according to X.
-            u = X.iloc[t,:].values
+            u = X.ix[t,:].as_matrix()
 
             # If we have a previous time point
             if t > 0:
@@ -98,11 +98,11 @@ class TemporalClassificationAlgorithms:
                 # If we predict per time step, set the previous value
                 # to the true previous value.
                 if per_time_step:
-                    y_prev = y_true.iloc[t-1,:].values
+                    y_prev = y_true.ix[t-1,:].as_matrix()
 
                 # Otherwise set it to the predicted value.
                 else:
-                    y_prev = y
+                    y_prev= y
 
             # If we do not have a previous time point, set the values to 0.
             else:
@@ -127,15 +127,15 @@ class TemporalClassificationAlgorithms:
                 combinations.append([val])
             return combinations
         else:
-            params_without_first_element = copy.deepcopy(list(params))
+            params_without_first_element = copy.deepcopy(params)
             params_without_first_element.pop(0)
             params_without_first_element_combinations = self.generate_parameter_combinations(parameter_dict, params_without_first_element)
-            values_first_element = parameter_dict[list(params)[0]]
+            values_first_element = parameter_dict[params[0]]
             for i in range(0, len(values_first_element)):
                 for j in range(0, len(params_without_first_element_combinations)):
-                    list_obj = [values_first_element[i]]
-                    list_obj.extend(params_without_first_element_combinations[j])
-                    combinations.append(list_obj)
+                    list = [values_first_element[i]]
+                    list.extend(params_without_first_element_combinations[j])
+                    combinations.append(list)
             return combinations
 
     def gridsearch_reservoir_computing(self, train_X, train_y, test_X, test_y, per_time_step=False, error = 'mse', gridsearch_training_frac=0.7):
@@ -144,10 +144,10 @@ class TemporalClassificationAlgorithms:
         params = tuned_parameters.keys()
         combinations = self.generate_parameter_combinations(tuned_parameters, params)
         split_point = int(gridsearch_training_frac * len(train_X.index))
-        train_params_X = train_X.iloc[0:split_point,]
-        test_params_X = train_X.iloc[split_point:len(train_X.index),]
-        train_params_y = train_y.iloc[0:split_point,]
-        test_params_y = train_y.iloc[split_point:len(train_X.index),]
+        train_params_X = train_X.ix[0:split_point,]
+        test_params_X = train_X.ix[split_point:len(train_X.index),]
+        train_params_y = train_y.ix[0:split_point,]
+        test_params_y = train_y.ix[split_point:len(train_X.index),]
 
         if error == 'mse':
             best_error = sys.float_info.max
@@ -156,9 +156,9 @@ class TemporalClassificationAlgorithms:
 
         best_combination = []
         for comb in combinations:
-            print(comb)
+            print comb
             # Order of the keys might have changed.
-            keys = list(tuned_parameters.keys())
+            keys = tuned_parameters.keys()
             pred_train_y, pred_test_y, pred_train_y_prob, pred_test_y_prob = self.reservoir_computing(train_params_X, train_params_y, test_params_X, test_params_y,
                                                                                                      reservoir_size=comb[keys.index('reservoir_size')], a=comb[keys.index('a')], per_time_step=per_time_step,
                                                                                                      gridsearch=False)
@@ -176,9 +176,9 @@ class TemporalClassificationAlgorithms:
                     best_error = acc
                     best_combination = comb
 
-        print('-------')
-        print(best_combination)
-        print('-------')
+        print '-------'
+        print best_combination
+        print '-------'
         return best_combination[keys.index('reservoir_size')], best_combination[keys.index('a')]
 
     def normalize(self, train, test, range_min, range_max):
@@ -237,7 +237,7 @@ class TemporalClassificationAlgorithms:
 
         # Allocate memory for our result matrices.
         X = np.zeros((len(train_X.index)-washout_period, 1+inputs+reservoir_size))
-        Yt = new_train_y.iloc[washout_period:len(new_train_y.index),:].values
+        Yt = new_train_y.ix[washout_period:len(new_train_y.index),:].as_matrix()
         Yt = np.arctanh( Yt )
         x = np.zeros((reservoir_size,1))
 
@@ -245,16 +245,16 @@ class TemporalClassificationAlgorithms:
         for t in range(0, len(new_train_X.index)):
 
             # Set the inputs according to the values seen in the training set.
-            u = new_train_X.iloc[t,:].values
+            u = new_train_X.ix[t,:].as_matrix()
 
             # Set the previous target value to the real value if available.
             if t > 0:
-                y_prev= new_train_y.iloc[t-1,:].values
+                y_prev= new_train_y.ix[t-1,:].as_matrix()
             else:
                 y_prev = np.array([0]*outputs)
 
             # Determine the activation of the reservoir.
-            x = (1-a)*x + a*np.tanh(np.dot(Win, np.vstack(np.insert(u,0,1)) ) + np.dot( W, x ) + np.dot( Wback, np.vstack(y_prev) ))
+            x = (1-a)*x + a*np.tanh( np.dot( Win, np.vstack(np.insert(u,0,1)) ) + np.dot( W, x ) + np.dot( Wback, np.vstack(y_prev) ))
 
             # And store the values obtained after the washout period.
             if t >= washout_period:
@@ -285,19 +285,19 @@ class TemporalClassificationAlgorithms:
 
         # And add all rows...
         for i in range(0, len(X.index)):
-            ds.addSample(tuple(X.iloc[i,:].values), tuple(y.iloc[i,:].values))
+            ds.addSample(tuple(X.ix[i,:].values), tuple(y.ix[i,:].values))
         return ds
 
     # Do a gridsearch for the recurrent neural network...
     def gridsearch_recurrent_neural_network(self, train_X, train_y, test_X, test_y, error='accuracy', gridsearch_training_frac=0.7):
         tuned_parameters = {'n_hidden_neurons': [50, 100], 'iterations':[250, 500], 'outputbias': [True]}
-        params = list(tuned_parameters.keys())
+        params = tuned_parameters.keys()
         combinations = self.generate_parameter_combinations(tuned_parameters, params)
         split_point = int(gridsearch_training_frac * len(train_X.index))
-        train_params_X = train_X.iloc[0:split_point,]
-        test_params_X = train_X.iloc[split_point:len(train_X.index),]
-        train_params_y = train_y.iloc[0:split_point,]
-        test_params_y = train_y.iloc[split_point:len(train_X.index),]
+        train_params_X = train_X.ix[0:split_point,]
+        test_params_X = train_X.ix[split_point:len(train_X.index),]
+        train_params_y = train_y.ix[0:split_point,]
+        test_params_y = train_y.ix[split_point:len(train_X.index),]
 
         if error == 'mse':
             best_error = sys.float_info.max
@@ -306,16 +306,12 @@ class TemporalClassificationAlgorithms:
 
         best_combination = []
         for comb in combinations:
-            print(comb)
+            print comb
             # Order of the keys might have changed.
-            keys = list(tuned_parameters.keys())
-            # print(keys)
-            pred_train_y, pred_test_y, pred_train_y_prob, pred_test_y_prob = self.recurrent_neural_network(
-                train_params_X, train_params_y, test_params_X, test_params_y,
-                n_hidden_neurons=comb[keys.index('n_hidden_neurons')],
-                iterations=comb[keys.index('iterations')],
-                outputbias=comb[keys.index('outputbias')], gridsearch=False
-            )
+            keys = tuned_parameters.keys()
+            pred_train_y, pred_test_y, pred_train_y_prob, pred_test_y_prob = self.recurrent_neural_network(train_params_X, train_params_y, test_params_X, test_params_y,
+                                                                                                     n_hidden_neurons=comb[params.index('n_hidden_neurons')], iterations=comb[params.index('iterations')],
+                                                                                                     outputbias=comb[params.index('outputbias')], gridsearch=False)
 
             if error == 'mse':
                 eval = RegressionEvaluation()
@@ -329,9 +325,9 @@ class TemporalClassificationAlgorithms:
                 if acc > best_error:
                     best_error = acc
                     best_combination = comb
-        print ('-------')
-        print (best_combination)
-        print ('-------')
+        print '-------'
+        print best_combination
+        print '-------'
         return best_combination[params.index('n_hidden_neurons')], best_combination[params.index('iterations')], best_combination[params.index('outputbias')]
 
     # Apply a recurrent neural network for classification upon the training data (with the specified number of
@@ -376,12 +372,12 @@ class TemporalClassificationAlgorithms:
         # Determine performance on the training and test set....
 #        Y_train = []
 #        for i in range(0, len(new_train_X.index)):
-#            input = tuple(new_train_X.iloc[i,:].values)
+#            input = tuple(new_train_X.ix[i,:].values)
 #            output = n.activate(input)
 #            Y_train.append(output)
 #        Y_test = []
 #        for i in range(0, len(new_test_X.index)):
-#            Y_test.append(n.activate(tuple(new_test_X.iloc[i,:].values)))
+#            Y_test.append(n.activate(tuple(new_test_X.ix[i,:].values)))
 
         Y_train = []
         Y_test = []
@@ -554,15 +550,15 @@ class TemporalRegressionAlgorithms:
     # Do a gridsearch for the time series.
     def gridsearch_time_series(self, train_X, train_y, test_X, test_y, error = 'mse', gridsearch_training_frac=0.7):
         tuned_parameters = {'ar': [0, 5], 'ma':[0, 5], 'd':[1]}
-        params = list(tuned_parameters.keys())
+        params = tuned_parameters.keys()
 
         tc = TemporalClassificationAlgorithms()
         combinations = tc.generate_parameter_combinations(tuned_parameters, params)
         split_point = int(gridsearch_training_frac * len(train_X.index))
-        train_params_X = train_X.iloc[0:split_point,]
-        test_params_X = train_X.iloc[split_point:len(train_X.index),]
-        train_params_y = train_y.iloc[0:split_point,]
-        test_params_y = train_y.iloc[split_point:len(train_X.index),]
+        train_params_X = train_X.ix[0:split_point,]
+        test_params_X = train_X.ix[split_point:len(train_X.index),]
+        train_params_y = train_y.ix[0:split_point,]
+        test_params_y = train_y.ix[split_point:len(train_X.index),]
 
         if error == 'mse':
             best_error = sys.float_info.max
@@ -571,9 +567,9 @@ class TemporalRegressionAlgorithms:
 
         best_combination = []
         for comb in combinations:
-            print(comb)
+            print comb
             # Order of the keys might have changed.
-            keys = list(tuned_parameters.keys())
+            keys = tuned_parameters.keys()
             pred_train_y, pred_test_y = self.time_series(train_params_X, train_params_y, test_params_X, test_params_y,
                                                                                                      ar=comb[keys.index('ar')], ma=comb[keys.index('ma')],d=comb[keys.index('d')],
                                                                                                      gridsearch=False)
@@ -584,9 +580,9 @@ class TemporalRegressionAlgorithms:
                 best_error = mse
                 best_combination = comb
 
-        print('-------')
-        print(best_combination)
-        print('-------')
+        print '-------'
+        print best_combination
+        print '-------'
         return best_combination[keys.index('ar')], best_combination[keys.index('ma')], best_combination[keys.index('d')]
 
 
@@ -611,7 +607,7 @@ class TemporalRegressionAlgorithms:
         values[:] = np.nan
         values[max(ar, ma):] = model_pred.values
         pred_train = pd.DataFrame(values, index=train_y.index, columns=[train_y.name])
-        pred_train.iloc[max(ar, ma):,:] = model_pred.values
+        pred_train.ix[max(ar, ma):,:] = model_pred.values
         pred_test = pd.DataFrame(model.predict(h=len(test_y.index), oos_data=test_dataset).values, index=test_y.index, columns=[test_y.name])
 
         return pred_train, pred_test

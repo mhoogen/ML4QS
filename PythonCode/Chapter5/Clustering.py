@@ -21,8 +21,6 @@ from scipy.cluster.hierarchy import linkage, fcluster
 from sklearn.neighbors import DistanceMetric
 import pyclust
 
-from nltk.cluster.kmeans import KMeansClusterer
-
 # Implementation of the non hierarchical clustering approaches.
 class NonHierarchicalClustering:
 
@@ -94,20 +92,19 @@ class NonHierarchicalClustering:
         # Take the appropriate columns.
         temp_dataset = dataset[cols]
         # Override the standard distance functions. Store the original first
-        # sklearn_euclidian_distances = sklearn.cluster.k_means_.euclidean_distances
-        sklearn_euclidian_distances = sklearn.metrics.pairwise.euclidean_distances
+        sklearn_euclidian_distances = sklearn.cluster.k_means_.euclidean_distances
         if distance_metric == self.euclidean:
-            sklearn.metrics.pairwise.euclidean_distances = self.euclidean_distance
+            sklearn.cluster.k_means_.euclidean_distances = self.euclidean_distance
         elif distance_metric == self.minkowski:
             self.p = p
-            sklearn.metrics.pairwise.euclidean_distances = self.minkowski_distance
+            sklearn.cluster.k_means_.euclidean_distances = self.minkowski_distance
         elif distance_metric == self.manhattan:
-            sklearn.metrics.pairwise.euclidean_distances = self.manhattan_distance
+            sklearn.cluster.k_means_.euclidean_distances = self.manhattan_distance
         elif distance_metric == self.gower:
             self.ranges = []
             for col in temp_dataset.columns:
                 self.ranges.append(temp_dataset[col].max() - temp_dataset[col].min())
-            sklearn.metrics.pairwise.euclidean_distances = self.gower_similarity
+            sklearn.cluster.k_means_.euclidean_distances = self.gower_similarity
         # If we do not recognize the option we use the default distance function, which is much
         # faster....
         # Now apply the k-means algorithm
@@ -154,14 +151,14 @@ class NonHierarchicalClustering:
         for i in range(0, len(dataset.index)):
             for j in range(i, len(dataset.index)):
                 if distance_metric == self.manhattan:
-                    distances.iloc[i,j] = self.manhattan_distance(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:])
+                    distances.ix[i,j] = self.manhattan_distance(dataset.ix[i:i+1,:], dataset.ix[j:j+1,:])
                 elif distance_metric == self.minkowski:
-                    distances.iloc[i,j] = self.manhattan_distance(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:], self.p)
+                    distances.ix[i,j] = self.manhattan_distance(dataset.ix[i:i+1,:], dataset.ix[j:j+1,:], self.p)
                 elif distance_metric == self.gower:
-                    distances.iloc[i,j] = self.gower_distance(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:])
+                    distances.ix[i,j] = self.gower_distance(dataset.ix[i:i+1,:], dataset.ix[j:j+1,:])
                 elif distance_metric == self.euclidean:
-                    distances.iloc[i,j] = self.euclidean_distance(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:])
-                distances.iloc[j,i] = distances.iloc[i,j]
+                    distances.ix[i,j] = self.euclidean_distance(dataset.ix[i:i+1,:], dataset.ix[j:j+1,:])
+                distances.ix[j,i] = distances.ix[i,j]
         return distances
 
     # We need to implement k-medoids ourselves to accommodate all distance metrics
@@ -170,7 +167,7 @@ class NonHierarchicalClustering:
         temp_dataset = dataset[cols]
         if distance_metric == 'default':
             km = pyclust.KMedoids(n_clusters=k, n_trials=n_inits)
-            km.fit(temp_dataset.values)
+            km.fit(temp_dataset.as_matrix())
             cluster_assignment = km.labels_
 
         else:
@@ -197,7 +194,7 @@ class NonHierarchicalClustering:
                     new_centers = []
                     for i in range(0, k):
                     # And find the new center that minimized the sum of the differences.
-                        best_center = D.loc[points_to_centroid == centers[i], points_to_centroid == centers[i]].sum().idxmin(axis=1)
+                        best_center = D.ix[points_to_centroid == centers[i], points_to_centroid == centers[i]].sum().idxmin(axis=1)
                         new_centers.append(best_center)
                     centers = new_centers
 
@@ -206,7 +203,7 @@ class NonHierarchicalClustering:
                 points_to_centroid = D[centers].idxmin(axis=1)
                 current_cluster_assignment = []
                 for i in range(0, len(dataset.index)):
-                    current_cluster_assignment.append(centers.index(points_to_centroid.iloc[i,:]))
+                    current_cluster_assignment.append(centers.index(points_to_centroid.ix[i,:]))
 
                 silhouette_avg = silhouette_score(temp_dataset, np.array(current_cluster_assignment))
                 if silhouette_avg > best_silhouette:
@@ -232,14 +229,14 @@ class NonHierarchicalClustering:
         for i in range(0, len(datasets)):
             for j in range(i, len(datasets)):
                 if distance_metric == self.abstraction_p:
-                    distances.iloc[i,j] = DMNoOrdering.p_distance(datasets[i], datasets[j])
+                    distances.ix[i,j] = DMNoOrdering.p_distance(datasets[i], datasets[j])
                 elif distance_metric == self.abstraction_euclidean:
-                    distances.iloc[i,j] = DMOrdering.euclidean_distance(datasets[i], datasets[j])
+                    distances.ix[i,j] = DMOrdering.euclidean_distance(datasets[i], datasets[j])
                 elif distance_metric == self.abstraction_lag:
-                    distances.iloc[i,j] = DMOrdering.lag_correlation(datasets[i], datasets[j], self.max_lag)
+                    distances.ix[i,j] = DMOrdering.lag_correlation(datasets[i], datasets[j], self.max_lag)
                 elif distance_metric == self.abstraction_dtw:
-                    distances.iloc[i,j] = DMOrdering.dynamic_time_warping(datasets[i], datasets[j])
-                distances.iloc[j,i] = distances.iloc[i,j]
+                    distances.ix[i,j] = DMOrdering.dynamic_time_warping(datasets[i], datasets[j])
+                distances.ix[j,i] = distances.ix[i,j]
         return distances
 
     # Note: distance metric only important in combination with certain abstraction methods as we allow for more
@@ -276,7 +273,7 @@ class NonHierarchicalClustering:
             new_centers = []
             for i in range(0, k):
                 # And find the new center that minimized the sum of the differences.
-                best_center = D.loc[points_to_centroid == centers[i], points_to_centroid == centers[i]].sum().idxmin(axis=1)
+                best_center = D.ix[points_to_centroid == centers[i], points_to_centroid == centers[i]].sum().idxmin(axis=1)
                 new_centers.append(best_center)
             centers = new_centers
 
@@ -285,7 +282,7 @@ class NonHierarchicalClustering:
         points_to_centroid = D[centers].idxmin(axis=1)
         cluster_assignment = []
         for i in range(0, len(datasets)):
-            cluster_assignment.append(centers.index(points_to_centroid.iloc[i,:]))
+            cluster_assignment.append(centers.index(points_to_centroid.ix[i,:]))
 
         dataset = pd.DataFrame(index=range(0, len(datasets)))
         dataset['cluster'] = cluster_assignment
@@ -308,9 +305,9 @@ class HierarchicalClustering:
         if (not use_prev_linkage) or (self.link is None):
             # Perform the clustering process according to the specified distance metric.
             if distance_metric == df.manhattan:
-                self.link = linkage(temp_dataset.values, method=link_function, metric='cityblock')
+                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='cityblock')
             else:
-                self.link = linkage(temp_dataset.values, method=link_function, metric='euclidean')
+                self.link = linkage(temp_dataset.as_matrix(), method=link_function, metric='euclidean')
 
         # And assign the clusters given the set maximum. In addition, compute the
         cluster_assignment = fcluster(self.link, max_clusters, criterion='maxclust')
