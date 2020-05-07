@@ -2,10 +2,10 @@ You have two main options to install the source code and packages:
 
 Option 1. Install with Docker
 
-Installing with Docker allows you to set up the required . Docker runs a virtual container on your system, which will run all packages in an environment where compatibility is verified. It does deliver less performance on high end systems and may require some configuration for system resource use in the Docker Desktop app.
+Installing with Docker allows you to set up the course materials in a separate virtual container running Ubuntu. This guarantees compatibility and prevents system-specific issues. Docker may require some configuration to efficiently use your system resources in the Docker Desktop app.
 
-1. Download and install Docker (Docker Desktop is the easiest to work with)
-2. clone/download the ML4QS data from the ML4QS repository by running `git clone https://www.github.com/mhoogen/ML4QS.git`
+1. Download and install Docker (Docker Desktop is the easiest to work with).
+2. clone/download the ML4QS data from the ML4QS repository by running `git clone https://www.github.com/mhoogen/ML4QS.git`.
 3. Open a command prompt or terminal window and navigate to the ML4QS folder by entering `cd path/to/ML4QS`.
 3. <i>On Windows</i>: Enter `start Python3_start_docker.bat` into command prompt to build and run the Docker image.
    
@@ -15,7 +15,7 @@ Once the docker image is finished building, you should be able to launch your Do
 
 Option 2. Install with Anaconda 
 
-Using Anaconda, you can run the code in your favorite IDE and install the ML4QS requirements in a separate virtual env. 
+Using Anaconda, you can run the code in your favorite IDE and install the ML4QS requirements in a separate virtual environment. 
 
 1. Download and install the latest version of Anaconda from https://www.anaconda.com/distribution/.
 2. Create a new virtual environment using the Anaconda Navigator or the Anaconda Prompt (Windows) or terminal (MacOS/Linux). Enter `conda create --name <my_env_name>` to create a new environment, then activate it by entering `conda activate <my_env_name>`. 
