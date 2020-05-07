@@ -1,7 +1,8 @@
 #!/bin/bash
 
 set -e
+PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/"
 
-# PROJECT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/"
-exec docker run --rm -it -v "$(pwd)" "ml4qs:base:root/Python3Code"
-/bin/bash
+docker build -t ml4qs:base .
+
+docker run --rm -it -v "${PROJECT_DIR}/Python3Code:/root" ml4qs:base
