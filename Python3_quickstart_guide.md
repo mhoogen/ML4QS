@@ -16,8 +16,10 @@ Once the docker image is finished building, you should be able to launch your Do
 Option 2. Install with Anaconda 
 
 Using Anaconda, you can run the code in your favorite IDE and install the ML4QS requirements in a separate virtual env. 
-Download and install the latest version of Anaconda from https://www.anaconda.com/distribution/.
 
-Start by creating a new virtual environment. You can use the Anaconda Navigator or the Anaconda Prompt (Windows) or terminal (MacOS/Linux) to create one. Simply enter `conda create --name <my_env_name> anaconda` to create a new environment, then activate it by entering `conda activate <my_env_name>`. Navigate to your ML4QS folder using `cd path/to/ML4QS`, and then run `pip install -r Python3_requirements.txt` to install the required dependencies. 
+1. Download and install the latest version of Anaconda from https://www.anaconda.com/distribution/.
+2. Start by creating a new virtual environment. You can use the Anaconda Navigator or the Anaconda Prompt (Windows) or terminal (MacOS/Linux) to create one. Simply enter `conda create --name <my_env_name> anaconda` to create a new environment, then activate it by entering `conda activate <my_env_name>`. 
+3. Navigate to your ML4QS folder using `cd path/to/ML4QS`. 
+4. Run `pip install -r Python3_requirements.txt` to install the required dependencies. 
 
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board, or send me an e-mail at t.m.maaiveld@student.vu.nl.
