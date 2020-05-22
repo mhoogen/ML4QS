@@ -333,7 +333,7 @@ class RegressionAlgorithms:
     def support_vector_regression_without_kernel(self, train_X, train_y, test_X, C=1, tol=1e-3, max_iter=1000, gridsearch=True, print_model_details=False):
         if gridsearch:
             # With the current parameters for max_iter and Python 3 packages convergence is not always reached, with increased iterations/tolerance often still fails to converge.
-            tuned_parameters = ['max_iter': [1000, 2000], 'tol': [1e-3, 1e-4],
+            tuned_parameters = [{'max_iter': [1000, 2000], 'tol': [1e-3, 1e-4],
                          'C': [1, 10, 100]}]
             svr = GridSearchCV(LinearSVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
         else:
