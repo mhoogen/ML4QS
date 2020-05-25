@@ -116,6 +116,7 @@ class DistanceBasedOutlierDetection:
             outlier_factor.append(self.local_outlier_factor_instance(i, k))
         data_outlier_probs = pd.DataFrame(outlier_factor, index=new_data_table.index, columns=['lof'])
         data_table = pd.concat([data_table, data_outlier_probs], axis=1)
+        del self.distances
         return data_table
 
     # The distance between a row i1 and i2.
