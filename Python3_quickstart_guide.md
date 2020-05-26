@@ -22,4 +22,6 @@ Using Anaconda, you can run the code in your favorite IDE and install the ML4QS 
 3. Navigate to your ML4QS folder using `cd path/to/ML4QS`. 
 4. Run `pip install -r Python3_requirements.txt` to install the required dependencies. 
 
+To get started with your coursework, download the [crowdsignals.io dataset](http://www.cs.vu.nl/~mhoogen/ml4qs/crowdsignals.zip).
+
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board and we will address your issue ASAP if it is not already answered there.
