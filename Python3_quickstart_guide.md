@@ -13,7 +13,7 @@ Installing with Docker allows you to set up the course materials in a separate v
    
 Once the docker image is finished building, you should be able to launch your Docker container by running the batch/shell script. The Python3Code directory has been attached to the container as a volume, so you can access or write to any file or directory in this volume. Run `ls` in the Docker terminal to list the contents of the folder. Once you've downloaded the crowdsignals.io data and placed it in the appropriate directory, you should be able to run `python3 crowdsignals_ch2.py` to execute the first script in Docker.
 
-<b>Note:<\b> Since Docker runs Ubuntu in headless mode, commands such as `plt.show()` will not display any figures. However, the figures are numbered and saved automatically in the `Python3Code/figures` directory, where you can view them as the script runs. See the FAQ document on the course discussion page for more information on running Docker.
+Note: Since Docker runs Ubuntu in headless mode, commands such as `plt.show()` will not display any figures. However, the figures are numbered and saved automatically in the `Python3Code/figures` directory, where you can view them as the script runs. See the FAQ document on the course discussion page for more information on running Docker.
 
 Option 2. Install with Anaconda 
 
