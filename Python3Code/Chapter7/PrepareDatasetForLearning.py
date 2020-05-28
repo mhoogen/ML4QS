@@ -79,8 +79,8 @@ class PrepareDatasetForLearning:
             test_set_y = dataset.iloc[end_training_set:len(dataset.index), class_label_indices]
         # For non temporal data we use a standard function to randomly split the dataset.
         else:
-            training_set_X, test_set_X, training_set_y, test_set_y = train_test_split(dataset[features],
-                                                                                      dataset[class_labels], test_size=(1-training_frac), stratify=dataset[class_labels], random_state=random_state)
+            training_set_X, test_set_X, training_set_y, test_set_y = train_test_split(dataset.iloc[:,features],
+                                                                                      dataset.iloc[:,class_label_indices], test_size=(1-training_frac), stratify=dataset.iloc[:,class_label_indices], random_state=random_state)
         return training_set_X, test_set_X, training_set_y, test_set_y
 
     def split_single_dataset_regression_by_time(self, dataset, target, start_training, end_training, end_test):
