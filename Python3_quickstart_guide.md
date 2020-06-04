@@ -7,7 +7,7 @@ Using Anaconda, you can run the code in your favorite IDE and install the ML4QS 
 1. Download and install Anaconda version 2020.02 from https://www.anaconda.com/distribution/.
 2. Create a new virtual environment using the Anaconda Navigator or the Anaconda Prompt (Windows) or terminal (MacOS/Linux). Enter `conda create --name <my_env_name> anaconda=2020.02` to create a new environment, then activate it by entering `conda activate <my_env_name>`. 
 3. clone/download the ML4QS data from the ML4QS repository by running `git clone https://www.github.com/mhoogen/ML4QS.git`.
-4. Navigate to your ML4QS folder using `cd path/to/ML4QS`. 
+4. Navigate to your ML4QS folder using `cd <path to your ML4QS folder>`.
 5. Run `pip install -r Python3_requirements.txt` to install the required dependencies. 
 
 Option 2. Install with Docker
@@ -16,7 +16,7 @@ Installing with Docker allows you to set up the course materials in a separate v
 
 1. Download and install Docker (Docker Desktop is the easiest to work with).
 2. clone/download the ML4QS data from the ML4QS repository by running `git clone https://www.github.com/mhoogen/ML4QS.git`.
-3. Open a command prompt or terminal window and navigate to the ML4QS folder by entering `cd path/to/ML4QS`.
+3. Open a command prompt or terminal window and navigate to the ML4QS folder by entering `cd <path to your ML4QS folder>`.
 3. <i>On Windows</i>: Enter `start Python3_start_docker.bat` into command prompt to build and run the Docker image.
    
    <i>On MacOS/Linux</i>: Enter `./Python3_start_docker.sh` into terminal to build and run the Docker image. You may have to set permissions for the file first using `chmod +x Python3_start_docker.sh`.
