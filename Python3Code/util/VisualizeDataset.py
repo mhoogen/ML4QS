@@ -85,8 +85,8 @@ class VisualizeDataset:
 
             # Pass through the relevant columns.
             for j in range(0, len(relevant_cols)):
-                # Create a mask to ignore the NaN values when plotting:
-                mask = data_table[relevant_cols[j]].notnull()
+                # Create a mask to ignore the NaN and Inf values when plotting:
+                mask = data_table[relevant_cols[j]].replace([np.inf, -np.inf], np.nan).notnull()
                 max_values.append(data_table[relevant_cols[j]][mask].max())
                 min_values.append(data_table[relevant_cols[j]][mask].min())
 
