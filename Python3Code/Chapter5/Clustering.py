@@ -145,7 +145,7 @@ class NonHierarchicalClustering:
         DM = InstanceDistanceMetrics()
 
         # Define the ranges of the columns if we use the gower distance.
-        ranges = []
+        self.ranges = []
         if distance_metric == self.gower:
             for col in dataset.columns:
                 self.ranges.append(dataset[col].max() - dataset[col].min())
