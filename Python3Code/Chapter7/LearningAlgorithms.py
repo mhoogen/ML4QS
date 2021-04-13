@@ -42,7 +42,7 @@ class ClassificationAlgorithms:
             nn = GridSearchCV(MLPClassifier(), tuned_parameters, cv=5, scoring='accuracy')
         else:
             # Create the model
-            nn = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, activation=activation, max_iter=max_iter, learning_rate=learning_rate, alpha=alpha)
+            nn = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, activation=activation, max_iter=max_iter, learning_rate=learning_rate, alpha=alpha, random_state=42)
 
         # Fit the model
         nn.fit(train_X, train_y.values.ravel())
@@ -67,10 +67,10 @@ class ClassificationAlgorithms:
     # C, epsilon and the kernel function), and use the created model to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
-    def support_vector_machine_with_kernel(self, train_X, train_y, test_X, kernel='rbf', C=1, gamma=1e-3, gridsearch=True, print_model_details=False):
+    def support_vector_machine_with_kernel(self, train_X, train_y, test_X, C=1,  kernel='rbf', gamma=1e-3, gridsearch=True, print_model_details=False):
         # Create the model
         if gridsearch:
-            tuned_parameters = [{'kernel': ['rbf', 'poly'], 'gamma': [1e-3, 1e-4],
+            tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],
                          'C': [1, 10, 100]}]
             svm = GridSearchCV(SVC(probability=True), tuned_parameters, cv=5, scoring='accuracy')
         else:
@@ -174,7 +174,7 @@ class ClassificationAlgorithms:
                                  'criterion':['gini', 'entropy']}]
             dtree = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, cv=5, scoring='accuracy')
         else:
-            dtree = DecisionTreeClassifier(min_samples_leaf=min_samples_leaf, criterion=criterion)
+            dtree = DecisionTreeClassifier(criterion=criterion)
 
         # Fit the model
 
@@ -214,7 +214,8 @@ class ClassificationAlgorithms:
     def naive_bayes(self, train_X, train_y, test_X):
         # Create the model
         nb = GaussianNB()
-
+        
+        train_y = train_y.values.ravel()
         # Fit the model
         nb.fit(train_X, train_y)
 
@@ -310,7 +311,7 @@ class RegressionAlgorithms:
             svr = GridSearchCV(SVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
         else:
             # Create the model
-            svr = SVR(C=C, kernel=kernel, gamma=gamma)
+            svr = SVR(C=C, kernel='rbf', gamma=gamma)
 
         # Fit the model
         svr.fit(train_X, train_y)
@@ -338,7 +339,7 @@ class RegressionAlgorithms:
             svr = GridSearchCV(LinearSVR(), tuned_parameters, cv=5, scoring='neg_mean_squared_error')
         else:
             # Create the model
-            svr = LinearSVR(C=C, kernel=kernel, tol=tol, max_iter=max_iter)
+            svr = LinearSVR(C=C, tol=tol, max_iter=max_iter)
 
         # Fit the model
         svr.fit(train_X, train_y)

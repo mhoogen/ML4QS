@@ -18,23 +18,9 @@ import sys
 
 # Chapter 2: Initial exploration of the dataset.
 
-"""
-First, we set some module-level constants to store our data locations. These are saved as a pathlib.Path object, the
-preferred way to handle OS paths in Python 3 (https://docs.python.org/3/library/pathlib.html). Using the Path's methods,
-you can execute most path-related operations such as making directories.
-
-sys.argv contains a list of keywords entered in the command line, and can be used to specify a file path when running
-a script from the command line. For example:
-
-$ python3 crowdsignals_ch2.py my/proj/data/folder my_dataset.csv
-
-If no location is specified, the default locations in the else statement are chosen, which are set to load each script's
-output into the next by default.
-"""
-
-DATASET_PATH = Path(sys.argv[1] if len(sys.argv) > 1 else './datasets/crowdsignals/csv-participant-one/')
+DATASET_PATH = Path('./datasets/crowdsignals/csv-participant-one/')
 RESULT_PATH = Path('./intermediate_datafiles/')
-RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter2_result.csv'
+RESULT_FNAME = 'chapter2_result.csv'
 
 # Set a granularity (the discrete step size of our time series data). We'll use a course-grained granularity of one
 # instance per minute, and a fine-grained one with four instances per second.
