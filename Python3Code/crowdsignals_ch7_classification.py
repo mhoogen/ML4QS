@@ -124,9 +124,9 @@ for reg_param in reg_parameters:
         performance_te += eval.accuracy(test_y, class_test_y)
     performance_training.append(performance_tr/N_REPEATS_NN)
     performance_test.append(performance_te/N_REPEATS_NN)
-# DataViz.plot_xy(x=[reg_parameters, reg_parameters], y=[performance_training, performance_test], method='semilogx',
-#                 xlabel='regularization parameter value', ylabel='accuracy', ylim=[0.95, 1.01],
-#                 names=['training', 'test'], line_styles=['r-', 'b:'])
+DataViz.plot_xy(x=[reg_parameters, reg_parameters], y=[performance_training, performance_test], method='semilogx',
+                xlabel='regularization parameter value', ylabel='accuracy', ylim=[0.95, 1.01],
+                names=['training', 'test'], line_styles=['r-', 'b:'])
 
 #Second, let us consider the influence of certain parameter settings for the tree model. (very related to the
 #regularization) and study the impact on performance.
@@ -153,7 +153,7 @@ DataViz.plot_xy(x=[leaf_settings, leaf_settings], y=[performance_training, perfo
 
 possible_feature_sets = [basic_features, features_after_chapter_3, features_after_chapter_4, features_after_chapter_5, selected_features]
 feature_names = ['initial set', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Selected features']
-N_KCV_REPEATS = 1
+N_KCV_REPEATS = 5
 
 
 print('Preprocessing took', time.time()-start, 'seconds.')

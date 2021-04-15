@@ -89,7 +89,7 @@ eval = RegressionEvaluation()
 
 # We repeat the experiment a number of times to get a bit more robust data as the initialization of e.g. the NN is random.
 
-REPEATS = 1
+REPEATS = 5
 
 scores_over_all_algs = []
 
