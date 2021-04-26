@@ -89,7 +89,7 @@ class CategoricalAbstraction:
             else:
                
                 timestamp_rows = data_table[data_table[pattern[0]] > 0].index.values.tolist()
-                print(timestamp_rows)
+               
                 times = [data_table.index.get_loc(i) for i in timestamp_rows]
                 self.cache[self.to_string(pattern)] = times
 
