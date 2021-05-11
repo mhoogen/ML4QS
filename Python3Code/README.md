@@ -15,7 +15,7 @@ Navigate to the Python3Code folder using cd <path to your ML4QS/Python3Code fold
 
 Enter the following commands to create and activate the environment:
 ```bash
-conda create --name myenv 
+conda create --name myenv pip
 conda activate myenv
 ```
 
