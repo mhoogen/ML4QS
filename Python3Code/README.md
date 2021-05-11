@@ -12,14 +12,13 @@ git clone https://www.github.com/mhoogen/ML4QS.git
 Windows:
 
 Open the Anaconda Prompt as Adminstrator (when you right click on the Anaconda Prompt, you see the option 'as Adminstrator'). 
-Navigate to the Python3Code folder using cd <path to your ML4QS/Python3Code folder> 
 
 Mac/Linux:
 
 Open the terminal
+
+
 Navigate to the Python3Code folder using cd <path to your ML4QS/Python3Code folder> 
-
-
 Enter the following commands to create and activate the environment:
 ```bash
 conda create --name myenv
