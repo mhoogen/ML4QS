@@ -39,7 +39,7 @@ Redirect to the main directory: Python3Code
 
 Run the following command to run the very first chapter. (this might take a while): 
 ```bash
-python3 crowdsignal_ch2.py
+python3 crowdsignals_ch2.py
 ```
 Study section ‘3. Code Instructions’ while you are waiting for Chapter2 to finish.
 
@@ -55,7 +55,7 @@ Also, in some cases one can add parameter settings as well through the argument 
 
 For example to solely run the LOF outlier detection method of Chapter3 with parameter-argument: K=4:
 ```bash
-python3 crowsignals_ch_3_outliers.py --mode=”LOF” --K=4
+python3 crowdsignals_ch_3_outliers.py --mode=”LOF” --K=4
 ```
 And to finish chapter3-outliers, and move to chapter3-rest:
 ```bash
