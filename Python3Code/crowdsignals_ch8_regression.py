@@ -26,8 +26,8 @@ from sklearn.model_selection import train_test_split
 
 # Set up file names and locations.
 DATA_PATH = Path('./intermediate_datafiles/')
-DATASET_FNAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter2_result.csv'
-RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter3_result_outliers.csv'
+DATASET_FNAME = 'chapter2_result.csv'
+RESULT_FNAME =  'chapter3_result_outliers.csv'
 
 # Next, import the data from the specified location and parse the date index.
 try:

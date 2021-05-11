@@ -13,53 +13,58 @@ import scipy.stats as stats
 # Class to abstract a history of numerical values we can use as an attribute.
 class NumericalAbstraction:
 
+    # For the slope we need a bit more work.
+    # We create time points, assuming discrete time steps with fixed delta t:
+    def get_slope(self, data):
+        
+        times = np.array(range(0, len(data.index)))
+        data = data.astype(np.float32)
+
+        # Check for NaN's
+        mask = ~np.isnan(data)
+
+        # If we have no data but NaN we return NaN.
+        if (len(data[mask]) == 0):
+            return np.nan
+        # Otherwise we return the slope.
+        else:
+            slope, _, _, _, _ = stats.linregress(times[mask], data[mask])
+            return slope
+
+    #TODO Add your own aggregation function here:
+    # def my_aggregation_function(self, data) 
 
     # This function aggregates a list of values using the specified aggregation
     # function (which can be 'mean', 'max', 'min', 'median', 'std', 'slope')
-    def aggregate_value(self, data, aggregation_function):
+    def aggregate_value(self,data, window_size, aggregation_function):
+        window = str(window_size) + 's'
         # Compute the values and return the result.
         if aggregation_function == 'mean':
-            return data.mean(skipna = True)
+            return data.rolling(window, min_periods=window_size).mean()
         elif aggregation_function == 'max':
-            return data.max(skipna = True)
+            return data.rolling(window, min_periods=window_size).max()
         elif aggregation_function == 'min':
-            return data.min(skipna = True)
+            return data.rolling(window, min_periods=window_size).min()
         elif aggregation_function == 'median':
-            return data.median(skipna = True)
+            return data.rolling(window, min_periods=window_size).median()
         elif aggregation_function == 'std':
-            return data.std(skipna = True)
+            return data.rolling(window, min_periods=window_size).std()
         elif aggregation_function == 'slope':
-            # For the slope we need a bit more work.
-            # We create time points, assuming discrete time steps with fixed delta t:
-            times = np.array(range(0, len(data.index)))
-            data = data.as_matrix().astype(np.float32)
-
-            # Check for NaN's
-            mask = ~np.isnan(data)
-
-            # If we have no data but NaN we return NaN.
-            if (len(data[mask]) == 0):
-                return np.nan
-            # Otherwise we return the slope.
-            else:
-                slope, intercept, r_value, p_value, std_err = stats.linregress(times[mask], data[mask])
-                return slope
+            return data.rolling(window, min_periods=window_size).apply(self.get_slope)
+        
+        #TODO: add your own aggregation function here
         else:
             return np.nan
 
-    # Abstract numerical columns specified given a window size (i.e. the number of time points from
-    # the past considered) and an aggregation function.
-    def abstract_numerical(self, data_table, cols, window_size, aggregation_function):
 
-        # Create new columns for the temporal data.
+    def abstract_numerical(self, data_table, cols, window_size, aggregation_function_name):
+    
         for col in cols:
-            data_table[col + '_temp_' + aggregation_function + '_ws_' + str(window_size)] = np.nan
-        # Pass over the dataset (we cannot compute it when we do not have enough history)
-        # and compute the values.
-        for i in range(window_size, len(data_table.index)):
-            for col in cols:
-                data_table.iloc[i, data_table.columns.get_loc(f'{col}_temp_{aggregation_function}_ws_{window_size}')] = self.aggregate_value(data_table[col].iloc[i-window_size:min(i+1, len(data_table.index))], aggregation_function)
-
+            
+            aggregations = self.aggregate_value(data_table[col], window_size, aggregation_function_name)
+            data_table[col + '_temp_' + aggregation_function_name + '_ws_' + str(window_size)] = aggregations
+      
+        
         return data_table
 
 # Class to perform categorical abstraction. We obtain patterns of categorical attributes that occur frequently
@@ -82,7 +87,9 @@ class CategoricalAbstraction:
                 times = self.cache[self.to_string(pattern)]
             # Otherwise we identify the time points at which we observe the value.
             else:
+               
                 timestamp_rows = data_table[data_table[pattern[0]] > 0].index.values.tolist()
+               
                 times = [data_table.index.get_loc(i) for i in timestamp_rows]
                 self.cache[self.to_string(pattern)] = times
 
