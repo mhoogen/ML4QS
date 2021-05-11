@@ -2,7 +2,7 @@
 
 In order to make sure that the provided code runs on all platforms (Windows, Max and Linux). We strongly advise to make use of Anaconda (or Miniconda).
 Using Anaconda, you can run the code in your favorite IDE and install the ML4QS requirements in a separate virtual environment. Naturally, if you are familiar with virtual environments and requirements files one can choose the setup of your choice (Docker Start Up Guide Below), but please be aware that this setup is not tested and you have to solve the problems you encounter yourself. 
-Download and install Miniconda from: 
+Download and install Anaconda from: 
 https://docs.anaconda.com/anaconda/install/ 
 Clone the ML4QS repository by running:
 
