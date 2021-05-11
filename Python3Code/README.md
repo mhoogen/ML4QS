@@ -30,6 +30,7 @@ If you have any more questions or can't seem to get the code working on your sys
 
 
 2. Dataset Start-Up
+
 To get started with your coursework:
 Download the crowdsignals.io dataset. 
 Create a subdirectory in the Python3Code directory called: ‘datasets’
@@ -44,6 +45,7 @@ python3 crowdsignals_ch2.py
 Study section ‘3. Code Instructions’ while you are waiting for Chapter2 to finish.
 
 3. Code Instructions
+
 Pre-processing the data (Chapters 3, 4 and 5) can be done in multiple ways. It depends on the characteristics of the dataset which method suits best. 
 Therefore at chapters 3, 4 and 5 several data-preprocessing methods are first studied on a single variable. To prevent having to continuously select (and unselect) subsets of code, we strongly advise to use the Argument Parser included in the code for these specific chapters. However, if one prefers to select and unselect specific sections of the code and hard code parameter settings this will also work. 
 
@@ -65,6 +67,7 @@ python3 crowdsignals_ch3_outliers.py --mode=”final”
 
 
 4. OPTIONAL (Docker fanatics)
+
 Installing with Docker allows you to set up the course materials in a separate virtual container running Ubuntu. This guarantees compatibility and prevents system-specific issues. Docker may require some configuration to efficiently use your system resources in the Docker Desktop app.
 Download and install Docker (Docker Desktop is the easiest to work with).
 
