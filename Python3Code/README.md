@@ -10,7 +10,7 @@ Clone the ML4QS repository by running:
 git clone https://www.github.com/mhoogen/ML4QS.git
 ```
 
-Navigate to the Python3Code folder using cd <path to your ML4QS/Python3Code folder> using Anaconda Prompt (Windows) or terminal (Mac/Linux)
+Navigate to the Python3Code folder using cd <path to your ML4QS/Python3Code folder> using Anaconda Prompt as Adminstrator (Windows) or terminal (Mac/Linux)
 
 
 Enter the following commands to create and activate the environment:
