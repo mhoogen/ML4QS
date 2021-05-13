@@ -6,22 +6,47 @@
 #    Chapter 3                                               #
 #                                                            #
 ##############################################################
+import pandas as pd
 
-# Simple class to impute missing values of a single columns.
+
 class ImputationMissingValues:
 
-    # Impute the mean values in case if missing data.
-    def impute_mean(self, dataset, col):
+    @staticmethod
+    def impute_mean(dataset: pd.DataFrame, col: str) -> pd.DataFrame:
+        """
+        Impute the mean value in case if missing data.
+
+        :param dataset: Dataset with missing values.
+        :param col: Column containing missing values that will be filled.
+        :return: Dataframe with imputed values in col.
+        """
+
         dataset[col] = dataset[col].fillna(dataset[col].mean())
         return dataset
 
-    # Impute the median values in case if missing data.
-    def impute_median(self, dataset, col):
+    @staticmethod
+    def impute_median(dataset: pd.DataFrame, col: str) -> pd.DataFrame:
+        """
+        Impute the median value in case if missing data.
+
+        :param dataset: Dataset with missing values.
+        :param col: Column containing missing values that will be filled.
+        :return: Dataframe with imputed values in col.
+        """
+
         dataset[col] = dataset[col].fillna(dataset[col].median())
         return dataset
 
-    # Interpolate the dataset based on previous/next values..
-    def impute_interpolate(self, dataset, col):
+    @staticmethod
+    def impute_interpolate(dataset: pd.DataFrame, col: str) -> pd.DataFrame:
+        """
+        Interpolate the dataset based on previous and next values in case of missing values.
+
+        :param dataset: Dataset with missing values.
+        :param col: Column containing missing values that will be filled.
+        :return:
+        """
+
         dataset[col] = dataset[col].interpolate()
         # And fill the initial data points if needed:
         dataset[col] = dataset[col].fillna(method='bfill')
