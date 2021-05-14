@@ -18,14 +18,15 @@ import math
 import gensim
 import gensim.models.ldamodel as lda
 
+
 # This class includes a number of approaches that abstract text based data to structured features.
 class TextAbstraction:
-
     col_name = 'words'
     bow = 'bow'
 
     # Tokenize the text: identify sentences and words within sentences. Returns a list of words.
-    def tokenization(self, text):
+    @staticmethod
+    def tokenization(text):
         words = []
         sentences = tokenize.sent_tokenize(text)
         for sentence in sentences:
@@ -35,7 +36,8 @@ class TextAbstraction:
 
     # Create a clean set of words which are lower case and do not include any undesired characters.
     # Returns the cleaned set.
-    def lower_case_and_filter_chars(self, words):
+    @staticmethod
+    def lower_case_and_filter_chars(words):
         new_words = []
         for word in words:
             # Take the lower case.
@@ -52,15 +54,15 @@ class TextAbstraction:
 
             # Select only the letters from the alphabet.
             for c in word:
-                if ((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or c == ' '):
+                if ('a' <= c <= 'z') or ('A' <= c <= 'Z') or c == ' ':
                     newText = newText + c
             if len(newText) > 0:
                 new_words.append(newText)
         return new_words
 
-
     # Stem a list of words. Return the list of stemmed words.
-    def stem(self, text):
+    @staticmethod
+    def stem(text):
         stemmer = SnowballStemmer("english")
         newText = []
         for w in text:
@@ -68,7 +70,8 @@ class TextAbstraction:
         return newText
 
     # Remove stopwords from a list of words. Returns the cleaned list.
-    def remove_stop_words(self, text):
+    @staticmethod
+    def remove_stop_words(text):
         stopwordList = stopwords.words('english')
         names = nltk.corpus.names.words()
 
@@ -80,10 +83,11 @@ class TextAbstraction:
 
     # Create combinations of <n> words for n-grams. Return a list of elements
     # that are the combination of <n> words that occur adjacent.
-    def form_n_grams(self, words, n):
+    @staticmethod
+    def form_n_grams(words, n):
         n_grams = []
-        for i in range(0, len(words)-n):
-            n_grams.append('_'.join(words[i:i+n]))
+        for i in range(0, len(words) - n):
+            n_grams.append('_'.join(words[i:i + n]))
         return n_grams
 
     # Identify words in the specified columns, create n-grams. Returns the same
@@ -132,7 +136,8 @@ class TextAbstraction:
 
             # And count the occurrences per row.
             for i in range(0, len(data_table.index)):
-                data_table.iloc[i, data_table.columns.get_loc(f'{cols[0]}_bow_{word}')] = data_table[self.col_name][i].count(word)
+                data_table.iloc[i, data_table.columns.get_loc(f'{cols[0]}_bow_{word}')] = data_table[self.col_name][
+                    i].count(word)
 
         # Remove the temporary column we had created for the cleaned lists of words.
         del data_table[self.col_name]
@@ -151,13 +156,13 @@ class TextAbstraction:
             data_table[cols[0] + '_tf_idf_' + word] = 0.0
 
             for i in range(0, len(data_table.index)):
-
                 # And count the tf score.
                 tf = data_table[self.col_name][i].count(word)
                 data_table.iloc[i, data_table.columns.get_loc(f'{cols[0]}_tf_idf_{word}')] = tf
 
             # Compute the idf score over all rows.
-            idf = math.log(float(len(data_table.index))/len(data_table.loc[data_table[cols[0] + '_tf_idf_' + word] > 0].index))
+            idf = math.log(
+                float(len(data_table.index)) / len(data_table.loc[data_table[cols[0] + '_tf_idf_' + word] > 0].index))
             # and multiply the rows with the idf.
             data_table[cols[0] + '_tf_idf_' + word] = data_table[cols[0] + '_tf_idf_' + word].mul(idf)
         # Remove the temporary column we had created for the cleaned lists of words.
@@ -194,4 +199,3 @@ class TextAbstraction:
         # Remove the temporary column we had created for the cleaned lists of words.
         del data_table[self.col_name]
         return data_table
-

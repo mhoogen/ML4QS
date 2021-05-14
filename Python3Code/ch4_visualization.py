@@ -21,10 +21,10 @@ np.random.seed(0)
 
 # Figure 4.1
 
-# Sample frequency (Hz)
+# Set sample frequency (Hz)
 fs = 10
 
-# Create time points....
+# Create time points
 df = pd.DataFrame(np.arange(0, 16.1, float(1)/fs), columns=list('X'))
 c1 = 3 * np.sin(2 * math.pi * 0.2 * df['X'])
 c2 = 2 * np.sin(2 * math.pi * 0.25 * (df['X']-2)) + 5
@@ -40,7 +40,7 @@ plt.show()
 
 FreqAbs = FourierTransformation()
 data_table = FreqAbs.abstract_frequency(copy.deepcopy(df), ['Y'], 160, fs)
-# Get the frequencies from the columns....
+# Get the frequencies from the columns
 frequencies = []
 values = []
 for col in data_table.columns:
