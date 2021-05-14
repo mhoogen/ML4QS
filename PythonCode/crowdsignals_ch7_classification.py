@@ -10,17 +10,11 @@
 from util.VisualizeDataset import VisualizeDataset
 from Chapter7.PrepareDatasetForLearning import PrepareDatasetForLearning
 from Chapter7.LearningAlgorithms import ClassificationAlgorithms
-from Chapter7.LearningAlgorithms import RegressionAlgorithms
 from Chapter7.Evaluation import ClassificationEvaluation
-from Chapter7.Evaluation import RegressionEvaluation
 from Chapter7.FeatureSelection import FeatureSelectionClassification
-from Chapter7.FeatureSelection import FeatureSelectionRegression
-import copy
 import pandas as pd
 from util import util
 import matplotlib.pyplot as plot
-import numpy as np
-from sklearn.model_selection import train_test_split
 import os
 
 

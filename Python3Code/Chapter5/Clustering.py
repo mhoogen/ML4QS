@@ -158,7 +158,7 @@ class NonHierarchicalClustering:
                 elif distance_metric == self.minkowski:
                     distances.iloc[i,j] = self.manhattan_distance(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:], self.p)
                 elif distance_metric == self.gower:
-                    distances.iloc[i,j] = self.gower_distance(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:])
+                    distances.iloc[i,j] = self.gowers_similarity(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:])
                 elif distance_metric == self.euclidean:
                     distances.iloc[i,j] = self.euclidean_distance(dataset.iloc[i:i+1,:], dataset.iloc[j:j+1,:])
                 distances.iloc[j,i] = distances.iloc[i,j]
@@ -174,6 +174,7 @@ class NonHierarchicalClustering:
             cluster_assignment = km.labels_
 
         else:
+            print("It workds")
             self.p = p
             cluster_assignment = []
             best_silhouette = -1
@@ -197,7 +198,8 @@ class NonHierarchicalClustering:
                     new_centers = []
                     for i in range(0, k):
                     # And find the new center that minimized the sum of the differences.
-                        best_center = D.loc[points_to_centroid == centers[i], points_to_centroid == centers[i]].sum().idxmin(axis=1)
+                      
+                        best_center = D.loc[points_to_centroid == centers[i]].sum().idxmin(axis=1)
                         new_centers.append(best_center)
                     centers = new_centers
 
@@ -206,7 +208,7 @@ class NonHierarchicalClustering:
                 points_to_centroid = D[centers].idxmin(axis=1)
                 current_cluster_assignment = []
                 for i in range(0, len(dataset.index)):
-                    current_cluster_assignment.append(centers.index(points_to_centroid.iloc[i,:]))
+                    current_cluster_assignment.append(centers.index(points_to_centroid.iloc[i]))
 
                 silhouette_avg = silhouette_score(temp_dataset, np.array(current_cluster_assignment))
                 if silhouette_avg > best_silhouette:

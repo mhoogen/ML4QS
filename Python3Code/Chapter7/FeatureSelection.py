@@ -24,7 +24,7 @@ class FeatureSelectionClassification:
     # Forward selection for classification which selects a pre-defined number of features (max_features)
     # that show the best accuracy. We assume a decision tree learning for this purpose, but
     # this can easily be changed. It return the best features.
-    def forward_selection(self, max_features, X_train, y_train):
+    def forward_selection(self, max_features, X_train, y_train, gridsearch):
         # Start with no features.
         ordered_features = []
         ordered_scores = []
@@ -35,13 +35,14 @@ class FeatureSelectionClassification:
 
         # Select the appropriate number of features.
         for i in range(0, max_features):
-            print(i)
+            #print(i)
 
             #Determine the features left to select.
             features_left = list(set(X_train.columns) - set(selected_features))
             best_perf = 0
             best_attribute = ''
 
+            print("Added feature{}".format(i))
             # For all features we can still select...
             for f in features_left:
                 temp_selected_features = copy.deepcopy(selected_features)
@@ -49,7 +50,7 @@ class FeatureSelectionClassification:
 
                 # Determine the accuracy of a decision tree learner if we were to add
                 # the feature.
-                pred_y_train, pred_y_test, prob_training_y, prob_test_y = ca.decision_tree(X_train[temp_selected_features], y_train, X_train[temp_selected_features])
+                pred_y_train, pred_y_test, prob_training_y, prob_test_y = ca.decision_tree(X_train[temp_selected_features], y_train, X_train[temp_selected_features], gridsearch=False)
                 perf = ce.accuracy(y_train, pred_y_train)
 
                 # If the performance is better than what we have seen so far (we aim for high accuracy)
