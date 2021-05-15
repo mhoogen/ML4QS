@@ -17,13 +17,13 @@ import numpy as np
 from pathlib import Path
 import argparse
 
+# Set up file names and locations
+DATA_PATH = Path('./intermediate_datafiles/')
+DATASET_FILENAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter2_result.csv'
+RESULT_FILENAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter3_result_outliers.csv'
+
 
 def main():
-    # Set up file names and locations
-    DATA_PATH = Path('./intermediate_datafiles/')
-    DATASET_FILENAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter2_result.csv'
-    RESULT_FILENAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter3_result_outliers.csv'
-
     # Import the data from the specified location and parse the date index
     try:
         dataset = pd.read_csv(Path(DATA_PATH / DATASET_FILENAME), index_col=0)
@@ -34,21 +34,19 @@ def main():
 
     # Create an instance of visualization class to plot the results
     DataViz = VisualizeDataset(module_path=__file__)
-
-    # Step 1: See whether there are some outliers that need to be preferably removed
-
-    # Set the columns to experiment on
-    outlier_columns = ['acc_phone_x', 'light_phone_lux']
-
     # Create the outlier classes
     OutlierDistribution = DistributionBasedOutlierDetection()
     OutlierDistance = DistanceBasedOutlierDetection()
+
+    # Step 1: If requested, see whether there are some outliers that need to be preferably removed
+    # Set the columns to experiment on
+    outlier_columns = ['acc_phone_x', 'light_phone_lux']
 
     # Investigate the approaches for the relevant attributes
     for col in outlier_columns:
         print(f"Applying outlier criteria for column {col}")
 
-        # Try out all different approaches. The parameters for each approach have been optimized by visual inspection
+        # Try out different approaches. The parameters for each approach have been optimized by visual inspection
         dataset = OutlierDistribution.chauvenet(data_table=dataset, col=col)
         DataViz.plot_binary_outliers(data_table=dataset, col=col, outlier_col=f'{col}_outlier')
         dataset = OutlierDistribution.mixture_model(data_table=dataset, col=col, components=3)
@@ -79,7 +77,7 @@ def main():
             if to_remove in dataset:
                 del dataset[to_remove]
 
-    # Take Chauvenet's criterion and apply it to all but the label data
+    # Step 2: Take Chauvenet's criterion and apply it to all but the label column in the main dataset
     for col in [c for c in dataset.columns if 'label' not in c]:
         print(f'Measurement is now: {col}')
         dataset = OutlierDistribution.chauvenet(data_table=dataset, col=col)

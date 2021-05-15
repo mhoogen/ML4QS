@@ -16,13 +16,14 @@ from Chapter4.TemporalAbstraction import NumericalAbstraction
 from Chapter4.TemporalAbstraction import CategoricalAbstraction
 from Chapter4.FrequencyAbstraction import FourierTransformation
 
+# Set up the file names and locations
+DATA_PATH = Path('./intermediate_datafiles/')
+DATASET_FNAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter3_result_final.csv'
+RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter4_result.csv'
+
 
 def main():
     # Read the result from the previous chapter convert the index to datetime
-    DATA_PATH = Path('./intermediate_datafiles/')
-    DATASET_FNAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter3_result_final.csv'
-    RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter4_result.csv'
-
     try:
         dataset = pd.read_csv(DATA_PATH / DATASET_FNAME, index_col=0)
         dataset.index = pd.to_datetime(dataset.index)

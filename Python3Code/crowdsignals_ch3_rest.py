@@ -20,14 +20,14 @@ from Chapter3.ImputationMissingValues import ImputationMissingValues
 from Chapter3.KalmanFilters import KalmanFilters
 from tqdm import tqdm
 
+# Set up the file names and locations
+DATA_PATH = Path('./intermediate_datafiles/')
+DATASET_FNAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter3_result_outliers.csv'
+RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter3_result_final.csv'
+ORIG_DATASET_FNAME = sys.argv[3] if len(sys.argv) > 3 else 'chapter2_result.csv'
+
 
 def main():
-    # Set up the file names and locations
-    DATA_PATH = Path('./intermediate_datafiles/')
-    DATASET_FNAME = sys.argv[1] if len(sys.argv) > 1 else 'chapter3_result_outliers.csv'
-    RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter3_result_final.csv'
-    ORIG_DATASET_FNAME = sys.argv[3] if len(sys.argv) > 3 else 'chapter2_result.csv'
-
     # Import the data from the specified location and parse the date index
     try:
         dataset = pd.read_csv(Path(DATA_PATH / DATASET_FNAME), index_col=0)

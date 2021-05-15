@@ -7,39 +7,22 @@
 #                                                            #
 ##############################################################
 
-# Import the relevant classes.
 from Chapter2.CreateDataset import CreateDataset
 from util.VisualizeDataset import VisualizeDataset
 from util import util
 from pathlib import Path
 import copy
-import os
-import sys
+
+# Set up file names and locations
+DATASET_PATH = Path('./datasets/crowdsignals/csv-participant-one/')
+RESULT_PATH = Path('./intermediate_datafiles/')
+RESULT_FNAME = 'chapter2_result.csv'
 
 
 def main():
-    """
-    First, we set some constants to store our data locations. These are saved as a pathlib.Path object, the preferred
-    way to handle OS paths in Python 3 (https://docs.python.org/3/library/pathlib.html). Using the Path's methods,
-    the most path-related operations such as making directories can be executed.
-
-    sys.argv contains a list of keywords entered in the command line, and can be used to specify a file path when
-    running a script from the command line. For example:
-
-    "$ python3 crowdsignals_ch2.py my/proj/data/folder my_dataset.csv"
-
-    If no location is specified, the default locations in the else statement are chosen, which are set to load each
-    script's output into the next by default. If required all aggregated datasets can be saved by setting the
-    SAVE_VERSIONS attribute.
-    """
-
-    DATASET_PATH = Path(sys.argv[1] if len(sys.argv) > 1 else './datasets/crowdsignals/csv-participant-one/')
-    RESULT_PATH = Path('./intermediate_datafiles/')
-    RESULT_FNAME = sys.argv[2] if len(sys.argv) > 2 else 'chapter2_result.csv'
-
-    # Set a granularity (the discrete step size of our time series data) and choose if all resulting datasets should be
-    # saved. We'll use a course-grained granularity of one instance per minute, and a fine-grained one with four
-    # instances per second.
+    # Set a granularity (the discrete step size of our time series data) and choose if all resulting datasets should
+    # be saved. A course-grained granularity of one instance per minute, and a fine-grained one with four instances
+    # per second are used.
     GRANULARITIES = [60000, 250]
     SAVE_VERSIONS = False
 
@@ -112,7 +95,7 @@ def main():
                              match=['like', 'like', 'like', 'like', 'like', 'like', 'like', 'like'],
                              display=['line', 'line', 'line', 'line', 'line', 'line', 'points', 'points'])
 
-        # Print a summary of the dataset.
+        # Print a summary of the dataset
         util.print_statistics(dataset=dataset)
         datasets.append(copy.deepcopy(dataset))
 
@@ -120,10 +103,10 @@ def main():
         if SAVE_VERSIONS:
             dataset.to_csv(RESULT_PATH / f'chapter2_result_{milliseconds_per_instance}')
 
-    # Make a table like the one shown in the book, comparing the two datasets produced.
+    # Make a table like the one shown in the book, comparing the two datasets produced
     util.print_latex_table_statistics_two_datasets(dataset1=datasets[0], dataset2=datasets[1])
 
-    # Finally, store the last dataset we generated (250 ms).
+    # Finally, store the last dataset we generated (250 ms)
     dataset.to_csv(RESULT_PATH / RESULT_FNAME)
 
 
