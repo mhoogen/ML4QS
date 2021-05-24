@@ -92,6 +92,7 @@ On Windows: Enter the following command prompt to build and run the Docker image
 
 On MacOS/Linux: Enter the following command to build and run the Docker image.  
 ```bash
+chmod +x start_docker.sh
 ./start_docker.sh 
 ```
 Please Note: You may have to set permissions for the file first using chmod +x Python3_start_docker.sh.
