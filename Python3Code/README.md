@@ -28,7 +28,7 @@ conda activate myenv
 Run the following command to install the required dependencies:
 
 ```bash
-pip install -r requirements.txt 
+pip3 install -r requirements.txt 
 ```
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board and we will address your issue ASAP if it is not already answered there.
 
