@@ -95,7 +95,6 @@ On MacOS/Linux: Enter the following command to build and run the Docker image.
 chmod +x start_docker.sh
 ./start_docker.sh 
 ```
-Please Note: You may have to set permissions for the file first using chmod +x Python3_start_docker.sh.
 
 
 Once the docker image is finished building, you should be able to launch your Docker container by running the batch/shell script. The Python3Code directory has been attached to the container as a volume, so you can access or write to any file or directory in this volume. Run ls in the Docker terminal to list the contents of the folder. Once you've downloaded the crowdsignals.io data and placed it in the appropriate directory, you should be able to run python3 crowdsignals_ch2.py to execute the first script in Docker.
