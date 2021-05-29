@@ -38,7 +38,7 @@ If you have any more questions or can't seem to get the code working on your sys
 2. Dataset Start-Up
 
 To get started with your coursework:
-Download the crowdsignals.io dataset. 
+Download the crowdsignals.io dataset from http://www.cs.vu.nl/~mhoogen/ml4qs/crowdsignals.zip. 
 Create a subdirectory in the Python3Code directory called: ‘datasets’
 Extract the downloaded dataset in the newly created directory ‘datasets’
 Your file structure should now look like: Python3Code/datasets/crowdsignals/csv-participant-one/acc.csv … (multiple csv files)
