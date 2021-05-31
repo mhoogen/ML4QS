@@ -67,7 +67,7 @@ python3 crowdsignals_ch3_outliers.py --mode="LOF" --K=4
 ```
 And to finish chapter3-outliers, and move to chapter3-rest:
 ```bash
-python3 crowdsignals_ch3_outliers.py --mode=”final"
+python3 crowdsignals_ch3_outliers.py --mode="final"
 ```
 
 
