@@ -30,6 +30,13 @@ Run the following command to install the required dependencies:
 ```bash
 pip3 install -r requirements.txt 
 ```
+If the requirements file is not being installed due to missing dependecies, try:
+
+```bash
+pip3 install numpy cython
+```
+and rerun the requirements file.
+
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board and we will address your issue ASAP if it is not already answered there.
 
 
