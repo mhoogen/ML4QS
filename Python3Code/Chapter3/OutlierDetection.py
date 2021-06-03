@@ -23,14 +23,14 @@ class DistributionBasedOutlierDetection:
 
     # Finds outliers in the specified column of datatable and adds a binary column with
     # the same name extended with '_outlier' that expresses the result per data point.
-    def chauvenet(self, data_table, col):
+    def chauvenet(self, data_table, col, C):
         # Taken partly from: https://www.astro.rug.nl/software/kapteyn/
 
         # Computer the mean and standard deviation.
         mean = data_table[col].mean()
         std = data_table[col].std()
         N = len(data_table.index)
-        criterion = 1.0/(2*N)
+        criterion = 1.0/(C*N)
 
         # Consider the deviation for the data points.
         deviation = abs(data_table[col] - mean)/std
