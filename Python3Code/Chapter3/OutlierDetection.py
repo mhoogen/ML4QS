@@ -36,8 +36,8 @@ class DistributionBasedOutlierDetection:
         deviation = abs(data_table[col] - mean)/std
 
         # Express the upper and lower bounds.
-        low = -deviation/math.sqrt(2)
-        high = deviation/math.sqrt(2)
+        low = -deviation/math.sqrt(C)
+        high = deviation/math.sqrt(C)
         prob = []
         mask = []
 
