@@ -135,10 +135,10 @@ if __name__ == '__main__':
     parser.add_argument('--K', type=int, default=5,
                         help="Local Outlier Factor:  K is the number of neighboring points considered")
 
-    parser.add_argument('--dmin', type=int, default=0.10,
+    parser.add_argument('--dmin', type=float, default=0.10,
                         help="Simple distance based:  dmin is ... ")
 
-    parser.add_argument('--fmin', type=int, default=0.99,
+    parser.add_argument('--fmin', type=float, default=0.99,
                         help="Simple distance based:  fmin is ... ")
 
     FLAGS, unparsed = parser.parse_known_args()
