@@ -174,10 +174,9 @@ class ClassificationAlgorithms:
                                  'criterion':['gini', 'entropy']}]
             dtree = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, cv=5, scoring='accuracy')
         else:
-            dtree = DecisionTreeClassifier(criterion=criterion)
+            dtree = DecisionTreeClassifier(min_samples_leaf=min_samples_leaf, criterion=criterion)
 
         # Fit the model
-
         dtree.fit(train_X, train_y.values.ravel())
 
         if gridsearch and print_model_details:
