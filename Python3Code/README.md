@@ -28,7 +28,7 @@ conda activate myenv
 Run the following command to install the required dependencies:
 
 ```bash
-pip install -r requirements.txt 
+pip3 install -r requirements.txt 
 ```
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board and we will address your issue ASAP if it is not already answered there.
 
@@ -38,7 +38,7 @@ If you have any more questions or can't seem to get the code working on your sys
 2. Dataset Start-Up
 
 To get started with your coursework:
-Download the crowdsignals.io dataset. 
+Download the crowdsignals.io dataset from http://www.cs.vu.nl/~mhoogen/ml4qs/crowdsignals.zip. 
 Create a subdirectory in the Python3Code directory called: ‘datasets’
 Extract the downloaded dataset in the newly created directory ‘datasets’
 Your file structure should now look like: Python3Code/datasets/crowdsignals/csv-participant-one/acc.csv … (multiple csv files)
@@ -63,7 +63,7 @@ Also, in some cases one can add parameter settings as well through the argument 
 
 For example to solely run the LOF outlier detection method of Chapter3 with parameter-argument: K=4:
 ```bash
-python3 crowdsignals_ch_3_outliers.py --mode=”LOF” --K=4
+python3 crowdsignals_ch3_outliers.py --mode=”LOF” --K=4
 ```
 And to finish chapter3-outliers, and move to chapter3-rest:
 ```bash
@@ -92,9 +92,9 @@ On Windows: Enter the following command prompt to build and run the Docker image
 
 On MacOS/Linux: Enter the following command to build and run the Docker image.  
 ```bash
+chmod +x start_docker.sh
 ./start_docker.sh 
 ```
-Please Note: You may have to set permissions for the file first using chmod +x Python3_start_docker.sh.
 
 
 Once the docker image is finished building, you should be able to launch your Docker container by running the batch/shell script. The Python3Code directory has been attached to the container as a volume, so you can access or write to any file or directory in this volume. Run ls in the Docker terminal to list the contents of the folder. Once you've downloaded the crowdsignals.io data and placed it in the appropriate directory, you should be able to run python3 crowdsignals_ch2.py to execute the first script in Docker.
