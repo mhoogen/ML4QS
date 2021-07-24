@@ -17,59 +17,78 @@ import copy
 import numpy as np
 from operator import itemgetter
 import pandas as pd
+from typing import List, Tuple
 
-# Specifies feature selection approaches for classification to identify the most important features.
+
 class FeatureSelectionClassification:
+    """
+    This class specifies feature selection approaches for classification to identify the most important features.
+    """
 
-    # Forward selection for classification which selects a pre-defined number of features (max_features)
-    # that show the best accuracy. We assume a decision tree learning for this purpose, but
-    # this can easily be changed. It return the best features.
-    def forward_selection(self, max_features, X_train, y_train, gridsearch):
-        # Start with no features.
+    @staticmethod
+    def forward_selection(max_features: int, X_train: pd.DataFrame, y_train: pd.Series) -> Tuple[List[str], List[str],
+                                                                                                 List[float]]:
+        """
+        Select the given number of features for classification, that show the best accuracy, using forward selection.
+        The method uses the given features and labels to train a decision tree and determine the accuracy of the
+        prediction. The method returns the selected features as well as the the scores.
+
+        :param max_features: Number of features to select.
+        :param X_train: Features as DataFrame.
+        :param y_train: Labels corresponding to given features.
+        :return: Selected features and scores.
+        """
+
+        # Start with no features
         ordered_features = []
         ordered_scores = []
         selected_features = []
         ca = ClassificationAlgorithms()
         ce = ClassificationEvaluation()
-        prev_best_perf = 0
 
-        # Select the appropriate number of features.
+        # Select the appropriate number of features
         for i in range(0, max_features):
-            #print(i)
-
-            #Determine the features left to select.
+            # Determine the features left to select
             features_left = list(set(X_train.columns) - set(selected_features))
             best_perf = 0
-            best_attribute = ''
+            best_feature = ''
 
-            print("Added feature{}".format(i))
-            # For all features we can still select...
+            print(f'Selecting feature {i+1}/{max_features}')
+            # Iterate over all features left
             for f in features_left:
                 temp_selected_features = copy.deepcopy(selected_features)
                 temp_selected_features.append(f)
 
-                # Determine the accuracy of a decision tree learner if we were to add
-                # the feature.
-                pred_y_train, pred_y_test, prob_training_y, prob_test_y = ca.decision_tree(X_train[temp_selected_features], y_train, X_train[temp_selected_features], gridsearch=False)
+                # Determine the accuracy of a decision tree learner adding the feature
+                pred_y_train, pred_y_test, prob_training_y, prob_test_y = ca.decision_tree(
+                    X_train[temp_selected_features], y_train, X_train[temp_selected_features], gridsearch=False)
                 perf = ce.accuracy(y_train, pred_y_train)
 
-                # If the performance is better than what we have seen so far (we aim for high accuracy)
-                # we set the current feature to the best feature and the same for the best performance.
+                # If the performance is better than the best so far (aiming for high accuracy), set the current feature
+                # to the best feature and the same for the best performance
                 if perf > best_perf:
                     best_perf = perf
                     best_feature = f
-            # We select the feature with the best performance.
+            # Select the feature with the best performance
             selected_features.append(best_feature)
-            prev_best_perf = best_perf
             ordered_features.append(best_feature)
             ordered_scores.append(best_perf)
         return selected_features, ordered_features, ordered_scores
 
-    # Backward selection for classification which selects a pre-defined number of features (max_features)
-    # that show the best accuracy. We assume a decision tree learning for this purpose, but
-    # this can easily be changed. It return the best features.
-    def backward_selection(self, max_features, X_train, y_train):
-        # First select all features.
+    @staticmethod
+    def backward_selection(max_features: int, X_train: pd.DataFrame, y_train: pd.Series) -> List[str]:
+        """
+        Select the given number of features for classification, that show the best accuracy, using backward selection.
+        The method uses the given features and labels to train a decision tree and determine the accuracy of the
+        prediction.
+
+        :param max_features: Number of features to select.
+        :param X_train: Features as DataFrame.
+        :param y_train: Labels corresponding to given features.
+        :return: Selected features.
+        """
+
+        # First select all features
         selected_features = X_train.columns.tolist()
         ca = ClassificationAlgorithms()
         ce = ClassificationEvaluation()
@@ -77,82 +96,101 @@ class FeatureSelectionClassification:
             best_perf = 0
             worst_feature = ''
 
-            # Select from the features that are still in the selection.
+            # Select from the features that are still in the selection
             for f in selected_features:
                 temp_selected_features = copy.deepcopy(selected_features)
                 temp_selected_features.remove(f)
 
-                # Determine the score without the feature.
-                pred_y_train, pred_y_test, prob_training_y, prob_test_y = ca.decision_tree(X_train[temp_selected_features], y_train, X_train[temp_selected_features])
+                # Determine the score without the feature
+                pred_y_train, pred_y_test, prob_training_y, prob_test_y = ca.decision_tree(
+                    X_train[temp_selected_features], y_train, X_train[temp_selected_features])
                 perf = ce.accuracy(y_train, pred_y_train)
 
-                # If we score better without the feature than what we have seen so far
-                # this is the worst feature.
+                # If scoring better without the feature than seen so far, this is the worst feature
                 if perf > best_perf:
                     best_perf = perf
                     worst_feature = f
 
-            # Remove the worst feature.
+            # Remove the worst feature
             selected_features.remove(worst_feature)
         return selected_features
 
-# Specifies feature selection approaches for classification to identify the most important features.
-class FeatureSelectionRegression:
 
-    # Forward selection for classification which selects a pre-defined number of features (max_features)
-    # that show the best accuracy. We assume a decision tree learning for this purpose, but
-    # this can easily be changed. It return the best features.
-    def forward_selection(self, max_features, X_train, y_train):
+class FeatureSelectionRegression:
+    """
+    This class specifies feature selection approaches for regression to identify the most important features.
+    """
+
+    @staticmethod
+    def forward_selection(max_features: int, X_train: pd.DataFrame, y_train: pd.Series) -> Tuple[List[str], List[str],
+                                                                                                 List[float]]:
+        """
+        Select the given number of features for regression, that show the best accuracy, using forward selection.
+        The method uses the given features and labels to train a decision tree and determine the mse of the
+        predictions. The method returns the selected features as well as the the scores.
+
+        :param max_features: Number of features to select.
+        :param X_train: Features as DataFrame.
+        :param y_train: True values corresponding to given features.
+        :return: Selected features and scores.
+        """
+
         ordered_features = []
         ordered_scores = []
 
-        # Start with no features.
+        # Start with no features
         selected_features = []
         ra = RegressionAlgorithms()
         re = RegressionEvaluation()
-        prev_best_perf = sys.float_info.max
 
-        # Select the appropriate number of features.
+        # Select the appropriate number of features
         for i in range(0, max_features):
 
-            #Determine the features left to select.
+            # Determine the features left to select
             features_left = list(set(X_train.columns) - set(selected_features))
             best_perf = sys.float_info.max
             best_feature = ''
 
-            # For all features we can still select...
+            # Iterate over all features left
             for f in features_left:
                 temp_selected_features = copy.deepcopy(selected_features)
                 temp_selected_features.append(f)
 
-                # Determine the mse of a decision tree learner if we were to add
-                # the feature.
-                pred_y_train, pred_y_test = ra.decision_tree(X_train[temp_selected_features], y_train, X_train[temp_selected_features])
+                # Determine the mse of a decision tree learner when adding the feature
+                pred_y_train, pred_y_test = ra.decision_tree(X_train[temp_selected_features], y_train,
+                                                             X_train[temp_selected_features])
                 perf = re.mean_squared_error(y_train, pred_y_train)
 
-                # If the performance is better than what we have seen so far (we aim for low mse)
-                # we set the current feature to the best feature and the same for the best performance.
+                # If the performance is better than seen so far (aiming for low mse) set the current feature to the best
+                # feature and the same for the best performance
                 if perf < best_perf:
                     best_perf = perf
                     best_feature = f
-            # We select the feature with the best performance.
+            # Select the feature with the best performance
             selected_features.append(best_feature)
-            prev_best_perf = best_perf
             ordered_features.append(best_feature)
             ordered_scores.append(best_perf)
         return selected_features, ordered_features, ordered_scores
 
-    # Backward selection for classification which selects a pre-defined number of features (max_features)
-    # that show the best accuracy. We assume a decision tree learning for this purpose, but
-    # this can easily be changed. It return the best features.
-    def backward_selection(self, max_features, X_train, y_train):
+    @staticmethod
+    def backward_selection(max_features, X_train, y_train):
+        """
+        Select the given number of features for regression, that show the best accuracy, using backward selection.
+        The method uses the given features and labels to train a decision tree and determine the mse of the
+        predictions.
 
-        # First select all features.
+        :param max_features: Number of features to select.
+        :param X_train: Features as DataFrame.
+        :param y_train: True values corresponding to given features.
+        :return: Selected features.
+        """
+
+        # First select all features
         selected_features = X_train.columns.tolist()
         ra = RegressionAlgorithms()
         re = RegressionEvaluation()
 
-        # Select from the features that are still in the selection.
+        # Select from the features that are still in the selection
         for i in range(0, (len(X_train.columns) - max_features)):
             best_perf = sys.float_info.max
             worst_feature = ''
@@ -160,26 +198,36 @@ class FeatureSelectionRegression:
                 temp_selected_features = copy.deepcopy(selected_features)
                 temp_selected_features.remove(f)
 
-                # Determine the score without the feature.
-                pred_y_train, pred_y_test = ra.decision_tree(X_train[temp_selected_features], y_train, X_train[temp_selected_features])
+                # Determine the score without the feature
+                pred_y_train, pred_y_test = ra.decision_tree(X_train[temp_selected_features], y_train,
+                                                             X_train[temp_selected_features])
                 perf = re.mean_squared_error(y_train, pred_y_train)
-                # If we score better (i.e. a lower mse) without the feature than what we have seen so far
-                # this is the worst feature.
+                # If scoring better (i.e. a lower mse) without the feature than seen so far this is the worst feature
                 if perf < best_perf:
                     best_perf = perf
                     worst_feature = f
-            # Remove the worst feature.
+            # Remove the worst feature
             selected_features.remove(worst_feature)
         return selected_features
 
-    # Select features based upon the correlation through the Pearson coefficient.
-    # It return the max_features best features.
-    def pearson_selection(self, max_features, X_train, y_train):
+    @staticmethod
+    def pearson_selection(max_features: int, X_train: pd.DataFrame, y_train: pd.Series) -> \
+            Tuple[List[str], List[Tuple[str, float]]]:
+        """
+        Select features based upon the correlation through the Pearson coefficient and return the given number of best
+        features as well as the computed pearson correlations.
+
+        :param max_features: Number of features to select.
+        :param X_train: Features as DataFrame.
+        :param y_train: True values corresponding to given features.
+        :return: List of selected features and pearson correlations.
+        """
+
         correlations = []
         full_columns_and_corr = []
         abs_columns_and_corr = []
 
-        # Compute the absolute correlations per column.
+        # Compute the absolute correlations per column
         for i in range(0, len(X_train.columns)):
             corr, p = pearsonr(X_train[X_train.columns[i]], y_train)
             correlations.append(abs(corr))
@@ -187,8 +235,8 @@ class FeatureSelectionRegression:
                 full_columns_and_corr.append((X_train.columns[i], corr))
                 abs_columns_and_corr.append((X_train.columns[i], abs(corr)))
 
-        sorted_attributes = sorted(abs_columns_and_corr,key=itemgetter(1), reverse=True)
+        sorted_attributes = sorted(abs_columns_and_corr, key=itemgetter(1), reverse=True)
         res_list = [x[0] for x in sorted_attributes[0:max_features]]
 
-        # And return the most correlated ones.
-        return res_list, sorted(full_columns_and_corr,key=itemgetter(1), reverse=True)
+        # Return the most correlated ones
+        return res_list, sorted(full_columns_and_corr, key=itemgetter(1), reverse=True)
