@@ -177,8 +177,7 @@ def main():
                                overall_performance_te_rnn_std),
                               (overall_performance_tr_ts, overall_performance_tr_ts_std, overall_performance_te_ts,
                                overall_performance_te_ts_std)]
-            util.print_table_row_performances_regression(feature_names[i], len(selected_train_X.index),
-                                                         len(selected_test_X.index), scores_with_sd)
+            util.print_table_row_performances_regression(feature_names[i], scores_with_sd)
             scores_over_all_algs.append(scores_with_sd)
 
         DataViz.plot_performances_regression(['Reservoir', 'RNN', 'Time series'], feature_names, scores_over_all_algs)

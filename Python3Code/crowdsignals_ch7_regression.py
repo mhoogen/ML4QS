@@ -82,7 +82,7 @@ def main():
         features, correlations = fs.pearson_selection(10, train_X[features_after_chapter_5], train_y)
         util.print_pearson_correlations(correlations)
 
-    # Select the 10 features with the highest correlation.
+    # Select the 10 features with the highest correlation
     selected_features = ['temp_pattern_labelOnTable', 'labelOnTable', 'temp_pattern_labelOnTable(b)labelOnTable',
                          'pca_2_temp_mean_ws_120', 'pca_1_temp_mean_ws_120', 'acc_watch_y_temp_mean_ws_120', 'pca_2',
                          'acc_phone_z_temp_mean_ws_120', 'gyr_watch_y_pse', 'gyr_watch_x_pse']
@@ -177,8 +177,7 @@ def main():
                               (performance_tr_svm, performance_tr_svm_std, performance_te_svm, performance_te_svm_std),
                               (performance_tr_knn, performance_tr_knn_std, performance_te_knn, performance_te_knn_std),
                               (performance_tr_dt, performance_tr_dt_std, performance_te_dt, performance_te_dt_std)]
-            util.print_table_row_performances_regression(feature_names[i], len(selected_train_X.index),
-                                                         len(selected_test_X.index), scores_with_sd)
+            util.print_table_row_performances_regression(feature_names[i], scores_with_sd)
             scores_over_all_algs.append(scores_with_sd)
 
         # Plot the results

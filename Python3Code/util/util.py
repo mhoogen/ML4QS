@@ -1,31 +1,37 @@
 import re
+import pandas as pd
 import scipy
+import scipy.spatial
 import copy
 import math
 import numpy as np
+from typing import List, Tuple, Iterable
+
 
 # Not a class, just a bunch of useful functions.
 
-def get_chapter(module_path):
-    return re.search('_ch._', 'crowdsignals_ch3_outliers.py').group(0).strip('_')
+def get_chapter(module_path: str) -> str:
+    return re.search('_ch._', module_path).group(0).strip('_')
 
-def normalize_dataset(data_table, columns):
+
+def normalize_dataset(data_table: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
     dt_norm = copy.deepcopy(data_table)
     for col in columns:
         dt_norm[col] = (data_table[col] - data_table[col].mean()) / (data_table[col].max() - data_table[col].min())
     return dt_norm
 
+
 # Calculate the distance between rows.
-def distance(rows, d_function='euclidean'):
+def distance(rows: pd.DataFrame, d_function: str = 'euclidean') -> np.ndarray:
     if d_function == 'euclidean':
-        # Assumes m rows and n columns (attributes), returns and array where each row represents
-        # the distances to the other rows (except the own row).
-        return scipy.spatial.distance.pdist(rows, 'euclidean') # todo: replace with numpy?
+        # Assumes m rows and n columns (attributes), returns and array where each row represents the distances to the
+        # other rows (except the own row)
+        return scipy.spatial.distance.pdist(rows, 'euclidean')
     else:
-        raise ValueError("Unknown distance value '" + d_function + "'")
+        raise ValueError(f'Unknown distance value "{d_function}"')
 
-def print_statistics(dataset, describe=True):
 
+def print_statistics(dataset: pd.DataFrame, describe: bool = True):
     if describe:
         # .describe() gives number of values, mean, standard deviation, min and max for each column in one table.
         print(dataset.describe().round(3).to_string())
@@ -41,16 +47,19 @@ def print_statistics(dataset, describe=True):
                            f'{dataset[col].min():6.3f}',
                            f'{dataset[col].max():6.3f}']))
 
-def print_table_cell(value1, value2):
+
+def print_table_cell(value1: float, value2: float):
     print("{0:.2f}".format(value1), ' / ', "{0:.2f}".format(value2), end='')
 
-def print_latex_table_statistics_two_datasets(dataset1, dataset2):
+
+def print_latex_table_statistics_two_datasets(dataset1: pd.DataFrame, dataset2: pd.DataFrame):
     print('attribute, fraction missing values, mean, standard deviation, min, max')
     dataset1_length = len(dataset1.index)
     dataset2_length = len(dataset2.index)
     for col in dataset1.columns:
         print(col, '& ', end='')
-        print_table_cell((float((dataset1_length - dataset1[col].count()))/dataset1_length)*100, (float((dataset2_length - dataset2[col].count()))/dataset2_length)*100)
+        print_table_cell((float((dataset1_length - dataset1[col].count())) / dataset1_length) * 100,
+                         (float((dataset2_length - dataset2[col].count())) / dataset2_length) * 100)
         print(' & ', end='')
         print_table_cell(dataset1[col].mean(), dataset2[col].mean())
         print(' & ', end='')
@@ -61,45 +70,52 @@ def print_latex_table_statistics_two_datasets(dataset1, dataset2):
         print_table_cell(dataset1[col].max(), dataset2[col].max())
         print('\\\\')
 
-def print_latex_statistics_clusters(dataset, cluster_col, input_cols, label_col):
-    label_cols = [c for c in dataset.columns if label_col == c[0:len(label_col)]]
+
+def print_latex_statistics_clusters(dataset: pd.DataFrame, cluster_col: str, input_cols: List[str], label_col: str):
+    label_cols = [c for c in dataset.columns if c.startswith(label_col)]
 
     clusters = dataset[cluster_col].unique()
 
-    for c in input_cols:
-        print('\multirow{2}{*}{', c, '} & mean ', end='')
+    for col in input_cols:
+        print('\multirow{2}{*}{', col, '} & mean ', end='')
         for cluster in clusters:
-            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, c].mean()), end='')
+            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, col].mean()), end='')
         print('\\\\')
         print(' & std ', end='')
         for cluster in clusters:
-            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, c].std()), end='')
+            print(' & ', "{0:.2f}".format(dataset.loc[dataset[cluster_col] == cluster, col].std()), end='')
         print('\\\\')
 
-    for l in label_cols:
-        print(l, ' & percentage ', end='')
+    for col in label_cols:
+        print(col, ' & percentage ', end='')
         for cluster in clusters:
-            print(' & ', "{0:.2f}".format((float(dataset.loc[dataset[cluster_col] == cluster, l].sum())/len(dataset[dataset[l] == 1].index) * 100)), '\%', end='')
+            print(' & ', "{0:.2f}".format((float(dataset.loc[dataset[cluster_col] == cluster, col].sum()) / len(
+                dataset[dataset[col] == 1].index) * 100)), '\%', end='')
         print('\\\\')
 
-def print_table_row_performances(row_name, training_len, test_len, values):
+
+def print_table_row_performances(row_name: str, training_len: int, test_len: int, values: Iterable) \
+        -> List[List[float]]:
     scores_over_sd = []
     print(row_name, end='')
 
     for val in values:
         print(' & ', end='')
-        sd_train = math.sqrt((val[0]*(1-val[0]))/training_len)
+        sd_train = math.sqrt((val[0] * (1 - val[0])) / training_len)
         print("{0:.4f}".format(val[0]), end='')
-        print('\\emph{(', "{0:.4f}".format(val[0]-2*sd_train), '-', "{0:.4f}".format(val[0]+2*sd_train), ')}', ' & ', end='')
-        sd_test = math.sqrt((val[1]*(1-val[1]))/test_len)
+        print('\\emph{(', "{0:.4f}".format(val[0] - 2 * sd_train), '-', "{0:.4f}".format(val[0] + 2 * sd_train), ')}',
+              ' & ', end='')
+        sd_test = math.sqrt((val[1] * (1 - val[1])) / test_len)
         print("{0:.4f}".format(val[1]), end='')
-        print('\\emph{(', "{0:.4f}".format(val[1]-2*sd_test), '-', "{0:.4f}".format(val[1]+2*sd_test), ')}', end='')
+        print('\\emph{(', "{0:.4f}".format(val[1] - 2 * sd_test), '-', "{0:.4f}".format(val[1] + 2 * sd_test), ')}',
+              end='')
         scores_over_sd.append([val[0], sd_train, val[1], sd_test])
     print('\\\\\\hline')
     return scores_over_sd
 
-def print_table_row_performances_regression(row_name, training_len, test_len, values):
-    print(row_name),
+
+def print_table_row_performances_regression(row_name: str, values: Iterable):
+    print(row_name)
 
     for val in values:
         print(' & ', end='')
@@ -109,7 +125,8 @@ def print_table_row_performances_regression(row_name, training_len, test_len, va
         print('\\emph{(', "{0:.4f}".format(val[3]), ')}', end='')
     print('\\\\\\hline')
 
-def print_pearson_correlations(correlations):
+
+def print_pearson_correlations(correlations: List[Tuple[str, float]]):
     for i in range(0, len(correlations)):
         if np.isfinite(correlations[i][1]):
             print(correlations[i][0], ' & ', "{0:.4f}".format(correlations[i][1]), '\\\\\\hline')
