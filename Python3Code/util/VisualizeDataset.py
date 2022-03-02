@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.cluster.hierarchy import dendrogram
+import matplotlib as mpl
+mpl.use('tkagg')
 
 
 class VisualizeDataset:
@@ -22,7 +24,9 @@ class VisualizeDataset:
         self.figures_dir = Path('figures') / subdir
         self.figures_dir.mkdir(exist_ok=True, parents=True)
 
-    def save(self, plot_obj: plt, formats: Tuple[str] = ('png',)):
+    def save(self, plot_obj, formats=('png', 'eps', 'pdf')): # 'svg'
+
+
         fig_name = f'figure_{self.plot_number}'
         for f in formats:
             save_path = self.figures_dir / f'{fig_name}.{f}'

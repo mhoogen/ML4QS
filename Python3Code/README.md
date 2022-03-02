@@ -21,14 +21,18 @@ Open the terminal
 Navigate to the Python3Code folder using cd <path to your ML4QS/Python3Code folder> 
 Enter the following commands to create and activate the environment:
 ```bash
-conda create --name myenv
+conda create --name myenv python=3.8.8
 conda activate myenv
 ```
 
-Run the following command to install the required dependencies:
+Run the following commands to install the required dependencies:
 
 ```bash
 pip3 install -r requirements.txt 
+```
+
+```bash
+pip3 install -r requirements_git.txt 
 ```
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board and we will address your issue ASAP if it is not already answered there.
 
@@ -63,11 +67,11 @@ Also, in some cases one can add parameter settings as well through the argument 
 
 For example to solely run the LOF outlier detection method of Chapter3 with parameter-argument: K=4:
 ```bash
-python3 crowdsignals_ch3_outliers.py --mode=”LOF” --K=4
+python3 crowdsignals_ch3_outliers.py --mode='LOF' --K=4
 ```
 And to finish chapter3-outliers, and move to chapter3-rest:
 ```bash
-python3 crowdsignals_ch3_outliers.py --mode=”final”
+python3 crowdsignals_ch3_outliers.py --mode='final'
 ```
 
 

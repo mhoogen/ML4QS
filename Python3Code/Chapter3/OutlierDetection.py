@@ -21,6 +21,7 @@ from typing import List, Tuple
 
 
 class DistributionBasedOutlierDetection:
+
     """
     Class for outlier detection algorithms based on some distribution of the data. They all consider only single
     points per row (i.e. one column).
@@ -44,14 +45,17 @@ class DistributionBasedOutlierDetection:
         mean = data_table[col].mean()
         std = data_table[col].std()
         N = len(data_table.index)
-        criterion = 1.0 / (2 * N)
+        criterion = 1.0 / (C * N)
+
 
         # Consider the deviation for the data points
         deviation = abs(data_table[col] - mean) / std
 
-        # Express the upper and lower bounds
-        low = -deviation / math.sqrt(2)
-        high = deviation / math.sqrt(2)
+
+        # Express the upper and lower bounds.
+        low = -deviation/math.sqrt(C)
+        high = deviation/math.sqrt(C)
+
         prob = []
         mask = []
 
@@ -138,15 +142,22 @@ class DistanceBasedOutlierDetection:
         distances = self.create_distance_table(norm_data_table, cols, d_function)
 
         mask = []
-        # Pass the rows in our table
-        for i in tqdm(range(0, len(norm_data_table.index))):
-            # Check what faction of neighbors are beyond dmin
-            frac = (float(sum([1 for col_val in distances.iloc[i, :].tolist() if col_val > d_min])) / len(
-                norm_data_table.index))
-            # Mark as an outlier if beyond the minimum frequency
-            mask.append(frac > f_min)
-        data_mask = pd.DataFrame(mask, index=norm_data_table.index, columns=['simple_dist_outlier'])
-        data_table = pd.concat([data_table, data_mask], axis=1)
+
+        # Pass the rows in our table.
+        for i in range(0, len(new_data_table.index)):
+            # Check what faction of neighbors are beyond dmin.
+            frac = (float(sum([1 for col_val in self.distances.iloc[i, :].tolist(
+            ) if col_val > dmin]))/len(new_data_table.index))
+            # Mark as an outlier if beyond the minimum frequency.
+            mask.append(frac > fmin)
+        if data_table.get('simple_dist_outlier') is None:
+            data_mask = pd.DataFrame(mask, index=new_data_table.index, columns=[
+                                     'simple_dist_outlier'])
+            data_table = pd.concat([data_table, data_mask], axis=1)
+        else:
+            data_table['simple_dist_outlier'] = pd.Series(mask, index=new_data_table.index)
+        del self.distances
+
         return data_table
 
     def local_outlier_factor(self, data_table: pd.DataFrame, cols: List[str], d_function: str, k: int) -> pd.DataFrame:
@@ -173,8 +184,14 @@ class DistanceBasedOutlierDetection:
         # Compute the outlier score per row.
         for i in tqdm(range(0, len(norm_data_table.index))):
             outlier_factor.append(self.local_outlier_factor_instance(i, k))
-        data_outlier_probs = pd.DataFrame(outlier_factor, index=norm_data_table.index, columns=['lof'])
-        data_table = pd.concat([data_table, data_outlier_probs], axis=1)
+
+        if data_table.get('lof') is None:
+            data_outlier_probs = pd.DataFrame(
+                outlier_factor, index=new_data_table.index, columns=['lof'])
+            data_table = pd.concat([data_table, data_outlier_probs], axis=1)
+        else:
+            data_table['lof'] = pd.Series(outlier_factor, index=new_data_table.index)
+
         del self.distances
         return data_table
 

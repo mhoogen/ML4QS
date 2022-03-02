@@ -49,9 +49,14 @@ def main():
     if FLAGS.mode == 'chauvenet':
         # Investigate the outlier columns using chauvenet criterium
         for col in outlier_columns:
-            print(f"Applying chauvenet outlier criteria for column {col}")
-            dataset = OutlierDistribution.chauvenet(data_table=dataset, col=col)
-            DataViz.plot_binary_outliers(data_table=dataset, col=col, outlier_col=f'{col}_outlier')
+
+            print(f"Applying Chauvenet outlier criteria for column {col}")
+
+            # And try out all different approaches. Note that we have done some optimization
+            # of the parameter values for each of the approaches by visual inspection.
+            dataset = OutlierDistr.chauvenet(dataset, col, FLAGS.C)
+            DataViz.plot_binary_outliers(
+                dataset, col, col + '_outlier')
 
     elif FLAGS.mode == 'mixture':
         # Investigate the outlier columns using mixture models
@@ -90,8 +95,10 @@ def main():
         # Take Chauvenet's criterion and apply it to all but the label column in the main dataset
         for col in [c for c in dataset.columns if 'label' not in c]:
             print(f'Measurement is now: {col}')
+
             dataset = OutlierDistribution.chauvenet(data_table=dataset, col=col)
             dataset.loc[dataset[f'{col}_outlier'], col] = np.nan
+
             del dataset[col + '_outlier']
 
         dataset.to_csv(DATA_PATH / RESULT_FILENAME)
@@ -102,14 +109,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--mode', type=str, default='final',
-                        help='Select what version to run: LOF, distance, mixture, chauvenet or final \
-                            "LOF" applies the Local Outlier Factor to a single variable \
-                            "distance" applies a distance based outlier detection method to a single variable \
-                            "mixture" applies a mixture model to detect outliers for a single variable\
-                            "chauvenet" applies Chauvenet outlier detection method to a single variable \
-                            "final" is used for the next chapter',
-                        choices=['LOF', 'distance', 'mixture', 'chauvenet', 'final'])
 
+                        help="Select what version to run: LOF, distance, mixture, chauvenet or final \
+                        'LOF' applies the Local Outlier Factor to a single variable \
+                        'distance' applies a distance based outlier detection method to a single variable \
+                        'mixture' applies a mixture model to detect outliers for a single variable\
+                        'chauvenet' applies Chauvenet outlier detection method to a single variable \
+                        'final' is used for the next chapter", choices=['LOF', 'distance', 'mixture', 'chauvenet', 'final'])
+
+    parser.add_argument('--C', type=float, default=2,
+                        help="Chauvenet: C parameter")
+   
     parser.add_argument('--K', type=int, default=5,
                         help='Local Outlier Factor:  K is the number of neighboring points considered')
 
@@ -118,6 +128,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--fmin', type=float, default=0.99,
                         help='Simple distance based:  fmin is ... ')
+
 
     FLAGS, unparsed = parser.parse_known_args()
 
