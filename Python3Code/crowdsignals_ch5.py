@@ -113,7 +113,7 @@ def main():
             print(f'k = {k}')
             dataset, l = clusteringH.agglomerative_over_instances(dataset, [
                                                                           'acc_phone_x', 'acc_phone_y', 'acc_phone_z'], k, 'euclidean', use_prev_linkage=True, link_function='ward')
-            silhouette_score = dataset_cluster['silhouette'].mean()
+            silhouette_score = dataset['silhouette'].mean()
             print(f'silhouette = {silhouette_score}')
             silhouette_values.append(silhouette_score)
             if k == k_values[0]:
