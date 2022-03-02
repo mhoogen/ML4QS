@@ -67,11 +67,11 @@ Also, in some cases one can add parameter settings as well through the argument 
 
 For example to solely run the LOF outlier detection method of Chapter3 with parameter-argument: K=4:
 ```bash
-python3 crowdsignals_ch3_outliers.py --mode=”LOF” --K=4
+python3 crowdsignals_ch3_outliers.py --mode='LOF' --K=4
 ```
 And to finish chapter3-outliers, and move to chapter3-rest:
 ```bash
-python3 crowdsignals_ch3_outliers.py --mode=”final”
+python3 crowdsignals_ch3_outliers.py --mode='final'
 ```
 
 
