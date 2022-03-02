@@ -25,7 +25,7 @@ conda create --name myenv python=3.8.8
 conda activate myenv
 ```
 
-Run the following command to install the required dependencies:
+Run the following commands to install the required dependencies:
 
 ```bash
 pip3 install -r requirements.txt 
