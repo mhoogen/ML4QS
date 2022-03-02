@@ -3,7 +3,7 @@ inspyred==1.0.1
 joblib==0.14.1
 matplotlib==3.2.1
 nltk==3.4.5
-numpy==1.18.2
+numpy==1.21.0
 pandas==1.0.3
 pyclust==0.2.0
 pykalman==0.9.5
