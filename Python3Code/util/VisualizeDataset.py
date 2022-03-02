@@ -262,7 +262,7 @@ class VisualizeDataset:
         for i in range(0, len(clusters)):
             # Aggregate the silhouette scores for samples belonging to
             # cluster i, and sort them
-            rows = data_table.mask(data_table[cluster_col] == clusters[i])
+            rows = data_table.mask(data_table[cluster_col] != clusters[i])
             ith_cluster_silhouette_values = np.array(rows[silhouette_col])
             ith_cluster_silhouette_values.sort()
 
