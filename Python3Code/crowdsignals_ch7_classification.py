@@ -238,7 +238,6 @@ for i in range(0, len(possible_feature_sets)):
                                                                                                 (overall_performance_tr_rf, overall_performance_te_rf),
                                                                                                 (overall_performance_tr_svm, overall_performance_te_svm),
                                                                                                 (performance_tr_knn, performance_te_knn),
-                                                                                                (performance_tr_knn, performance_te_knn),
                                                                                                 (performance_tr_dt, performance_te_dt),
                                                                                                 (performance_tr_nb, performance_te_nb)])
     scores_over_all_algs.append(scores_with_sd)
