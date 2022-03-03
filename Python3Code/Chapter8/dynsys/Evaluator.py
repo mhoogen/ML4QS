@@ -99,7 +99,7 @@ class Evaluator():
             for eval in self.eval_aspects:
                 pred_value = self.model.get_values(eval)[-1]
                 pred_values.append(pred_value)
-                mse = mean_squared_error([pred_value], [dataset.iloc[step+1, dataset.columns.get_loc(col[len(self.default_start):])]])
+                mse = mean_squared_error([pred_value], [dataset.iloc[step+1, dataset.columns.get_loc(eval[len(self.default_start):])]])
                 evals.append(mse)
 
             # Store the fitness for all aspects.
