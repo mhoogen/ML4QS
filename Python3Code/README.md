@@ -74,6 +74,9 @@ And to finish chapter3-outliers, and move to chapter3-rest:
 python3 crowdsignals_ch3_outliers.py --mode='final'
 ```
 
+!! IMPORTANT !!
+
+Running chapter 4 might give the error: ValueError: numpy.ndarray changed, may indicate binary incompatiblity. Expected 88 from C header, got 80 from PyObject. This is related to an incompatibility of Numpy. A quick fix is to temporarily update NumPy with pip install numpy==1.20.3, execute crowdsignals ch4.py and downgrade with pip install numpy==1.18.2 afterwards. Make sure to use version 1.18.2 for all chapters except chapter 4.
 
 
 4. OPTIONAL (Docker fanatics)
