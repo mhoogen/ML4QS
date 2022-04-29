@@ -18,9 +18,7 @@ import sys
 
 # Chapter 2: Initial exploration of the dataset.
 
-#DATASET_PATH = Path('./datasets/crowdsignals/csv-participant-one/')
-
-DATASET_PATH = Path('./datasets/csv-participant-one/')
+DATASET_PATH = Path('./datasets/crowdsignals/csv-participant-one/')
 RESULT_PATH = Path('./intermediate_datafiles/')
 RESULT_FNAME = 'chapter2_result.csv'
 
