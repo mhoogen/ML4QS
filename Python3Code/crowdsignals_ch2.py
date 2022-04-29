@@ -18,7 +18,9 @@ import sys
 
 # Chapter 2: Initial exploration of the dataset.
 
-DATASET_PATH = Path('./datasets/crowdsignals/csv-participant-one/')
+#DATASET_PATH = Path('./datasets/crowdsignals/csv-participant-one/')
+
+DATASET_PATH = Path('./datasets/csv-participant-one/')
 RESULT_PATH = Path('./intermediate_datafiles/')
 RESULT_FNAME = 'chapter2_result.csv'
 
@@ -29,6 +31,7 @@ GRANULARITIES = [60000, 250]
 # We can call Path.mkdir(exist_ok=True) to make any required directories if they don't already exist.
 [path.mkdir(exist_ok=True, parents=True) for path in [DATASET_PATH, RESULT_PATH]]
 
+print('Please wait, this will take a while to run!')
 
 datasets = []
 for milliseconds_per_instance in GRANULARITIES:
@@ -95,3 +98,7 @@ util.print_latex_table_statistics_two_datasets(datasets[0], datasets[1])
 
 # Finally, store the last dataset we generated (250 ms).
 dataset.to_csv(RESULT_PATH / RESULT_FNAME)
+
+# Lastly, print a statement to know the code went through
+
+print('The code has run through successfully!')
