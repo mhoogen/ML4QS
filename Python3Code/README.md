@@ -12,6 +12,24 @@ git clone https://www.github.com/mhoogen/ML4QS.git
 Windows:
 
 Open the Anaconda Prompt as Adminstrator (when you right click on the Anaconda Prompt, you see the option 'as Adminstrator'). 
+Run the following command:
+
+```bash
+conda create --name myenv python=3.8.8
+conda activate myenv
+```
+
+Then, navigate back to the Python3Code folder using cd <path to your ML4QS/Python3Code folder>.
+
+Run the following commands to install the required dependencies:
+
+```bash
+pip3 install -r requirements.txt 
+```
+
+```bash
+pip3 install -r requirements_git.txt 
+```
 
 Mac/Linux:
 
