@@ -46,9 +46,12 @@ Download the crowdsignals.io dataset from https://www.cs.vu.nl/~mhoogen/ml4qs/cr
 Create a subdirectory in the Python3Code directory called: ‘datasets’
 Extract the downloaded dataset in the newly created directory ‘datasets’
 Your file structure should now look like: Python3Code/datasets/crowdsignals/csv-participant-one/acc.csv … (multiple csv files)
+
+Important: It might be the case that unzipping the 'crowdsignals.zip' will not automatically create a crowdsignals folder with a subfolder 'csv-participant-one' folder. In this case, you need to manually create a folder crowdsignals and copy the 'csv-participant-one' folder in it.
+
 Redirect to the main directory: Python3Code
 
-Run the following command to run the very first chapter. (this might take a while): 
+Run the following command to run the very first chapter. (this might take a while. You need to close the figures that pop-up so the code can run through!): 
 ```bash
 python3 crowdsignals_ch2.py
 ```
