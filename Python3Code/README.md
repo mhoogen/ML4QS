@@ -30,6 +30,7 @@ pip3 install -r requirements.txt
 ```bash
 pip3 install -r requirements_git.txt 
 ```
+It could be the case that you run into an error when installing pybrain/pyflux stating '... error microsoft visual c++ 14.0 or greater is required'. In this case, you need to install Visual Studio Build Tools via the following link: https://visualstudio.microsoft.com/visual-cpp-build-tools/ . Once installed, you need to open it, click on modify and mark 'Desktop development with C++'. Afterwards, you might need to reboot. More information can be found via: https://docs.microsoft.com/en-us/answers/questions/136595/error-microsoft-visual-c-140-or-greater-is-require.html.
 
 Mac/Linux:
 
@@ -73,6 +74,7 @@ Run the following command to run the very first chapter. (this might take a whil
 ```bash
 python3 crowdsignals_ch2.py
 ```
+
 Study section ‘3. Code Instructions’ while you are waiting for Chapter2 to finish.
 
 3. Code Instructions
