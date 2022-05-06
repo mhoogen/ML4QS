@@ -82,7 +82,7 @@ Therefore at chapters 3, 4 and 5 several data-preprocessing methods are first st
 
 To study the effect of a specific method on the data, one can add the name of this method to the --mode argument. At the bottom of each script, one can find all possible methods. 
 
-Each chapter also has a --mode argument called ‘final’.  This selection contains the optimal methods selection and is used on all the variables, this results in the dataset needed for the next chapter. 
+Each chapter also has a --mode argument called ‘final’.  This selection contains the optimal methods selection and is used on all the variables, this results in the dataset needed for the next chapter. Hence, you need to run each crowdsignals_ch(<chapter number>).py file with the mode='final' before you can move on to the next python script!
 
 Also, in some cases one can add parameter settings as well through the argument parser. 
 
@@ -90,10 +90,15 @@ For example to solely run the LOF outlier detection method of Chapter3 with para
 ```bash
 python3 crowdsignals_ch3_outliers.py --mode='LOF' --K=4
 ```
-And to finish chapter3-outliers, and move to chapter3-rest:
+And to finish chapter3-outliers, and move to chapter3_rest:
 ```bash
 python3 crowdsignals_ch3_outliers.py --mode='final'
 ```
+Finally, you can run
+```bash
+python3 crowdsignals_ch3_rest.py --mode='final'
+```
+to finish Chapter 3.
 
 !! IMPORTANT !!
 
