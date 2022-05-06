@@ -74,6 +74,10 @@ Run the following command to run the very first chapter. (this might take a whil
 ```bash
 python3 crowdsignals_ch2.py
 ```
+For Windows it might be the case that you need to run the script via:
+```bash
+python crowdsignals_ch2.py
+```
 
 Study section ‘3. Code Instructions’ while you are waiting for Chapter2 to finish.
 
