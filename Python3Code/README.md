@@ -114,7 +114,7 @@ Running chapter 4 might give the error: ValueError: numpy.ndarray changed, may i
 4. OPTIONAL (Docker fanatics)
 
 Installing with Docker allows you to set up the course materials in a separate virtual container running Ubuntu. This guarantees compatibility and prevents system-specific issues. Docker may require some configuration to efficiently use your system resources in the Docker Desktop app.
-Download and install Docker (Docker Desktop is the easiest to work with).
+Download and install Docker (Docker Desktop is the easiest to work with). You can download 'Docker Desktop' via this link: https://www.docker.com/products/docker-desktop/.
 
 
 clone/download the ML4QS data from the ML4QS repository by running git clone https://www.github.com/mhoogen/ML4QS.git.
