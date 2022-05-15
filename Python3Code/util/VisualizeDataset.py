@@ -18,7 +18,10 @@ import sys
 from pathlib import Path
 import dateutil
 import matplotlib as mpl
-mpl.use('tkagg')
+try:
+    mpl.use('tkagg')
+except ImportError:
+    print('WARNING: Could not switch to TkAgg backend', file=sys.stderr)
 
 class VisualizeDataset:
 
