@@ -107,7 +107,7 @@ class NonHierarchicalClustering:
             self.ranges = []
             for col in temp_dataset.columns:
                 self.ranges.append(temp_dataset[col].max() - temp_dataset[col].min())
-            sklearn.metrics.pairwise.euclidean_distances = self.gower_similarity
+            sklearn.metrics.pairwise.euclidean_distances = self.gowers_similarity
         # If we do not recognize the option we use the default distance function, which is much
         # faster....
         # Now apply the k-means algorithm

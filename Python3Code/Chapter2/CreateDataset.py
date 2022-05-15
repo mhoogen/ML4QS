@@ -15,7 +15,6 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plot
 import matplotlib.dates as md
 
-
 class CreateDataset:
 
     base_dir = ''
@@ -37,7 +36,9 @@ class CreateDataset:
             for i in range(0, len(c)):
                 c[i] = str(prefix) + str(c[i])
         timestamps = self.create_timestamps(start_time, end_time)
-        self.data_table = pd.DataFrame(index=timestamps, columns=c)
+
+        #Specify the datatype here to prevent an issue
+        self.data_table = pd.DataFrame(index=timestamps, columns=c, dtype=object)
 
     # Add numerical data, we assume timestamps in the form of nanoseconds from the epoch
     def add_numerical_dataset(self, file, timestamp_col, value_cols, aggregation='avg', prefix=''):

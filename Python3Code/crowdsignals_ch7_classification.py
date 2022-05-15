@@ -84,7 +84,11 @@ features_after_chapter_5 = list(set().union(basic_features, pca_features, time_f
 fs = FeatureSelectionClassification()
 
 features, ordered_features, ordered_scores = fs.forward_selection(N_FORWARD_SELECTION,
-                                                                  train_X[features_after_chapter_5], train_y, gridsearch=False)
+                                                                  train_X[features_after_chapter_5],
+                                                                  test_X[features_after_chapter_5],
+                                                                  train_y,
+                                                                  test_y,
+                                                                  gridsearch=False)
 
 DataViz.plot_xy(x=[range(1, N_FORWARD_SELECTION+1)], y=[ordered_scores],
                 xlabel='number of features', ylabel='accuracy')
@@ -233,7 +237,6 @@ for i in range(0, len(possible_feature_sets)):
                                                                                                 (overall_performance_tr_nn, overall_performance_te_nn),
                                                                                                 (overall_performance_tr_rf, overall_performance_te_rf),
                                                                                                 (overall_performance_tr_svm, overall_performance_te_svm),
-                                                                                                (performance_tr_knn, performance_te_knn),
                                                                                                 (performance_tr_knn, performance_te_knn),
                                                                                                 (performance_tr_dt, performance_te_dt),
                                                                                                 (performance_tr_nb, performance_te_nb)])

@@ -32,6 +32,9 @@ class ClassificationAlgorithms:
     # hidden layers and number of iterations), and use the created network to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
+    # To improve the speed, one can use a CV of 3 only to make it faster
+    # Furthermore, you decrease the number of iteration and increase the learning rate, i.e. 0.001 and use 'adam' as a solver
+    # Include n_jobs in the GridSearchCV function and set it to -1 to use all processors which could also increase the speed
     def feedforward_neural_network(self, train_X, train_y, test_X, hidden_layer_sizes=(100,), max_iter=500, activation='logistic', alpha=0.0001, learning_rate='adaptive', gridsearch=True, print_model_details=False):
 
 
@@ -67,6 +70,8 @@ class ClassificationAlgorithms:
     # C, epsilon and the kernel function), and use the created model to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
+    # To improve the speed, one can use a CV of 3 only to make it faster
+    # Include n_jobs in the GridSearchCV function and set it to -1 to use all processors which could also increase the speed
     def support_vector_machine_with_kernel(self, train_X, train_y, test_X, C=1,  kernel='rbf', gamma=1e-3, gridsearch=True, print_model_details=False):
         # Create the model
         if gridsearch:
@@ -99,6 +104,7 @@ class ClassificationAlgorithms:
     # C, epsilon and the kernel function), and use the created model to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
+    # To improve the speed, one can use a CV of 3 only to make it faster and use fewer iterations
     def support_vector_machine_without_kernel(self, train_X, train_y, test_X, C=1, tol=1e-3, max_iter=1000, gridsearch=True, print_model_details=False):
         # Create the model
         if gridsearch:
@@ -135,6 +141,8 @@ class ClassificationAlgorithms:
     # k), and use the created model to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
+    # Again, use CV of 3 which will increase the speed of your model
+    # Also, usage of n_jobs=-1 could help to increase the speed
     def k_nearest_neighbor(self, train_X, train_y, test_X, n_neighbors=5, gridsearch=True, print_model_details=False):
         # Create the model
         if gridsearch:
@@ -167,6 +175,8 @@ class ClassificationAlgorithms:
     # and use the created model to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
+    # Again, use CV of 3 which will increase the speed of your model
+    # Also, usage of n_jobs in GridSearchCV could help to increase the speed
     def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='gini', print_model_details=False, export_tree_path='./figures/crowdsignals_ch7_classification/', export_tree_name='tree.dot', gridsearch=True):
         # Create the model
         if gridsearch:
@@ -174,7 +184,7 @@ class ClassificationAlgorithms:
                                  'criterion':['gini', 'entropy']}]
             dtree = GridSearchCV(DecisionTreeClassifier(), tuned_parameters, cv=5, scoring='accuracy')
         else:
-            dtree = DecisionTreeClassifier(criterion=criterion)
+            dtree = DecisionTreeClassifier(min_samples_leaf=min_samples_leaf, criterion=criterion)
 
         # Fit the model
 
@@ -234,6 +244,8 @@ class ClassificationAlgorithms:
     # model print_model_details=True) and use the created model to predict the outcome for both the
     # test and training set. It returns the categorical predictions for the training and test set as well as the
     # probabilities associated with each class, each class being represented as a column in the data frame.
+    # Use CV of 3 to make things faster
+    # Use n_jobs = -1 which will make use of all of your processors. This could speed up also the calculation
     def random_forest(self, train_X, train_y, test_X, n_estimators=10, min_samples_leaf=5, criterion='gini', print_model_details=False, gridsearch=True):
 
         if gridsearch:
@@ -276,6 +288,7 @@ class RegressionAlgorithms:
     # Apply a neural network for regression upon the training data (with the specified composition of
     # hidden layers and number of iterations), and use the created network to predict the outcome for both the
     # test and training set. It returns the categorical numerical predictions for the training and test set.
+    # Use CV of 3 to make things faster and might be already sufficient
     def feedforward_neural_network(self, train_X, train_y, test_X, hidden_layer_sizes=(100,), max_iter=500, activation='identity', learning_rate='adaptive', gridsearch=True, print_model_details=False):
         if gridsearch:
             # With the current parameters for max_iter and Python 3 packages convergence is not always reached, therefore increased +1000.
@@ -304,6 +317,8 @@ class RegressionAlgorithms:
     # Apply a support vector machine with a given kernel function for regression upon the training data (with the specified value for
     # C, gamma and the kernel function), and use the created model to predict the outcome for both the
     # test and training set. It returns the predictions for the training and test set.
+    # Use CV of 3 to make things faster and might be already sufficient
+    # This method is rather slow and its fit time complexity is more than quadratic with the number of samples which makes scaling hard
     def support_vector_regression_with_kernel(self, train_X, train_y, test_X, kernel='rbf', C=1, gamma=1e-3, gridsearch=True, print_model_details=False):
         if gridsearch:
             tuned_parameters = [{'kernel': ['rbf', 'poly'], 'gamma': [1e-3, 1e-4],
@@ -331,6 +346,7 @@ class RegressionAlgorithms:
     # Apply a support vector machine without a complex kernel function for regression upon the training data (with the specified value for
     # C, tolerance and max iterations), and use the created model to predict the outcome for both the
     # test and training set. It returns the predictions for the training and test set.
+    # Use CV of 3 to make things faster and might be already sufficient
     def support_vector_regression_without_kernel(self, train_X, train_y, test_X, C=1, tol=1e-3, max_iter=1000, gridsearch=True, print_model_details=False):
         if gridsearch:
             # With the current parameters for max_iter and Python 3 packages convergence is not always reached, with increased iterations/tolerance often still fails to converge.
@@ -359,6 +375,8 @@ class RegressionAlgorithms:
     # Apply a nearest neighbor approach for regression upon the training data (with the specified value for
     # k), and use the created model to predict the outcome for both the
     # test and training set. It returns the predictions for the training and test set.
+    # Use CV of 3 to make things faster
+    # Use n_jobs = -1 which will make use of all of your processors. This could speed up also the calculation
     def k_nearest_neighbor(self, train_X, train_y, test_X, n_neighbors=5, gridsearch=True, print_model_details=False):
         # Create the model
         if gridsearch:
@@ -387,6 +405,7 @@ class RegressionAlgorithms:
     # the minimum samples in the leaf, and the export path and files if print_model_details=True)
     # and use the created model to predict the outcome for both the
     # test and training set. It returns the predictions for the training and test set.
+    # Use CV of 3 to make things faster and CV of 3 might be already sufficient enough
     def decision_tree(self, train_X, train_y, test_X, min_samples_leaf=50, criterion='mse', print_model_details=False, export_tree_path='./figures/crowdsignals_ch7_regression/', export_tree_name='tree.dot', gridsearch=True):
         # Create the model
         if gridsearch:
@@ -427,6 +446,9 @@ class RegressionAlgorithms:
     # the minimum samples in the leaf, the number of trees, and if we should print some of the details of the
     # model print_model_details=True) and use the created model to predict the outcome for both the
     # test and training set. It returns the predictions for the training and test set.
+    # Use CV of 3 to make things faster
+    # Use n_jobs = -1 which will make use of all of your processors. This could speed up also the calculation
+
     def random_forest(self, train_X, train_y, test_X, n_estimators=10, min_samples_leaf=5, criterion='mse', print_model_details=False, gridsearch=True):
 
         if gridsearch:

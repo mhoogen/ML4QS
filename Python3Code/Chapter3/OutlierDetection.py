@@ -23,21 +23,21 @@ class DistributionBasedOutlierDetection:
 
     # Finds outliers in the specified column of datatable and adds a binary column with
     # the same name extended with '_outlier' that expresses the result per data point.
-    def chauvenet(self, data_table, col):
+    def chauvenet(self, data_table, col, C):
         # Taken partly from: https://www.astro.rug.nl/software/kapteyn/
 
         # Computer the mean and standard deviation.
         mean = data_table[col].mean()
         std = data_table[col].std()
         N = len(data_table.index)
-        criterion = 1.0/(2*N)
+        criterion = 1.0/(C*N)
 
         # Consider the deviation for the data points.
         deviation = abs(data_table[col] - mean)/std
 
         # Express the upper and lower bounds.
-        low = -deviation/math.sqrt(2)
-        high = deviation/math.sqrt(2)
+        low = -deviation/math.sqrt(C)
+        high = deviation/math.sqrt(C)
         prob = []
         mask = []
 
@@ -107,9 +107,12 @@ class DistanceBasedOutlierDetection:
             ) if col_val > dmin]))/len(new_data_table.index))
             # Mark as an outlier if beyond the minimum frequency.
             mask.append(frac > fmin)
-        data_mask = pd.DataFrame(mask, index=new_data_table.index, columns=[
-                                 'simple_dist_outlier'])
-        data_table = pd.concat([data_table, data_mask], axis=1)
+        if data_table.get('simple_dist_outlier') is None:
+            data_mask = pd.DataFrame(mask, index=new_data_table.index, columns=[
+                                     'simple_dist_outlier'])
+            data_table = pd.concat([data_table, data_mask], axis=1)
+        else:
+            data_table['simple_dist_outlier'] = pd.Series(mask, index=new_data_table.index)
         del self.distances
         return data_table
 
@@ -132,9 +135,12 @@ class DistanceBasedOutlierDetection:
         for i in range(0, len(new_data_table.index)):
             if i % 100 == 0: print(f'Completed {i} steps for LOF.')
             outlier_factor.append(self.local_outlier_factor_instance(i, k))
-        data_outlier_probs = pd.DataFrame(
-            outlier_factor, index=new_data_table.index, columns=['lof'])
-        data_table = pd.concat([data_table, data_outlier_probs], axis=1)
+        if data_table.get('lof') is None:
+            data_outlier_probs = pd.DataFrame(
+                outlier_factor, index=new_data_table.index, columns=['lof'])
+            data_table = pd.concat([data_table, data_outlier_probs], axis=1)
+        else:
+            data_table['lof'] = pd.Series(outlier_factor, index=new_data_table.index)
         del self.distances
         return data_table
 

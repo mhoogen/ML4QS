@@ -12,6 +12,25 @@ git clone https://www.github.com/mhoogen/ML4QS.git
 Windows:
 
 Open the Anaconda Prompt as Adminstrator (when you right click on the Anaconda Prompt, you see the option 'as Adminstrator'). 
+Run the following command:
+
+```bash
+conda create --name myenv python=3.8.8
+conda activate myenv
+```
+
+Then, navigate back to the Python3Code folder using cd <path to your ML4QS/Python3Code folder>.
+
+Run the following commands to install the required dependencies:
+
+```bash
+pip3 install -r requirements.txt 
+```
+
+```bash
+pip3 install -r requirements_git.txt 
+```
+It could be the case that you run into an error when installing pybrain/pyflux stating '... error microsoft visual c++ 14.0 or greater is required'. In this case, you need to install Visual Studio Build Tools via the following link: https://visualstudio.microsoft.com/visual-cpp-build-tools/ . Once installed, you need to open it, click on modify and mark 'Desktop development with C++'. Afterwards, you might need to reboot. More information can be found via: https://docs.microsoft.com/en-us/answers/questions/136595/error-microsoft-visual-c-140-or-greater-is-require.html.
 
 Mac/Linux:
 
@@ -21,14 +40,18 @@ Open the terminal
 Navigate to the Python3Code folder using cd <path to your ML4QS/Python3Code folder> 
 Enter the following commands to create and activate the environment:
 ```bash
-conda create --name myenv
+conda create --name myenv python=3.8.8
 conda activate myenv
 ```
 
-Run the following command to install the required dependencies:
+Run the following commands to install the required dependencies:
 
 ```bash
 pip3 install -r requirements.txt 
+```
+
+```bash
+pip3 install -r requirements_git.txt 
 ```
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board and we will address your issue ASAP if it is not already answered there.
 
@@ -38,16 +61,24 @@ If you have any more questions or can't seem to get the code working on your sys
 2. Dataset Start-Up
 
 To get started with your coursework:
-Download the crowdsignals.io dataset from http://www.cs.vu.nl/~mhoogen/ml4qs/crowdsignals.zip. 
+Download the crowdsignals.io dataset from https://www.cs.vu.nl/~mhoogen/ml4qs/crowdsignals.zip. 
 Create a subdirectory in the Python3Code directory called: ‘datasets’
 Extract the downloaded dataset in the newly created directory ‘datasets’
 Your file structure should now look like: Python3Code/datasets/crowdsignals/csv-participant-one/acc.csv … (multiple csv files)
+
+Important: It might be the case that unzipping the 'crowdsignals.zip' will not automatically create a crowdsignals folder with a subfolder 'csv-participant-one' folder. In this case, you need to manually create a folder crowdsignals and copy the 'csv-participant-one' folder in it.
+
 Redirect to the main directory: Python3Code
 
-Run the following command to run the very first chapter. (this might take a while): 
+Run the following command to run the very first chapter. (this might take a while. You need to close the figures that pop-up so the code can run through!): 
 ```bash
 python3 crowdsignals_ch2.py
 ```
+For Windows it might be the case that you need to run the script via:
+```bash
+python crowdsignals_ch2.py
+```
+
 Study section ‘3. Code Instructions’ while you are waiting for Chapter2 to finish.
 
 3. Code Instructions
@@ -57,25 +88,28 @@ Therefore at chapters 3, 4 and 5 several data-preprocessing methods are first st
 
 To study the effect of a specific method on the data, one can add the name of this method to the --mode argument. At the bottom of each script, one can find all possible methods. 
 
-Each chapter also has a --mode argument called ‘final’.  This selection contains the optimal methods selection and is used on all the variables, this results in the dataset needed for the next chapter. 
+Each chapter also has a --mode argument called ‘final’.  This selection contains the optimal methods selection and is used on all the variables, this results in the dataset needed for the next chapter. Hence, you need to run each crowdsignals_ch(<chapter number>).py file with the mode='final' before you can move on to the next python script!
 
 Also, in some cases one can add parameter settings as well through the argument parser. 
 
 For example to solely run the LOF outlier detection method of Chapter3 with parameter-argument: K=4:
 ```bash
-python3 crowdsignals_ch_3_outliers.py --mode=”LOF” --K=4
+python3 crowdsignals_ch3_outliers.py --mode='LOF' --K=4
 ```
-And to finish chapter3-outliers, and move to chapter3-rest:
+And to finish chapter3-outliers, and move to chapter3_rest:
 ```bash
-python3 crowdsignals_ch3_outliers.py --mode=”final”
+python3 crowdsignals_ch3_outliers.py --mode='final'
 ```
-
-
+Finally, you can run
+```bash
+python3 crowdsignals_ch3_rest.py --mode='final'
+```
+to finish Chapter 3.
 
 4. OPTIONAL (Docker fanatics)
 
 Installing with Docker allows you to set up the course materials in a separate virtual container running Ubuntu. This guarantees compatibility and prevents system-specific issues. Docker may require some configuration to efficiently use your system resources in the Docker Desktop app.
-Download and install Docker (Docker Desktop is the easiest to work with).
+Download and install Docker (Docker Desktop is the easiest to work with). You can download 'Docker Desktop' via this link: https://www.docker.com/products/docker-desktop/.
 
 
 clone/download the ML4QS data from the ML4QS repository by running git clone https://www.github.com/mhoogen/ML4QS.git.

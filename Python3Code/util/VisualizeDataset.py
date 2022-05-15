@@ -17,6 +17,8 @@ import math
 import sys
 from pathlib import Path
 import dateutil
+import matplotlib as mpl
+mpl.use('tkagg')
 
 class VisualizeDataset:
 
@@ -33,7 +35,7 @@ class VisualizeDataset:
         self.figures_dir.mkdir(exist_ok=True, parents=True)
 
 
-    def save(self, plot_obj, formats=('png',)): # 'svg'
+    def save(self, plot_obj, formats=('png', 'pdf')): # 'svg'
 
         fig_name = f'figure_{self.plot_number}'
 
@@ -260,7 +262,7 @@ class VisualizeDataset:
         for i in range(0, len(clusters)):
             # Aggregate the silhouette scores for samples belonging to
             # cluster i, and sort them
-            rows = data_table.mask(data_table[cluster_col] == clusters[i])
+            rows = data_table.mask(data_table[cluster_col] != clusters[i])
             ith_cluster_silhouette_values = np.array(rows[silhouette_col])
             ith_cluster_silhouette_values.sort()
 

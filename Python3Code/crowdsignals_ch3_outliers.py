@@ -65,7 +65,7 @@ def main():
 
             # And try out all different approaches. Note that we have done some optimization
             # of the parameter values for each of the approaches by visual inspection.
-            dataset = OutlierDistr.chauvenet(dataset, col)
+            dataset = OutlierDistr.chauvenet(dataset, col, FLAGS.C)
             DataViz.plot_binary_outliers(
                 dataset, col, col + '_outlier')
 
@@ -110,7 +110,7 @@ def main():
         for col in [c for c in dataset.columns if not 'label' in c]:
 
             print(f'Measurement is now: {col}')
-            dataset = OutlierDistr.chauvenet(dataset, col)
+            dataset = OutlierDistr.chauvenet(dataset, col, FLAGS.C)
             dataset.loc[dataset[f'{col}_outlier'] == True, col] = np.nan
             del dataset[col + '_outlier']
 
@@ -130,15 +130,16 @@ if __name__ == '__main__':
                         'chauvenet' applies Chauvenet outlier detection method to a single variable \
                         'final' is used for the next chapter", choices=['LOF', 'distance', 'mixture', 'chauvenet', 'final'])
 
-   
+    parser.add_argument('--C', type=float, default=2,
+                        help="Chauvenet: C parameter")
    
     parser.add_argument('--K', type=int, default=5,
                         help="Local Outlier Factor:  K is the number of neighboring points considered")
 
-    parser.add_argument('--dmin', type=int, default=0.10,
+    parser.add_argument('--dmin', type=float, default=0.10,
                         help="Simple distance based:  dmin is ... ")
 
-    parser.add_argument('--fmin', type=int, default=0.99,
+    parser.add_argument('--fmin', type=float, default=0.99,
                         help="Simple distance based:  fmin is ... ")
 
     FLAGS, unparsed = parser.parse_known_args()
