@@ -1,0 +1,46 @@
+sensor_type, device_type, timestamps, name, address, rssi, 
+bluetooth,smartphone,1454956222426000000,null,C8:CF:D4:A7:DB:75,-98.000
+bluetooth,smartphone,1454956580001000000,null,71:15:6B:8F:CA:FB,-80.000
+bluetooth,smartphone,1454957057973000000,Flex,EC:89:05:BF:BC:A6,-90.000
+bluetooth,smartphone,1454957066119000000,null,50:FE:5A:E6:6C:44,-86.000
+bluetooth,smartphone,1454957421121000000,null,6D:49:78:BE:9C:F5,-91.000
+bluetooth,smartphone,1454957536203000000,null,61:82:DA:4E:BF:B7,-92.000
+bluetooth,smartphone,1454957657239000000,null,59:4C:17:53:D2:04,-93.000
+bluetooth,smartphone,1454957901851000000,Charge HR,D0:C7:23:B3:C2:3E,-109.000
+bluetooth,smartphone,1454958266098000000,Chad Charbonneau (Gala,FC:19:10:B7:4B:E5,-103.000
+bluetooth,smartphone,1454958384124000000,Chad Charbonneau (Gala,FC:19:10:B7:4B:E5,-106.000
+bluetooth,smartphone,1454958740213000000,Susies-Z10,94:EB:CD:9A:BD:9F,-90.000
+bluetooth,smartphone,1454958743191000000,DEH-X6600BT  ,74:5E:1C:55:5D:4A,-103.000
+bluetooth,smartphone,1454959345114000000,null,40:83:DE:48:57:1E,-105.000
+bluetooth,smartphone,1454959578508000000,MacBook Pro,C8:BC:C8:B3:9F:7B,-91.000
+bluetooth,smartphone,1454959581808000000,null,40:83:DE:12:60:4C,-88.000
+bluetooth,smartphone,1454959581898000000,null,40:83:DE:38:8B:88,-98.000
+bluetooth,smartphone,1454959584806000000,null,40:83:DE:12:48:D4,-90.000
+bluetooth,smartphone,1454959587209000000,null,40:83:DE:78:42:54,-94.000
+bluetooth,smartphone,1454959699321000000,null,40:83:DE:38:1B:2F,-96.000
+bluetooth,smartphone,1454959816901000000,null,73:96:79:5D:3C:7C,-102.000
+bluetooth,smartphone,1454959819148000000,WindowsCE,40:83:DE:48:57:1E,-99.000
+bluetooth,smartphone,1454959939388000000,null,54:B8:E9:80:E4:1E,-100.000
+bluetooth,smartphone,1454960296149000000,null,7E:6B:5F:94:98:D6,-95.000
+bluetooth,smartphone,1454960296509000000,null,49:7F:60:07:71:AC,-101.000
+bluetooth,smartphone,1454960304985000000,null,64:4F:5C:D3:73:55,-95.000
+bluetooth,smartphone,1454960421532000000,iPhone,64:4F:5C:D3:73:55,-105.000
+bluetooth,smartphone,1454960423305000000,Flex,D9:3D:50:F5:06:C3,-103.000
+bluetooth,smartphone,1454960541162000000,WindowsCE,40:83:DE:48:57:1E,-104.000
+bluetooth,smartphone,1454960545389000000,Flex,D9:3D:50:F5:06:C3,-102.000
+bluetooth,smartphone,1454961263979000000,null,55:F7:38:F3:6D:BC,-107.000
+bluetooth,smartphone,1454961496884000000,null,00:05:4F:F3:2B:EC,-92.000
+bluetooth,smartphone,1454961621384000000,null,00:1A:5D:EE:8C:DD,-102.000
+bluetooth,smartphone,1454962097292000000,null,10:40:F3:E7:BB:3D,-104.000
+bluetooth,smartphone,1454962217416000000,null,00:1E:AE:4B:59:66,-107.000
+bluetooth,smartphone,1454962222229000000,null,7C:7A:91:8C:36:FF,-100.000
+bluetooth,smartphone,1454962225043000000,kitt_2c41,CD:BD:8C:F0:37:7B,-104.000
+bluetooth,smartphone,1454962696532000000,null,5A:93:4E:AF:17:B5,-109.000
+bluetooth,smartphone,1454962823161000000,null,74:5E:1C:91:8C:AE,-104.000
+bluetooth,smartphone,1454962823638000000,null,00:0E:9F:61:9C:4E,-102.000
+bluetooth,smartphone,1454962823869000000,iPhone,5A:93:4E:AF:17:B5,-107.000
+bluetooth,smartphone,1454963183950000000,null,48:44:73:55:F0:39,-98.000
+bluetooth,smartphone,1454963416504000000,iPhone,48:44:73:55:F0:39,-96.000
+bluetooth,smartphone,1454963656852000000,null,7A:B7:6E:89:D0:57,-100.000
+bluetooth,smartphone,1454963777947000000,null,56:A1:FA:8E:FA:A0,-75.000
+bluetooth,smartphone,1454963783588000000,null,7A:B7:6E:89:D0:57,-91.000
