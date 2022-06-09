@@ -75,6 +75,10 @@ for milliseconds_per_instance in GRANULARITIES:
     # Plot the data
     DataViz = VisualizeDataset(__file__)
 
+    dataset['acc_phone_x']=dataset['acc_phone_x'].astype(float)
+    dataset['acc_phone_y']=dataset['acc_phone_y'].astype(float)
+    dataset['acc_phone_z']=dataset['acc_phone_z'].astype(float)
+
     # Boxplot
     DataViz.plot_dataset_boxplot(dataset, ['acc_phone_x','acc_phone_y','acc_phone_z'])
 

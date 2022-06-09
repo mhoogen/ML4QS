@@ -50,7 +50,7 @@ def print_latex_table_statistics_two_datasets(dataset1, dataset2):
     dataset2_length = len(dataset2.index)
     for col in dataset1.columns:
         print(col, '& ', end='')
-        print_table_cell((float((dataset1_length - dataset1[col].count()))/datasets1_length)*100, (float((dataset2_length - dataset2[col].count()))/datasets2_length)*100)
+        print_table_cell((float((dataset1_length - dataset1[col].count()))/dataset1_length)*100, (float((dataset2_length - dataset2[col].count()))/dataset2_length)*100)
         print(' & ', end='')
         print_table_cell(dataset1[col].mean(), dataset2[col].mean())
         print(' & ', end='')
