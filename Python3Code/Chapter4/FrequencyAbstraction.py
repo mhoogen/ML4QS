@@ -76,7 +76,7 @@ class FourierTransformation:
                 window_size + 1).apply(self.find_fft_transformation)
 
             # Pad the missing rows with nans
-            frequencies = np.pad(np.array(self.temp_list), ((40, 0), (0, 0)),
+            frequencies = np.pad(np.array(self.temp_list), ((window_size, 0), (0, 0)),
                         'constant', constant_values=np.nan)
             # add new freq columns to frame
             
