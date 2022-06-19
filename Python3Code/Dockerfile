@@ -16,5 +16,6 @@ RUN xargs -L 1 pip3 install < /src/requirements.txt
 RUN xargs -L 1 pip3 install < /src/requirements_git.txt
 
 WORKDIR /root
-RUN python3 --version
 
+ENV HISTFILE=
+RUN python3 --version
