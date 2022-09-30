@@ -1,6 +1,6 @@
 gensim==3.8.1
 inspyred==1.0.1
-joblib==0.14.1
+joblib==1.2.0
 matplotlib==3.2.1
 nltk==3.4.5
 numpy==1.22.3
