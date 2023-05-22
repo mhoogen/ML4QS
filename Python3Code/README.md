@@ -28,10 +28,29 @@ pip3 install -r requirements.txt
 ```
 
 ```bash
-pip3 install -r requirements_git.txt 
+pip3 install [README.md](..%2F..%2F..%2F..%2FDesktop%2FREADME.md)-r requirements_git.txt 
 ```
-It could be the case that you run into an error when installing pybrain/pyflux stating '... error microsoft visual c++ 14.0 or greater is required'. In this case, you need to install Visual Studio Build Tools via the following link: https://visualstudio.microsoft.com/visual-cpp-build-tools/ . Once installed, you need to open it, click on modify and mark 'Desktop development with C++'. Afterwards, you might need to reboot. More information can be found via: https://docs.microsoft.com/en-us/answers/questions/136595/error-microsoft-visual-c-140-or-greater-is-require.html.
+It could be the case that you run into an error when installing pybrain/pyflux. Two possible solutions are given here:
+1. An error stating: '... error microsoft visual c++ 14.0 or greater is required'. In this case, you need to install Visual Studio Build Tools via the following link: https://visualstudio.microsoft.com/visual-cpp-build-tools/ . Once installed, you need to open it, click on modify and mark 'Desktop development with C++'. Afterwards, you might need to reboot. More information can be found via: https://docs.microsoft.com/en-us/answers/questions/136595/error-microsoft-visual-c-140-or-greater-is-require.html.
 
+2. If there is a different pyflux error, installing pyflux via a wheel might help. 
+Download a pyflux wheel (based on your python version and desktop) and pip install it 
+in the current working directory. Follow the steps to perform.\
+Step 1:
+Download the pyflux wheel file from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyflux) 
+where 27 up to 39 indicate your python version. We work with python 3.8.8 so pick 38.
+Check your desktop settings (64 or 32). You can check that [here](https://support.microsoft.com/en-us/windows/32-bit-and-64-bit-windows-frequently-asked-questions-c6ca9541-8dce-4d48-0415-94a3faa2e13d)  \
+Step 2:
+Put the wheel file in the current working directory \
+Step 3:
+Install the wheel with the following command:
+```bash
+pip install pyflux‑0.4.17‑cp38‑cp38‑win_amd64.whl
+```
+Or if you have a 32 desktop: 
+```bash
+pip install pyflux‑0.4.17‑cp38‑cp38‑win32.whl
+```
 Mac/Linux:
 
 Open the terminal
