@@ -9,7 +9,7 @@ Clone the ML4QS repository by running:
 ```bash
 git clone https://www.github.com/mhoogen/ML4QS.git
 ```
-Windows:
+## Windows:
 
 Open the Anaconda Prompt as Adminstrator (when you right click on the Anaconda Prompt, you see the option 'as Adminstrator'). 
 Run the following command:
@@ -51,7 +51,7 @@ Or if you have a 32 desktop:
 ```bash
 pip install pyflux‑0.4.17‑cp38‑cp38‑win32.whl
 ```
-Mac/Linux:
+## Mac/Linux:
 
 Open the terminal
 
@@ -72,6 +72,8 @@ pip3 install -r requirements.txt
 ```bash
 pip3 install -r requirements_git.txt 
 ```
+In case you run into an error installing PyFlux, please run ```xcode-select --install``` and then re-run ```pip3 install -r requirements_git.txt```.
+
 If you have any more questions or can't seem to get the code working on your system, post your question on the Tech Support FAQ on the Canvas message board and we will address your issue ASAP if it is not already answered there.
 
 
