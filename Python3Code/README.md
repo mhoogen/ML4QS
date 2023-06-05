@@ -28,7 +28,7 @@ pip3 install -r requirements.txt
 ```
 
 ```bash
-pip3 install [README.md](..%2F..%2F..%2F..%2FDesktop%2FREADME.md)-r requirements_git.txt 
+pip3 install -r requirements_git.txt 
 ```
 It could be the case that you run into an error when installing pybrain/pyflux. Two possible solutions are given here:
 1. An error stating: '... error microsoft visual c++ 14.0 or greater is required'. In this case, you need to install Visual Studio Build Tools via the following link: https://visualstudio.microsoft.com/visual-cpp-build-tools/ . Once installed, you need to open it, click on modify and mark 'Desktop development with C++'. Afterwards, you might need to reboot. More information can be found via: https://docs.microsoft.com/en-us/answers/questions/136595/error-microsoft-visual-c-140-or-greater-is-require.html.
