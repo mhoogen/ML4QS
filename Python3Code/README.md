@@ -37,8 +37,8 @@ It could be the case that you run into an error when installing pybrain/pyflux. 
 Download a pyflux wheel (based on your python version and desktop) and pip install it 
 in the current working directory. Follow the steps to perform.\
 Step 1:
-Download the pyflux wheel file from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyflux) 
-where 27 up to 39 indicate your python version. We work with python 3.8.8 so pick 38.
+Download the pyflux wheel file from this Github repository via the folder pyflux_wheel. There are two files in this folder.
+We work with python 3.8.8 so therefor the number 38 is in the file. You either pick the 32 or 64 file.
 Check your desktop settings (64 or 32). You can check that [here](https://support.microsoft.com/en-us/windows/32-bit-and-64-bit-windows-frequently-asked-questions-c6ca9541-8dce-4d48-0415-94a3faa2e13d)  \
 Step 2:
 Put the wheel file in the current working directory \
