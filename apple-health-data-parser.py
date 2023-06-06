@@ -1,3 +1,5 @@
+# sourced from https://medium.com/@gaurvinayak18/analyzing-apple-health-data-with-python-17700260b599
+
 import os
 import re
 import sys
