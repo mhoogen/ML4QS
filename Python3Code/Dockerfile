@@ -6,7 +6,7 @@ RUN apt-get install sudo
 RUN apt-get install git -y
 
 COPY requirements.txt /src/requirements.txt
-COPY requirements.txt /src/requirements_git.txt
+COPY requirements_git.txt /src/requirements_git.txt
 
 RUN apt-get install python3-pip -y
 RUN pip3 install pip --upgrade
