@@ -68,11 +68,31 @@ def merge_steps_weather(dir_weather: str, dir_steps: str, steps_column_datetime 
 
     return merge
 
-if __name__ == '__main__':
-    merge = merge_steps_weather(sys.argv[1], sys.argv[2])
-    merge.to_csv('weather_steps_merged.csv')
+def create_weather_steps(dir_weather: str, dir_steps: str):
+    #Create usefull dataframe
+    weather_steps = merge_steps_weather(dir_weather, dir_steps)
+    New_steps = weather_steps[['creationDate', 'hour', 'value']]
+    New_weather = weather_steps.iloc[:, 13:35]
+    New_weather_steps = pd.concat([New_steps, New_weather], axis=1)
 
-# uncomment this line to run in console, change directories for the location on your device
-#merge = merge_steps_weather(dir_weather='./data_used/weather.txt', dir_steps='./data_used/StepCount.csv')
+    ##Define groups
+    #New_weather_steps['group'] = (New_weather_steps['hour'] != New_weather_steps['hour'].shift()).cumsum()
+
+    ##sum the steps per group
+    #New_weather_steps_ = New_weather_steps.groupby(['group', 'hour'])['value'].sum().reset_index(drop=True)
+
+    ##replace steps for sum of the steps
+    #for i, j in zip(range(len(New_weather_steps)), New_weather_steps['group']):
+    #    New_weather_steps.at[i, 'value'] = New_weather_steps_[j - 1]
+
+    ##drop duplicates and column 'group'
+    #New_weather_steps = New_weather_steps.drop('group', axis=1)
+    #New_weather_steps = New_weather_steps.drop_duplicates()
+
+    return(New_weather_steps)
+
+if __name__ == '__main__':
+    merge = create_weather_steps('./data_used/weather.txt', './data_used/StepCount.csv')
+    merge.to_csv('weather_steps.csv')
 
 
