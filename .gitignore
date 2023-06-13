@@ -42,3 +42,8 @@ README.md
 data_used/weather.txt
 README.md
 Missing_data/weather_steps_merged.csv
+Missing_data/New_weather_steps.csv
+Missing_data/transformation_notgood.py
+New_weather_steps.csv
+Steps_weather_combined.csv
+Missing_data/EDA_old.ipynb
