@@ -7,24 +7,15 @@
 #                                                            #
 ##############################################################
 
-import os
-import copy
-import numpy as np
 import pandas as pd
 from pathlib import Path
-import matplotlib.pyplot as plt
 import time
 start = time.time()
 
-from sklearn.model_selection import train_test_split
-
 from Chapter7.PrepareDatasetForLearning import PrepareDatasetForLearning
 from Chapter7.LearningAlgorithms import ClassificationAlgorithms
-from Chapter7.LearningAlgorithms import RegressionAlgorithms
 from Chapter7.Evaluation import ClassificationEvaluation
-from Chapter7.Evaluation import RegressionEvaluation
 from Chapter7.FeatureSelection import FeatureSelectionClassification
-from Chapter7.FeatureSelection import FeatureSelectionRegression
 from util import util
 from util.VisualizeDataset import VisualizeDataset
 
@@ -93,25 +84,22 @@ features, ordered_features, ordered_scores = fs.forward_selection(N_FORWARD_SELE
 DataViz.plot_xy(x=[range(1, N_FORWARD_SELECTION+1)], y=[ordered_scores],
                 xlabel='number of features', ylabel='accuracy')
 
-
-# based on python2 features, slightly different. 
+# based on python2 features, slightly different.
 selected_features = ['acc_phone_y_freq_0.0_Hz_ws_40', 'press_phone_pressure_temp_mean_ws_120', 'gyr_phone_x_temp_std_ws_120',
                      'mag_watch_y_pse', 'mag_phone_z_max_freq', 'gyr_watch_y_freq_weighted', 'gyr_phone_y_freq_1.0_Hz_ws_40',
                      'acc_phone_x_freq_1.9_Hz_ws_40', 'mag_watch_z_freq_0.9_Hz_ws_40', 'acc_watch_y_freq_0.5_Hz_ws_40']
 
 # # # Let us first study the impact of regularization and model complexity: does regularization prevent overfitting?
-
 learner = ClassificationAlgorithms()
 eval = ClassificationEvaluation()
 start = time.time()
 
-
 reg_parameters = [0.0001, 0.001, 0.01, 0.1, 1, 10]
 performance_training = []
 performance_test = []
-## Due to runtime constraints we run the experiment 3 times, yet if you want even more robust data one should increase the repetitions. 
-N_REPEATS_NN = 3
 
+## Due to runtime constraints we run the experiment 3 times, yet if you want even more robust data one should increase the repetitions.
+N_REPEATS_NN = 3
 
 for reg_param in reg_parameters:
     performance_tr = 0
@@ -134,7 +122,6 @@ DataViz.plot_xy(x=[reg_parameters, reg_parameters], y=[performance_training, per
 
 #Second, let us consider the influence of certain parameter settings for the tree model. (very related to the
 #regularization) and study the impact on performance.
-
 leaf_settings = [1,2,5,10]
 performance_training = []
 performance_test = []
@@ -154,7 +141,6 @@ DataViz.plot_xy(x=[leaf_settings, leaf_settings], y=[performance_training, perfo
 
 # So yes, it is important :) Therefore we perform grid searches over the most important parameters, and do so by means
 # of cross validation upon the training set.
-
 possible_feature_sets = [basic_features, features_after_chapter_3, features_after_chapter_4, features_after_chapter_5, selected_features]
 feature_names = ['initial set', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Selected features']
 N_KCV_REPEATS = 5
@@ -169,7 +155,6 @@ for i in range(0, len(possible_feature_sets)):
     selected_test_X = test_X[possible_feature_sets[i]]
 
     # First we run our non deterministic classifiers a number of times to average their score.
-
     performance_tr_nn = 0
     performance_tr_rf = 0
     performance_tr_svm = 0
@@ -185,23 +170,23 @@ for i in range(0, len(possible_feature_sets)):
         print("Training RandomForest run {} / {} ... ".format(repeat, N_KCV_REPEATS, feature_names[i]))
         performance_tr_nn += eval.accuracy(train_y, class_train_y)
         performance_te_nn += eval.accuracy(test_y, class_test_y)
-        
+
         class_train_y, class_test_y, class_train_prob_y, class_test_prob_y = learner.random_forest(
             selected_train_X, train_y, selected_test_X, gridsearch=True
         )
-        
+
         performance_tr_rf += eval.accuracy(train_y, class_train_y)
         performance_te_rf += eval.accuracy(test_y, class_test_y)
 
         print("Training SVM run {} / {}, featureset: {}... ".format(repeat, N_KCV_REPEATS, feature_names[i]))
-      
+
         class_train_y, class_test_y, class_train_prob_y, class_test_prob_y = learner.support_vector_machine_with_kernel(
             selected_train_X, train_y, selected_test_X, gridsearch=True
         )
         performance_tr_svm += eval.accuracy(train_y, class_train_y)
         performance_te_svm += eval.accuracy(test_y, class_test_y)
 
-    
+
     overall_performance_tr_nn = performance_tr_nn/N_KCV_REPEATS
     overall_performance_te_nn = performance_te_nn/N_KCV_REPEATS
     overall_performance_tr_rf = performance_tr_rf/N_KCV_REPEATS
@@ -209,7 +194,7 @@ for i in range(0, len(possible_feature_sets)):
     overall_performance_tr_svm = performance_tr_svm/N_KCV_REPEATS
     overall_performance_te_svm = performance_te_svm/N_KCV_REPEATS
 
-#     #And we run our deterministic classifiers:
+    # And we run our deterministic classifiers:
     print("Determenistic Classifiers:")
 
     print("Training Nearest Neighbor run 1 / 1, featureset {}:".format(feature_names[i]))
@@ -222,14 +207,14 @@ for i in range(0, len(possible_feature_sets)):
     class_train_y, class_test_y, class_train_prob_y, class_test_prob_y = learner.decision_tree(
         selected_train_X, train_y, selected_test_X, gridsearch=True
     )
-    
+
     performance_tr_dt = eval.accuracy(train_y, class_train_y)
     performance_te_dt = eval.accuracy(test_y, class_test_y)
     print("Training Naive Bayes run 1/1 featureset {}:".format(feature_names[i]))
     class_train_y, class_test_y, class_train_prob_y, class_test_prob_y = learner.naive_bayes(
         selected_train_X, train_y, selected_test_X
     )
-   
+
     performance_tr_nb = eval.accuracy(train_y, class_train_y)
     performance_te_nb = eval.accuracy(test_y, class_test_y)
 
@@ -244,9 +229,8 @@ for i in range(0, len(possible_feature_sets)):
 
 DataViz.plot_performances_classification(['NN', 'RF','SVM', 'KNN', 'DT', 'NB'], feature_names, scores_over_all_algs)
 
-# # And we study two promising ones in more detail. First, let us consider the decision tree, which works best with the
-# # selected features.
-
+# And we study two promising ones in more detail. First, let us consider the decision tree, which works best with the
+# selected features.
 class_train_y, class_test_y, class_train_prob_y, class_test_prob_y = learner.decision_tree(train_X[selected_features], train_y, test_X[selected_features],
                                                                                            gridsearch=True,
                                                                                            print_model_details=True, export_tree_path=EXPORT_TREE_PATH)
