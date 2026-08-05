@@ -105,6 +105,8 @@ def main():
 
         k_values = range(2, 10)
         silhouette_values = []
+        k_datasets = []
+        k_ls = []
 
         # Do some initial runs to determine the right number for the maximum number of clusters.
 
@@ -116,9 +118,18 @@ def main():
             silhouette_score = dataset['silhouette'].mean()
             print(f'silhouette = {silhouette_score}')
             silhouette_values.append(silhouette_score)
-            if k == k_values[0]:
-                DataViz.plot_dendrogram(dataset, l)
+            k_datasets.append(dataset)
+            k_ls.append(l)
 
+            
+        max_value = np.max(silhouette_values)
+        index_max = silhouette_values.index(max_value)
+        
+        print('max score = ', max_value)
+        print('max k = ', k_values[index_max])
+        
+        DataViz.plot_dendrogram(k_datasets[index_max], k_ls[index_max])
+        
         DataViz.plot_xy(x=[k_values], y=[silhouette_values], xlabel='k', ylabel='silhouette score',
                         ylim=[0, 1], line_styles=['b-'])
 
