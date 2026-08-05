@@ -1,0 +1,2 @@
+sensor_type,device_type,timestamps,content_length,num_words,address,msg_type,event_type 
+sms,smartphone,1454957301189,8.000,2.000,E7FEE4137E6ED5DAE2AAB26C61787B89F1BDFA9422A1207F8EA562E524610987,1,SMSContentChanged
