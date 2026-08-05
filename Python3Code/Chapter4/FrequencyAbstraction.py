@@ -46,8 +46,8 @@ class FourierTransformation:
             pse = 0
 
         real_ampl = np.insert(real_ampl, 0, max_freq)
-        real_ampl = np.insert(real_ampl, 0, freq_weigthed)
-        row = np.insert(real_ampl, 0, pse)
+        real_ampl = np.insert(real_ampl, 1, freq_weigthed)
+        row = np.insert(real_ampl, 2, pse)
 
         self.temp_list.append(row)
 
